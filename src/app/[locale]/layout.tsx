@@ -5,7 +5,9 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { PostHogProvider } from "@/components/analytics/PostHogProvider";
 import { routing } from "@/libs/I18nRouting";
+import { ThemeProvider } from "@/libs/ThemeProvider";
 import { ClerkLocalizations } from "@/utils/AppConfig";
+import { getI18nPath } from "@/utils/Helpers";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -56,32 +58,39 @@ export default async function RootLayout(props: {
   let afterSignOutUrl = "/";
 
   if (locale !== routing.defaultLocale) {
-    signInUrl = `/${locale}${signInUrl}`;
-    signUpUrl = `/${locale}${signUpUrl}`;
-    dashboardUrl = `/${locale}${dashboardUrl}`;
-    afterSignOutUrl = `/${locale}${afterSignOutUrl}`;
+    signInUrl = getI18nPath(signInUrl, locale);
+    signUpUrl = getI18nPath(signUpUrl, locale);
+    dashboardUrl = getI18nPath(dashboardUrl, locale);
+    afterSignOutUrl = getI18nPath(afterSignOutUrl, locale);
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body>
-        <NextIntlClientProvider>
-          <PostHogProvider>
-            <ClerkProvider
-              localization={clerkLocale}
-              signInUrl={signInUrl}
-              signUpUrl={signUpUrl}
-              signInFallbackRedirectUrl={dashboardUrl}
-              signUpFallbackRedirectUrl={dashboardUrl}
-              afterSignOutUrl={afterSignOutUrl}
-              appearance={{
-                cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
-              }}
+        <ClerkProvider
+          localization={clerkLocale}
+          signInUrl={signInUrl}
+          signUpUrl={signUpUrl}
+          signInFallbackRedirectUrl={dashboardUrl}
+          signUpFallbackRedirectUrl={dashboardUrl}
+          afterSignOutUrl={afterSignOutUrl}
+          appearance={{
+            cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
+          }}
+        >
+          <NextIntlClientProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
             >
-              {props.children}
-            </ClerkProvider>
-          </PostHogProvider>
-        </NextIntlClientProvider>
+              <PostHogProvider>
+                {props.children}
+              </PostHogProvider>
+            </ThemeProvider>
+          </NextIntlClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
