@@ -11,10 +11,11 @@
     "description": "Code de démarrage pour Next.js avec Tailwind CSS",
     "made_with": "Fait avec <author></author>."
   },
-  "Index": {
-    "meta_title": "Présentation de Next.js Boilerplate",
-    "meta_description": "Next js Boilerplate est le code de démarrage parfait pour votre projet. Construisez votre application React avec le framework Next.js.",
-    "sponsors_title": "Partenaires"
+  "RootPage": {
+    "meta_title": "Accueil",
+    "meta_description": "Description de la page d'accueil",
+    "sponsors_title": "Partenaires",
+    "hello_world": "Bonjour le monde"
   },
   "Counter": {
     "meta_title": "Compteur",

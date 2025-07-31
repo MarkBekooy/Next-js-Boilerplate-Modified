@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { PostHogProvider } from '@/components/analytics/PostHogProvider';
-import { DemoBadge } from '@/components/DemoBadge';
 import { routing } from '@/libs/I18nRouting';
+import { ClerkLocalizations } from '@/utils/AppConfig';
 import '@/app/globals.css';
 
 export const metadata: Metadata = {
@@ -48,14 +49,38 @@ export default async function RootLayout(props: {
 
   setRequestLocale(locale);
 
+  const clerkLocale = ClerkLocalizations.supportedLocales[locale] ?? ClerkLocalizations.defaultLocale;
+  let signInUrl = '/sign-in';
+  let signUpUrl = '/sign-up';
+  let dashboardUrl = '/dashboard';
+  let afterSignOutUrl = '/';
+
+  if (locale !== routing.defaultLocale) {
+    signInUrl = `/${locale}${signInUrl}`;
+    signUpUrl = `/${locale}${signUpUrl}`;
+    dashboardUrl = `/${locale}${dashboardUrl}`;
+    afterSignOutUrl = `/${locale}${afterSignOutUrl}`;
+  }
+
   return (
     <html lang={locale}>
       <body>
         <NextIntlClientProvider>
           <PostHogProvider>
-            {props.children}
+            <ClerkProvider
+              localization={clerkLocale}
+              signInUrl={signInUrl}
+              signUpUrl={signUpUrl}
+              signInFallbackRedirectUrl={dashboardUrl}
+              signUpFallbackRedirectUrl={dashboardUrl}
+              afterSignOutUrl={afterSignOutUrl}
+              appearance={{
+                cssLayerName: 'clerk', // Ensure Clerk is compatible with Tailwind CSS v4
+              }}
+            >
+              {props.children}
+            </ClerkProvider>
           </PostHogProvider>
-          <DemoBadge />
         </NextIntlClientProvider>
       </body>
     </html>
