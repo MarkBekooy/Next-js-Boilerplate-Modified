@@ -1,8 +1,4 @@
-# Validate commit messages
-commit-msg:
-  commands:
-    commitlint:
-      run: npx --no -- commitlint --edit {1}
+# Don't forget to run `pnpm dlx lefthook install` to install the hooks
 
 # Validate content before committing
 pre-commit:
@@ -14,5 +10,11 @@ pre-commit:
       priority: 1
     check-types:
       glob: "*.{ts,tsx}"
-      run: npm run check:types
+      run: pnpm check:types
       priority: 2
+
+# Validate commit messages
+commit-msg:
+  commands:
+    commitlint:
+      run: npx --no -- commitlint --edit {1}
