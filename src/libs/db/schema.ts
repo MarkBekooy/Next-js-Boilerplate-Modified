@@ -13,6 +13,7 @@ import { integer, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
 // Need a database for production? Check out https://www.prisma.io/?via=nextjsboilerplate
 // Tested and compatible with Next.js Boilerplate
 
+// FIXME: Remove and replace this example schema with own table schema
 export const counterSchema = pgTable("counter", {
   id: serial("id").primaryKey(),
   count: integer("count").default(0),
