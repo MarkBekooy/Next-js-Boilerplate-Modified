@@ -1,8 +1,8 @@
 // This file configures the initialization of Sentry on the client.
 // The added config here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
-import * as Sentry from '@sentry/nextjs';
-import * as Spotlight from '@spotlightjs/spotlight';
+import * as Sentry from "@sentry/nextjs";
+import * as Spotlight from "@spotlightjs/spotlight";
 
 if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
   Sentry.init({
@@ -35,7 +35,7 @@ if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
     debug: false,
   });
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     Spotlight.init();
   }
 }

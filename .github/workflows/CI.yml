@@ -35,7 +35,7 @@ jobs:
       - name: Build Next.js
         run: npm run build
         env:
-          NEXT_PUBLIC_SENTRY_DISABLED: 'true' # Only upload Sentry source maps in deployment
+          NEXT_PUBLIC_SENTRY_DISABLED: "true" # Only upload Sentry source maps in deployment
 
       - if: matrix.node-version == '22.x' && success()
         name: Cache Next.js build output
@@ -218,7 +218,7 @@ jobs:
           download_translations: true
           create_pull_request: false
           localization_branch_name: ${{ github.head_ref || github.ref_name }} # explanation here: https://stackoverflow.com/a/71158878
-          commit_message: 'chore: new Crowdin translations by GitHub Action'
+          commit_message: "chore: new Crowdin translations by GitHub Action"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}

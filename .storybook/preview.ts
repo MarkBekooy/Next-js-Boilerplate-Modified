@@ -1,5 +1,5 @@
-import type { Preview } from '@storybook/nextjs-vite';
-import '../src/app/globals.css';
+import type { Preview } from "@storybook/nextjs-vite";
+import "../src/app/globals.css";
 
 const preview: Preview = {
   parameters: {
@@ -16,10 +16,10 @@ const preview: Preview = {
       toc: true, // Enable table of contents
     },
     a11y: {
-      test: 'todo', // Make a11y tests optional
+      test: "todo", // Make a11y tests optional
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default preview;

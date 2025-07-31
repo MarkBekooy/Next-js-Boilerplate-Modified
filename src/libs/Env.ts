@@ -1,9 +1,9 @@
-import { createEnv } from '@t3-oss/env-nextjs';
-import { z } from 'zod';
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
 
 export const Env = createEnv({
   server: {
-    ARCJET_KEY: z.string().startsWith('ajkey_').optional(),
+    ARCJET_KEY: z.string().startsWith("ajkey_").optional(),
     CLERK_SECRET_KEY: z.string().min(1),
     DATABASE_URL: z.string().min(1),
     BETTER_STACK_SOURCE_TOKEN: z.string().optional(),
@@ -15,7 +15,7 @@ export const Env = createEnv({
     NEXT_PUBLIC_POSTHOG_HOST: z.string().optional(),
   },
   shared: {
-    NODE_ENV: z.enum(['test', 'development', 'production']).optional(),
+    NODE_ENV: z.enum(["test", "development", "production"]).optional(),
   },
   // You need to destructure all the keys manually
   runtimeEnv: {
