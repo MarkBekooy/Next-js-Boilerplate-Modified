@@ -1,23 +1,23 @@
-import type { NextConfig } from 'next';
-import withBundleAnalyzer from '@next/bundle-analyzer';
-import { withSentryConfig } from '@sentry/nextjs';
-import createNextIntlPlugin from 'next-intl/plugin';
-import './src/libs/Env';
+import type { NextConfig } from "next";
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import { withSentryConfig } from "@sentry/nextjs";
+import createNextIntlPlugin from "next-intl/plugin";
+import "./src/libs/Env";
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
   eslint: {
-    dirs: ['.'],
+    dirs: ["."],
   },
   poweredByHeader: false,
   reactStrictMode: true,
 };
 
 // Initialize the Next-Intl plugin
-let configWithPlugins = createNextIntlPlugin('./src/libs/I18n.ts')(baseConfig);
+let configWithPlugins = createNextIntlPlugin("./src/libs/I18n.ts")(baseConfig);
 
 // Conditionally enable bundle analysis
-if (process.env.ANALYZE === 'true') {
+if (process.env.ANALYZE === "true") {
   configWithPlugins = withBundleAnalyzer()(configWithPlugins);
 }
 
@@ -47,7 +47,7 @@ if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
     // This can increase your server load as well as your hosting bill.
     // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
     // side errors will fail.
-    tunnelRoute: '/monitoring',
+    tunnelRoute: "/monitoring",
 
     // Automatically tree-shake Sentry logger statements to reduce bundle size
     disableLogger: true,

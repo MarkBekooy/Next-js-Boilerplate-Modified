@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from "@playwright/test";
 
 // Checkly is a tool used to monitor deployed environments, such as production or preview environments.
 // It runs end-to-end tests with the `.check.e2e.ts` extension after each deployment to ensure that the environment is up and running.
@@ -12,37 +12,37 @@ import { expect, test } from '@playwright/test';
 // You can't use `goto` function directly with a relative path like with other *.e2e.ts tests.
 // Check the example at https://feedback.checklyhq.com/changelog/new-changelog-436
 
-test.describe('Sanity', () => {
-  test.describe('Static pages', () => {
-    test('should display the homepage', async ({ page, baseURL }) => {
+test.describe("Sanity", () => {
+  test.describe("Static pages", () => {
+    test("should display the homepage", async ({ page, baseURL }) => {
       await page.goto(`${baseURL}/`);
 
       await expect(
-        page.getByRole('heading', { name: 'Boilerplate Code for Your Next.js Project with Tailwind CSS' }),
+        page.getByRole("heading", { name: "Boilerplate Code for Your Next.js Project with Tailwind CSS" }),
       ).toBeVisible();
     });
 
-    test('should navigate to the about page', async ({ page, baseURL }) => {
+    test("should navigate to the about page", async ({ page, baseURL }) => {
       await page.goto(`${baseURL}/`);
 
-      await page.getByRole('link', { name: 'About' }).click();
+      await page.getByRole("link", { name: "About" }).click();
 
       await expect(page).toHaveURL(/about$/);
 
       await expect(
-        page.getByText('Welcome to our About page', { exact: false }),
+        page.getByText("Welcome to our About page", { exact: false }),
       ).toBeVisible();
     });
 
-    test('should navigate to the portfolio page', async ({ page, baseURL }) => {
+    test("should navigate to the portfolio page", async ({ page, baseURL }) => {
       await page.goto(`${baseURL}/`);
 
-      await page.getByRole('link', { name: 'Portfolio' }).click();
+      await page.getByRole("link", { name: "Portfolio" }).click();
 
       await expect(page).toHaveURL(/portfolio$/);
 
       await expect(
-        page.locator('main').getByRole('link', { name: /^Portfolio/ }),
+        page.locator("main").getByRole("link", { name: /^Portfolio/ }),
       ).toHaveCount(6);
     });
   });

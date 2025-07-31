@@ -8,7 +8,7 @@
 const config = {
   plugins: {
     // Add Tailwind CSS support
-    '@tailwindcss/postcss': {},
+    "@tailwindcss/postcss": {},
   },
 };
 
