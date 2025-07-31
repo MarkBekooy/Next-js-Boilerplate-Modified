@@ -1,7 +1,5 @@
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import path from 'node:path';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import * as schema from '@/libs/db/schema';
 import { Env } from '../Env';
 
@@ -10,7 +8,6 @@ const globalForDb = globalThis as unknown as {
   drizzle: NodePgDatabase<typeof schema>;
 };
 
-// Need a database for production? Check out https://www.prisma.io/?via=nextjsboilerplate
 // Tested and compatible with Next.js Boilerplate
 const createDbConnection = () => {
   return drizzle({
@@ -28,9 +25,5 @@ const db = globalForDb.drizzle || createDbConnection();
 if (Env.NODE_ENV !== 'production') {
   globalForDb.drizzle = db;
 }
-
-await migrate(db, {
-  migrationsFolder: path.join(process.cwd(), 'migrations'),
-});
 
 export { db };
