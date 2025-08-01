@@ -5,12 +5,12 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev:spotlight": "npx @spotlightjs/spotlight",
+    "dev:spotlight": "pnpm dlx @spotlightjs/spotlight",
     "dev:next": "next dev --turbopack",
     "dev": "npx run-p db-server:file dev:*",
     "build": "next build --turbopack",
     "start": "next start",
-    "build-stats": "cross-env ANALYZE=true npm run build",
+    "build-stats": "cross-env ANALYZE=true pnpm build",
     "clean": "rimraf .next out coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
