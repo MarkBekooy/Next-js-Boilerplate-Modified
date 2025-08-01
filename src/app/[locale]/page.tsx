@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -39,6 +40,7 @@ export default async function RootPage(props: RootPageProps) {
         </CardContent>
       </Card>
       <ThemeToggle />
+      <LocaleSwitcher />
     </>
   );
 };
