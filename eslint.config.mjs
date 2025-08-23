@@ -2,6 +2,7 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import antfu from "@antfu/eslint-config";
 import nextPlugin from "@next/eslint-plugin-next";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import playwright from "eslint-plugin-playwright";
 import storybook from "eslint-plugin-storybook";
@@ -53,6 +54,8 @@ export default antfu(
       },
     },
   },
+  // --- Tanstack Query Rules ---
+  ...pluginQuery.configs["flat/recommended"],
   // --- E2E Testing Rules ---
   {
     files: [
