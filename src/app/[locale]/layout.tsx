@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -12,6 +9,7 @@ import { routing } from "@/libs/I18nRouting";
 import { ThemeProvider } from "@/libs/ThemeProvider";
 import { ClerkLocalizations } from "@/utils/AppConfig";
 import { getI18nPath } from "@/utils/Helpers";
+import ReactQueryProvider from "./react-query-providers";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -68,8 +66,6 @@ export default async function RootLayout(props: {
     afterSignOutUrl = getI18nPath(afterSignOutUrl, locale);
   }
 
-  const queryClient = new QueryClient();
-
   return (
     <html lang={locale} suppressHydrationWarning>
       <body>
@@ -91,12 +87,11 @@ export default async function RootLayout(props: {
               enableSystem
               disableTransitionOnChange
             >
-              <QueryClientProvider client={queryClient}>
-                <PostHogProvider>
+              <PostHogProvider>
+                <ReactQueryProvider>
                   {props.children}
-                </PostHogProvider>
-
-              </QueryClientProvider>
+                </ReactQueryProvider>
+              </PostHogProvider>
             </ThemeProvider>
           </NextIntlClientProvider>
         </ClerkProvider>
