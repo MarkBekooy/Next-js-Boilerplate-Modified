@@ -1,4 +1,5 @@
-import { integer, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
+import { v7 as uuidv7 } from "uuid";
 
 // This file defines the structure of your database tables using the Drizzle ORM.
 
@@ -15,7 +16,7 @@ import { integer, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
 
 // FIXME: Remove and replace this example schema with own table schema
 export const counterSchema = pgTable("counter", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().$defaultFn(uuidv7),
   count: integer("count").default(0),
   updatedAt: timestamp("updated_at", { mode: "date" })
     .defaultNow()
