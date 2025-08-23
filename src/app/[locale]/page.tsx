@@ -4,11 +4,7 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type RootPageProps = {
-  params: Promise<{ locale: string }>;
-};
-
-export async function generateMetadata(props: RootPageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await props.params;
   const t = await getTranslations({
     locale,
@@ -21,7 +17,7 @@ export async function generateMetadata(props: RootPageProps): Promise<Metadata> 
   };
 }
 
-export default async function RootPage(props: RootPageProps) {
+export default async function RootPage(props: PageProps<"/[locale]">) {
   const { locale } = await props.params;
   setRequestLocale(locale);
   const t = await getTranslations({
