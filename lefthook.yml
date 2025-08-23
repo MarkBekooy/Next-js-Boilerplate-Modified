@@ -5,7 +5,7 @@ pre-commit:
   commands:
     lint:
       glob: "*"
-      run: pnpm dlx eslint --fix --no-warn-ignored
+      run: pnpm exec eslint --fix --no-warn-ignored
       stage_fixed: true
       priority: 1
     check-types:
@@ -17,4 +17,4 @@ pre-commit:
 commit-msg:
   commands:
     commitlint:
-      run: pnpm dlx commitlint --edit {1}
+      run: pnpm exec commitlint --edit {1}
