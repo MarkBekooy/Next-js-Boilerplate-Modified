@@ -1,0 +1,58 @@
+---
+description: Always use the `tryCatch` utility function instead of writing traditional try/catch blocks.
+globs: src/**/*.ts, src/**/*.tsx
+alwaysApply: true
+---
+# Try-Catch Utility Rule
+
+Always use the `tryCatch` utility function from [src/utils/try-catch.ts](mdc:src/utils/try-catch.ts) instead of writing traditional try/catch blocks.
+
+## Usage Pattern
+
+Instead of:
+```typescript
+try {
+  const result = JSON.parse(someString);
+  // handle success
+} catch (error) {
+  // handle error
+}
+```
+
+Use:
+```typescript
+import { tryCatch } from '@/utils/try-catch';
+
+const { data, error } = tryCatch(() => JSON.parse(someString));
+if (error) {
+  // handle error
+} else {
+  // use data
+}
+```
+
+## Benefits
+
+1. **Consistent error handling**: All error handling follows the same pattern
+2. **Type safety**: The result is properly typed with `data` and `error` properties
+3. **Cleaner code**: No nested try/catch blocks cluttering the code
+4. **Functional approach**: More functional and composable error handling
+
+## Examples
+
+### Synchronous operations:
+```typescript
+const { data, error } = tryCatch(() => someRiskyOperation());
+```
+
+### Asynchronous operations:
+```typescript
+const { data, error } = await tryCatch(someAsyncOperation());
+```
+
+### With type annotations:
+```typescript
+const { data, error } = tryCatch<string, SyntaxError>(() => JSON.parse(jsonString));
+```
+
+Always import the `tryCatch` function from `@/utils/try-catch` and use the destructured `{ data, error }` pattern for consistent error handling throughout the codebase. 

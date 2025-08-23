@@ -8,7 +8,7 @@ export function tryCatch<T, E = Error>(
 ): ResultAsync<T, E>;
 export function tryCatch<T, E = Error>(operation: () => T): ResultSync<T, E>;
 export function tryCatch<T, E = Error>(
-  operation: Promise<T> | (() => T)
+  operation: Promise<T> | (() => T),
 ): ResultSync<T, E> | ResultAsync<T, E> {
   if (operation instanceof Promise) {
     return operation
