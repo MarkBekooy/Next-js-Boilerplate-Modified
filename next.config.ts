@@ -15,6 +15,9 @@ const baseConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
+  experimental: {
+    reactCompiler: true,
+  },
 };
 
 // Initialize the Next-Intl plugin
