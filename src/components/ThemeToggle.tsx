@@ -11,7 +11,7 @@ export function ThemeToggle() {
 
   useEffect(() => {
     // Based on https://www.npmjs.com/package/next-themes#avoid-hydration-mismatch
-    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks-extra/no-direct-set-state-in-use-effect
     setMounted(true);
   }, []);
 
