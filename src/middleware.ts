@@ -63,7 +63,7 @@ export default async function middleware(
         });
       }
 
-      return handleI18nRouting(request);
+      return handleI18nRouting(req);
     })(request, event);
   }
 
@@ -75,4 +75,5 @@ export const config = {
   // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
   // - … the ones containing a dot (e.g. `favicon.ico`)
   matcher: "/((?!_next|_vercel|monitoring|.*\\..*).*)",
+  runtime: "nodejs",
 };
