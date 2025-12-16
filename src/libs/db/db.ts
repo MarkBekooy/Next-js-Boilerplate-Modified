@@ -1,5 +1,6 @@
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import * as schema from "@/libs/db/schema";
 import { Env } from "../Env";
 
@@ -10,11 +11,14 @@ const globalForDb = globalThis as unknown as {
 
 // Tested and compatible with Next.js Boilerplate
 const createDbConnection = () => {
+  const pool = new Pool({
+    connectionString: Env.DATABASE_URL,
+    ssl: !Env.DATABASE_URL.includes("localhost") && !Env.DATABASE_URL.includes("127.0.0.1"),
+    max: 1,
+  });
+
   return drizzle({
-    connection: {
-      connectionString: Env.DATABASE_URL,
-      ssl: !Env.DATABASE_URL.includes("localhost") && !Env.DATABASE_URL.includes("127.0.0.1"),
-    },
+    client: pool,
     casing: "snake_case",
     schema,
   });
