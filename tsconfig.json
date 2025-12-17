@@ -66,7 +66,7 @@
     // Next.js Project Configuration
     // Controls settings specific to Next.js framework
     // ======================================================================
-    "jsx": "preserve", // Preserve JSX for Next.js transformation
+    "jsx": "react-jsx", // Uses the React automatic runtime
     "incremental": true, // Enable faster incremental builds
     "noEmit": true, // Skip emitting files (Next.js handles this)
     "plugins": [{ "name": "next" }] // Enable Next.js TypeScript plugin
@@ -74,5 +74,5 @@
 
   // Files to include/exclude from the project
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.e2e.ts"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mts"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts"]
 }

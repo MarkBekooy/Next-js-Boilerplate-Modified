@@ -66,15 +66,15 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
     <html lang={locale} suppressHydrationWarning>
       <body>
         <ClerkProvider
+          appearance={{
+            cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
+          }}
           localization={clerkLocale}
           signInUrl={signInUrl}
           signUpUrl={signUpUrl}
           signInFallbackRedirectUrl={dashboardUrl}
           signUpFallbackRedirectUrl={dashboardUrl}
           afterSignOutUrl={afterSignOutUrl}
-          appearance={{
-            cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
-          }}
         >
           <NextIntlClientProvider>
             <ThemeProvider

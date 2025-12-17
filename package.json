@@ -151,10 +151,5 @@
       "@semantic-release/git",
       "@semantic-release/github"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.1.11"
-    }
   }
 }
