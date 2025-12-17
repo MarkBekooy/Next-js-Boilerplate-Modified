@@ -5,11 +5,11 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { PostHogProvider } from "@/components/analytics/PostHogProvider";
+import ReactQueryProvider from "@/contexts/react-query-providers";
 import { routing } from "@/libs/I18nRouting";
 import { ThemeProvider } from "@/libs/ThemeProvider";
 import { ClerkLocalizations } from "@/utils/AppConfig";
 import { getI18nPath } from "@/utils/Helpers";
-import ReactQueryProvider from "./react-query-providers";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
