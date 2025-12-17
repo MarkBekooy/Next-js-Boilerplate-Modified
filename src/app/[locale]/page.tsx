@@ -4,6 +4,7 @@ import Link from "next/link";
 import ActionPanel from "@/components/ActionPanel";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export async function generateMetadata(props: PageProps<"/[locale]">): Promise<Metadata> {
@@ -67,12 +68,9 @@ export default async function RootPage(props: PageProps<"/[locale]">) {
                   Visit the test page
                 </Link>
               )} */}
-            <Link
-              href="/test"
-              className="rounded-xl border border-zinc-900/10 px-6 py-3 text-sm font-medium text-zinc-900 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black dark:border-zinc-100/10 dark:text-white"
-            >
-              Visit the test page
-            </Link>
+            <Button variant="outline" asChild className="mt-2 p-5 text-sm font-medium">
+              <Link href="/test">Visit the test page</Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
