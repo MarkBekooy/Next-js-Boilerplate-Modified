@@ -31,6 +31,7 @@ export default antfu(
     // Ignored paths
     ignores: [
       "migrations/**/*",
+      "src/components/ui/**/*",
     ],
   },
   // --- Accessibility Rules ---

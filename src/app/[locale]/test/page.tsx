@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Link } from "@/libs/I18nNavigation";
 
 export default function TestPage() {
@@ -11,12 +12,9 @@ export default function TestPage() {
           Simple route to confirm navigation works.
         </p>
         <div className="flex justify-center">
-          <Link
-            href="/"
-            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black"
-          >
-            Back to home
-          </Link>
+          <Button asChild className="p-5">
+            <Link href="/">Back to home</Link>
+          </Button>
         </div>
       </main>
     </div>

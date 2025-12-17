@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import ReactQueryProvider from "@/contexts/react-query-providers";
 import { routing } from "@/libs/I18nRouting";
@@ -10,6 +11,18 @@ import { ThemeProvider } from "@/libs/ThemeProvider";
 import { ClerkLocalizations } from "@/utils/AppConfig";
 import { getI18nPath } from "@/utils/Helpers";
 import "@/app/globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   icons: [
@@ -63,8 +76,8 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
   }
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body>
+    <html lang={locale} suppressHydrationWarning className={inter.variable}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClerkProvider
           appearance={{
             cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
