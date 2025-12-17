@@ -1,4 +1,8 @@
 import * as Sentry from "@sentry/nextjs";
+import { getPostHogServer } from "@/libs/posthog-server";
+import { tryCatch } from "@/utils/try-catch";
+
+const POSTHOG_COOKIE_REGEX = /ph_phc_.*?_posthog=([^;]+)/;
 
 const sentryOptions: Sentry.NodeOptions | Sentry.EdgeOptions = {
   // Sentry DSN
@@ -38,4 +42,45 @@ export async function register() {
   }
 }
 
-export const onRequestError = Sentry.captureRequestError;
+export const onRequestError = async (
+  err: unknown,
+  request: { headers: { cookie?: string | string[] } },
+  context: unknown,
+) => {
+  // Capture error with Sentry
+  Sentry.captureRequestError(err, request as any, context as any);
+
+  // Capture error with PostHog (only in Node.js runtime)
+  if (process.env.NEXT_RUNTIME === "nodejs") {
+    const posthog = getPostHogServer();
+    let distinctId: string | null = null;
+
+    if (request.headers.cookie) {
+      // Normalize multiple cookie arrays to string
+      const cookieString = Array.isArray(request.headers.cookie)
+        ? request.headers.cookie.join("; ")
+        : request.headers.cookie;
+
+      const postHogCookieMatch = cookieString.match(POSTHOG_COOKIE_REGEX);
+      const cookieValue = postHogCookieMatch?.at(1);
+
+      if (cookieValue) {
+        const { data: decodedCookie, error: decodeError } = tryCatch(() =>
+          decodeURIComponent(cookieValue),
+        );
+
+        if (!decodeError && decodedCookie) {
+          const { data: postHogData, error: parseError } = tryCatch(() =>
+            JSON.parse(decodedCookie),
+          );
+
+          if (!parseError && postHogData?.distinct_id) {
+            distinctId = postHogData.distinct_id;
+          }
+        }
+      }
+    }
+
+    await posthog.captureException(err, distinctId || undefined);
+  }
+};

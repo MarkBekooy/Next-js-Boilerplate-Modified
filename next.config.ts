@@ -18,6 +18,20 @@ const baseConfig: NextConfig = {
   experimental: {
     reactCompiler: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/relay-FBSt/static/:path*", // FBSt = FrostByte Software template
+        destination: "https://eu-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/relay-FBSt/:path*",
+        destination: "https://eu.i.posthog.com/:path*",
+      },
+    ];
+  },
+  // This is required to support PostHog trailing slash API requests
+  skipTrailingSlashRedirect: true,
 };
 
 // Initialize the Next-Intl plugin

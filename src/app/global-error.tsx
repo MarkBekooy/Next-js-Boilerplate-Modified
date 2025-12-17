@@ -2,15 +2,19 @@
 
 import * as Sentry from "@sentry/nextjs";
 import NextError from "next/error";
+import posthog from "posthog-js";
 import { useEffect } from "react";
 import { routing } from "@/libs/I18nRouting";
 
-export default function GlobalError(props: {
+export default function GlobalError({
+  error,
+}: {
   error: Error & { digest?: string };
 }) {
   useEffect(() => {
-    Sentry.captureException(props.error);
-  }, [props.error]);
+    Sentry.captureException(error);
+    posthog.captureException(error);
+  }, [error]);
 
   return (
     <html lang={routing.defaultLocale}>
