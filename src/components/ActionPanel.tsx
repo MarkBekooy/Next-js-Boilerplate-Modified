@@ -53,7 +53,7 @@ export default function ActionPanel() {
             type="button"
             onClick={triggerServerAction}
             disabled={isServerPending}
-            className="w-full rounded-xl bg-black px-6 py-3 text-sm font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-60 dark:bg-white dark:text-black"
+            className="w-full rounded-xl bg-black px-6 py-3 text-sm font-medium text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-60 dark:bg-white dark:text-black"
           >
             {isServerPending ? "Working..." : "Invoke server action"}
           </button>
@@ -71,7 +71,7 @@ export default function ActionPanel() {
             type="button"
             onClick={triggerRouteHandler}
             disabled={isRoutePending}
-            className="w-full rounded-xl border border-zinc-900/10 px-6 py-3 text-sm font-medium text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-60 dark:border-zinc-100/10 dark:text-white"
+            className="w-full rounded-xl border border-zinc-900/10 px-6 py-3 text-sm font-medium text-zinc-900 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-60 dark:border-zinc-100/10 dark:text-white"
           >
             {isRoutePending ? "Working..." : "Invoke API endpoint (route handler)"}
           </button>
