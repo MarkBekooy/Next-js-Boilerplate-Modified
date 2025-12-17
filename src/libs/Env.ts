@@ -5,6 +5,7 @@ export const Env = createEnv({
   server: {
     ARCJET_KEY: z.string().startsWith("ajkey_").optional(),
     CLERK_SECRET_KEY: z.string().startsWith("sk_").min(1),
+    CLERK_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
     DATABASE_URL: z.string().min(1),
   },
   client: {
@@ -22,6 +23,7 @@ export const Env = createEnv({
   runtimeEnv: {
     ARCJET_KEY: process.env.ARCJET_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN,
