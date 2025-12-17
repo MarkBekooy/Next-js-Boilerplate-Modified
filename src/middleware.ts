@@ -4,6 +4,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import arcjet from "@/libs/Arcjet";
+import { Env } from "./libs/Env";
 import { routing } from "./libs/I18nRouting";
 
 const handleI18nRouting = createMiddleware(routing);
@@ -40,7 +41,7 @@ export default async function middleware(
 ) {
   // Verify the request with Arcjet
   // Use `process.env` instead of Env to reduce bundle size in middleware
-  if (process.env.ARCJET_KEY) {
+  if (Env.ARCJET_KEY) {
     const decision = await aj.protect(request);
 
     if (decision.isDenied()) {
