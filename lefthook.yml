@@ -5,7 +5,7 @@ pre-commit:
   commands:
     lint:
       glob: "*"
-      run: pnpm exec eslint --fix --no-warn-ignored
+      run: pnpm exec eslint --fix --no-warn-ignored --cache
       stage_fixed: true
       priority: 1
     check-types:
