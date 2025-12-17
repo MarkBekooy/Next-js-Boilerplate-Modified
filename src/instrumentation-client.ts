@@ -2,7 +2,10 @@
 // The added config here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import * as Sentry from "@sentry/nextjs";
+import posthog from "posthog-js";
+import { Env } from "./libs/Env";
 
+// Initialize Sentry
 if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -39,5 +42,14 @@ if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
     debug: false,
   });
 }
+
+// Initialize PostHog
+posthog.init(Env.NEXT_PUBLIC_POSTHOG_KEY, {
+  api_host: "/relay-FBSt",
+  ui_host: "https://eu.posthog.com",
+  defaults: "2025-05-24",
+  capture_exceptions: true, // This enables capturing exceptions using Error Tracking, set to false if you don't want this
+  debug: Env.NODE_ENV === "development",
+});
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

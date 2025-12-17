@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { useState, useTransition } from "react";
 import { sayHelloFromServerAction } from "@/app/[locale]/api/_actions/hello-actions";
 
@@ -22,6 +23,7 @@ export default function ActionPanel() {
         setServerActionResult("Something went wrong");
       }
     });
+    posthog.capture("test_event");
   };
 
   const triggerRouteHandler = async () => {

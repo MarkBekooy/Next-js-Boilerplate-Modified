@@ -27,6 +27,13 @@ export default async function RootPage(props: PageProps<"/[locale]">) {
     namespace: "RootPage",
   });
 
+  // Track feature flags in PostHog
+  // const posthog = getPostHogServer();
+  // const flags = await posthog.getAllFlags(
+  //   "user_distinct_id", // replace with a user's distinct ID
+  // );
+  // await posthog.shutdown();
+
   return (
     <>
       <Card>
@@ -50,6 +57,16 @@ export default async function RootPage(props: PageProps<"/[locale]">) {
         <CardContent>
           <ActionPanel />
           <div className="flex justify-center">
+            {/* Feature flag tracking disabled for now, but this is an example */}
+            {/* {flags["test-page-flag"]
+              && (
+                <Link
+                  href="/test"
+                  className="rounded-xl border border-zinc-900/10 px-6 py-3 text-sm font-medium text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:border-zinc-100/10 dark:text-white"
+                >
+                  Visit the test page
+                </Link>
+              )} */}
             <Link
               href="/test"
               className="rounded-xl border border-zinc-900/10 px-6 py-3 text-sm font-medium text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:border-zinc-100/10 dark:text-white"

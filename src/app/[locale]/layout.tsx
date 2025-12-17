@@ -4,7 +4,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { PostHogProvider } from "@/components/analytics/PostHogProvider";
 import ReactQueryProvider from "@/contexts/react-query-providers";
 import { routing } from "@/libs/I18nRouting";
 import { ThemeProvider } from "@/libs/ThemeProvider";
@@ -84,11 +83,9 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
               enableSystem
               disableTransitionOnChange
             >
-              <PostHogProvider>
-                <ReactQueryProvider>
-                  {props.children}
-                </ReactQueryProvider>
-              </PostHogProvider>
+              <ReactQueryProvider>
+                {props.children}
+              </ReactQueryProvider>
             </ThemeProvider>
           </NextIntlClientProvider>
         </ClerkProvider>

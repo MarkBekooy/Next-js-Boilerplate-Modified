@@ -77,6 +77,9 @@ importers:
       posthog-js:
         specifier: ^1.257.2
         version: 1.307.2
+      posthog-node:
+        specifier: ^5.17.3
+        version: 5.17.3
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -7868,6 +7871,10 @@ packages:
   posthog-js@1.307.2:
     resolution: {integrity: sha512-Fnyia8nMwKtM80FeZi6nV0WlywDThBxldN+erQGQsDYQ9LByTMrAwrvKttFZ+KK1sE8DUPpT9/JkRrdwRNaUTg==}
 
+  posthog-node@5.17.3:
+    resolution: {integrity: sha512-sV7olZNd4RTmqUyfk0FARqy8WRVsqCkgQtuO+P1GkP5oURcqx0VvGqktnByw2zFV63qX5Fa3vdoH4xheahYzKQ==}
+    engines: {node: '>=20'}
+
   preact@10.28.0:
     resolution: {integrity: sha512-rytDAoiXr3+t6OIP3WGlDd0ouCUG1iCWzkcY3++Nreuoi17y6T5i/zRhe6uYfoVcxq6YU+sBtJouuRDsq8vvqA==}
 
@@ -10565,7 +10572,7 @@ snapshots:
     dependencies:
       is-negated-glob: 1.0.0
 
-  '@hono/mcp@0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@4.2.1))(hono@4.11.1)':
+  '@hono/mcp@0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@3.25.76))(hono@4.11.1)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.25.1(hono@4.11.1)(zod@3.25.76)
       hono: 4.11.1
@@ -12189,7 +12196,7 @@ snapshots:
 
   '@spotlightjs/sidecar@2.5.0':
     dependencies:
-      '@hono/mcp': 0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@4.2.1))(hono@4.11.1)
+      '@hono/mcp': 0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@3.25.76))(hono@4.11.1)
       '@hono/node-server': 1.19.7(hono@4.11.1)
       '@jridgewell/trace-mapping': 0.3.31
       '@modelcontextprotocol/sdk': 1.25.1(hono@4.11.1)(zod@3.25.76)
@@ -17680,6 +17687,10 @@ snapshots:
       fflate: 0.4.8
       preact: 10.28.0
       web-vitals: 4.2.4
+
+  posthog-node@5.17.3:
+    dependencies:
+      '@posthog/core': 1.8.0
 
   preact@10.28.0: {}
 
