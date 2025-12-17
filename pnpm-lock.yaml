@@ -10572,7 +10572,7 @@ snapshots:
     dependencies:
       is-negated-glob: 1.0.0
 
-  '@hono/mcp@0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@3.25.76))(hono@4.11.1)':
+  '@hono/mcp@0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@4.2.1))(hono@4.11.1)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.25.1(hono@4.11.1)(zod@3.25.76)
       hono: 4.11.1
@@ -12196,7 +12196,7 @@ snapshots:
 
   '@spotlightjs/sidecar@2.5.0':
     dependencies:
-      '@hono/mcp': 0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@3.25.76))(hono@4.11.1)
+      '@hono/mcp': 0.1.5(@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@4.2.1))(hono@4.11.1)
       '@hono/node-server': 1.19.7(hono@4.11.1)
       '@jridgewell/trace-mapping': 0.3.31
       '@modelcontextprotocol/sdk': 1.25.1(hono@4.11.1)(zod@3.25.76)
