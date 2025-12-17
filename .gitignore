@@ -61,5 +61,8 @@ build-archive.log
 /playwright-report/
 /playwright/.cache/
 
+# eslint
+.eslintcache
+
 # Personal exclusions
 IMPORTANT.md
