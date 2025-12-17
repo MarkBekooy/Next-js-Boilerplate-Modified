@@ -6,7 +6,7 @@ import "./src/libs/Env";
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
-  eslint: {
+  eslint: { // This is required for Next 15. In Next 16 the eslint config option removed.
     dirs: ["."],
   },
   devIndicators: {
