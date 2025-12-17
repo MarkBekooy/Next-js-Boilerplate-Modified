@@ -13,7 +13,7 @@ export default function TestPage() {
         <div className="flex justify-center">
           <Link
             href="/"
-            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black"
+            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black"
           >
             Back to home
           </Link>
