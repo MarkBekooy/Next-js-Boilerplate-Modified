@@ -1,7 +1,7 @@
 # Note: Rename the word 'example' to your project name in lowercase
 services:
   postgres-dev:
-    image: postgres:17.2
+    image: postgres:17.7
     container_name: example-db-dev
     environment:
       POSTGRES_USER: postgres
