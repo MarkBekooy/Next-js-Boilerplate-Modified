@@ -4,6 +4,8 @@ import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from "next-intl/plugin";
 import "./src/libs/Env";
 
+const isDev = process.env.NODE_ENV === "development";
+
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
   eslint: { // This is required for Next 15. In Next 16 the eslint config option removed.
@@ -16,7 +18,7 @@ const baseConfig: NextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
   experimental: {
-    reactCompiler: true,
+    reactCompiler: !isDev,
   },
   async rewrites() {
     return [
