@@ -1,15 +1,18 @@
-# Don't forget to run `pnpm dlx lefthook install` to install the hooks
+# Don't forget to run `pnpx lefthook install` to install the hooks
+
+# TODO: Maybe parallelize the commands? Then enable the parallel option and remove the priority options.
 
 # Validate content before committing
 pre-commit:
+  # parallel: true
   commands:
     lint:
-      glob: "*"
-      run: pnpm exec eslint --fix --no-warn-ignored {staged_files}
+      glob: "*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}"
+      run: pnpm exec eslint --cache --fix --no-warn-ignored {staged_files}
       stage_fixed: true
       priority: 1
-    check-types:
-      glob: "*.{ts,tsx}"
+    type-check:
+      glob: "*.{ts,tsx,mts,cts}"
       run: pnpm check:types
       priority: 2
 
