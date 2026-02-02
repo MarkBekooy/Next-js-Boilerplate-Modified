@@ -1,10 +1,7 @@
 # Don't forget to run `pnpx lefthook install` to install the hooks
 
-# TODO: Maybe parallelize the commands? Then enable the parallel option and remove the priority options.
-
 # Validate content before committing
 pre-commit:
-  # parallel: true
   commands:
     lint:
       glob: "*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}"
