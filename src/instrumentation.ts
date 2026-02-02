@@ -4,6 +4,11 @@ import { tryCatch } from "@/utils/try-catch";
 
 const POSTHOG_COOKIE_REGEX = /ph_phc_.*?_posthog=([^;]+)/;
 
+type PostHogCookieData = {
+  distinct_id: string;
+  [key: string]: unknown;
+};
+
 const sentryOptions: Sentry.NodeOptions | Sentry.EdgeOptions = {
   // Sentry DSN
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -70,8 +75,8 @@ export const onRequestError = async (
         );
 
         if (!decodeError && decodedCookie) {
-          const { data: postHogData, error: parseError } = tryCatch(() =>
-            JSON.parse(decodedCookie),
+          const { data: postHogData, error: parseError } = tryCatch<PostHogCookieData, Error>(() =>
+            JSON.parse(decodedCookie) as PostHogCookieData,
           );
 
           if (!parseError && postHogData?.distinct_id) {

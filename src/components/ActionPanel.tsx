@@ -33,7 +33,7 @@ export default function ActionPanel() {
       if (!response.ok) {
         throw new Error("Request failed");
       }
-      const data: { message?: string } = await response.json();
+      const data = await response.json() as { message?: string };
       setRouteHandlerResult(data.message ?? "No response");
     } catch {
       setRouteHandlerResult("Something went wrong");
