@@ -1,5 +1,6 @@
 import { PostHog } from "posthog-node";
 import { Env } from "./Env";
+import "server-only";
 
 let posthogInstance: PostHog | null = null;
 
