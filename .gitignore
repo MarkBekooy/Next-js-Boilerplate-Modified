@@ -53,9 +53,6 @@ next-env.d.ts
 /playwright-report/
 /playwright/.cache/
 
-# eslint
-.eslintcache
-
 # Personal exclusions
 IMPORTANT.md
 .pnpm-store

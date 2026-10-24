@@ -13,7 +13,10 @@ import { v7 as uuidv7 } from "uuid";
 
 const timestamps = {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().$onUpdate(() => new Date()).notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 };
 
 export const usersSchema = snakeCase.table(
@@ -29,7 +32,7 @@ export const usersSchema = snakeCase.table(
     ...timestamps,
     deletedAt: timestamp({ withTimezone: true }),
   },
-  table => [
+  (table) => [
     uniqueIndex("email_idx").on(table.email),
     uniqueIndex("user_auth_user_id_idx").on(table.authUserId),
     uniqueIndex("user_stripe_customer_id_idx").on(table.stripeCustomerId),

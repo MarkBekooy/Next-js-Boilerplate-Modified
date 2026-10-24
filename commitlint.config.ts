@@ -5,7 +5,7 @@ const Configuration: UserConfig = {
   rules: {
     "subject-case": [0, "never", ["sentence-case", "start-case", "pascal-case"]],
   },
-  ignores: [message => message.startsWith("chore: bump")], // Ignore dependabot commits
+  ignores: [(message) => message.startsWith("chore: bump")], // Ignore dependabot commits
 };
 
 export default Configuration;

@@ -2,6 +2,7 @@ import { Env } from "@/libs/Env";
 import { createDbConnection } from "@/utils/db-connection";
 
 // Stores the db connection in the global scope to prevent multiple instances due to hot reloading with Next.js
+// SAFETY: This adds only this module's optional development cache to the global object type.
 const globalForDb = globalThis as typeof globalThis & {
   cachedDrizzle?: ReturnType<typeof createDbConnection>;
 };

@@ -1,9 +1,6 @@
 {
   "name": "next-js-boilerplate",
   "author": "Mark Bekooy",
-  "engines": {
-    "node": ">=22"
-  },
   "scripts": {
     "dev:next": "next dev",
     "dev": "npx run-p db-server:file dev:*",
@@ -11,8 +8,8 @@
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true next build --webpack",
     "clean": "rimraf .next out coverage",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
     "check:types": "tsc --noEmit --pretty",
     "check:deps": "knip",
     "check:i18n": "i18n-check -l src/locales -s en -u src -f next-intl",
@@ -61,7 +58,7 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^10.0.0",
+    "@clerk/eslint-plugin": "0.2.0",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@commitlint/cz-commitlint": "^21.2.4",
@@ -69,16 +66,13 @@
     "@commitlint/types": "^21.2.3",
     "@electric-sql/pglite": "^0.5.11",
     "@electric-sql/pglite-socket": "^0.2.14",
-    "@eslint-react/eslint-plugin": "^5.28.7",
     "@lingual/i18n-check": "^0.9.5",
     "@next/bundle-analyzer": "16.4.3",
-    "@next/eslint-plugin-next": "16.4.3",
     "@playwright/test": "^1.64.1",
     "@posthog/nextjs-config": "1.12.0",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/git": "^11.0.1",
     "@tailwindcss/postcss": "^4.3.3",
-    "@tanstack/eslint-plugin-query": "^5.104.5",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
@@ -93,17 +87,16 @@
     "cross-env": "^10.1.0",
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "1.0.0-rc.5",
-    "eslint": "9.39.5",
-    "eslint-plugin-format": "^2.0.1",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-playwright": "^2.12.1",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.7",
-    "eslint-plugin-tailwindcss": "^4.4.0",
+    "eslint-plugin-drizzle": "0.2.3",
+    "eslint-plugin-github": "6.1.2",
     "import-in-the-middle": "^3.5.2",
     "knip": "^6.42.1",
     "lefthook": "^2.2.2",
     "npm-run-all": "^4.1.5",
+    "oxfmt": "0.74.0",
+    "oxlint": "1.89.0",
+    "oxlint-plugin-react-doctor": "0.9.18",
+    "oxlint-tailwindcss": "1.16.0",
     "postcss": "^8.5.31",
     "postcss-load-config": "^6.0.1",
     "require-in-the-middle": "^8.0.1",
@@ -111,6 +104,7 @@
     "semantic-release": "^25.0.9",
     "tailwindcss": "^4.3.3",
     "typescript": "npm:@typescript/typescript6@6.0.2",
+    "ultracite": "8.0.2",
     "vite": "^8.3.5",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.0.5",
@@ -143,5 +137,8 @@
       "@semantic-release/git",
       "@semantic-release/github"
     ]
+  },
+  "engines": {
+    "node": ">=22.18.0"
   }
 }

@@ -13,8 +13,8 @@ const baseConfig: NextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
   reactCompiler: process.env.NODE_ENV !== "development",
-  async rewrites() {
-    return [
+  rewrites() {
+    return Promise.resolve([
       {
         source: "/relay-FBSt/static/:path*", // FBSt = FrostByte Software template
         destination: "https://eu-assets.i.posthog.com/static/:path*",
@@ -23,14 +23,14 @@ const baseConfig: NextConfig = {
         source: "/relay-FBSt/:path*",
         destination: "https://eu.i.posthog.com/:path*",
       },
-    ];
+    ]);
   },
   // This is required to support PostHog trailing slash API requests
   skipTrailingSlashRedirect: true,
 };
 
 // Compose plugins on the config only when their feature is enabled.
-// eslint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
+// oxlint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
 let configWithPlugins = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
 
 if (process.env.ANALYZE === "true") {
@@ -39,9 +39,9 @@ if (process.env.ANALYZE === "true") {
 
 // Upload source maps in production when PostHog credentials are configured.
 if (
-  process.env.NODE_ENV === "production"
-  && process.env.POSTHOG_API_KEY
-  && process.env.POSTHOG_PROJECT_ID
+  process.env.NODE_ENV === "production" &&
+  process.env.POSTHOG_API_KEY &&
+  process.env.POSTHOG_PROJECT_ID
 ) {
   configWithPlugins = withPostHogConfig(configWithPlugins, {
     personalApiKey: process.env.POSTHOG_API_KEY,

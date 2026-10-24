@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export async function generateMetadata(props: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await props.params;
+
   const t = await getTranslations({
     locale,
     namespace: "RootPage",
@@ -23,6 +24,7 @@ export async function generateMetadata(props: PageProps<"/[locale]">): Promise<M
 export default async function RootPage(props: PageProps<"/[locale]">) {
   const { locale } = await props.params;
   setRequestLocale(locale);
+
   const t = await getTranslations({
     locale,
     namespace: "RootPage",
@@ -79,4 +81,4 @@ export default async function RootPage(props: PageProps<"/[locale]">) {
       <LocaleSwitcher />
     </>
   );
-};
+}

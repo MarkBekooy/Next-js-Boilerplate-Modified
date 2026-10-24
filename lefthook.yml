@@ -1,20 +1,31 @@
 # Don't forget to run `pnpx lefthook install` to install the hooks
 
-# Validate content before committing
+# Validate staged content before committing
 pre-commit:
   commands:
-    lint:
-      glob: "*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}"
-      run: pnpm exec eslint --cache --fix --no-warn-ignored {staged_files}
+    lint-fix:
+      run: pnpm fix -- {staged_files}
+      glob:
+        - "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}"
+        - "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}"
+      stage_fixed: true
+      priority: 1
+    format:
+      run: pnpm exec oxfmt {staged_files}
+      glob:
+        - "*.{json,jsonc,css}"
+        - "**/*.{json,jsonc,css}"
       stage_fixed: true
       priority: 1
     type-check:
-      glob: "*.{ts,tsx,mts,cts}"
       run: pnpm check:types
+      glob:
+        - "*.{ts,tsx,mts,cts}"
+        - "**/*.{ts,tsx,mts,cts}"
       priority: 2
 
 # Validate commit messages
 commit-msg:
   commands:
     commitlint:
-      run: pnpm exec commitlint --edit {1}
+      run: pnpm exec commitlint < $(git rev-parse --git-path COMMIT_EDITMSG)
