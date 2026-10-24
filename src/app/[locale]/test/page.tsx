@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "cn";
 import { Link } from "@/libs/i18n/navigation";
 
 export default function TestPage() {
@@ -10,9 +11,9 @@ export default function TestPage() {
           Simple route to confirm navigation works.
         </p>
         <div className="flex justify-center">
-          <Button asChild className="p-5">
-            <Link href="/">Back to home</Link>
-          </Button>
+          <Link href="/" className={cn(buttonVariants(), "p-5")}>
+            Back to home
+          </Link>
         </div>
       </main>
     </div>
