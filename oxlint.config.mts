@@ -15,6 +15,7 @@ import tailwind from "./oxlint/tailwind.mjs";
 
 const jsPlugins = selectJsPlugins(["github", "react-doctor"]);
 const drizzleJsPlugin = { name: "drizzle", specifier: "eslint-plugin-drizzle" };
+const nextIntlJsPlugin = { name: "next-intl", specifier: "./oxlint/next-intl.mjs" };
 const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
 
 const vitest = {
@@ -48,7 +49,7 @@ export default defineConfig({
     "migrations/**/*",
     "src/components/ui/**/*",
   ],
-  jsPlugins: [...(jsPlugins.jsPlugins ?? []), drizzleJsPlugin, shadcnJsPlugin],
+  jsPlugins: [...(jsPlugins.jsPlugins ?? []), drizzleJsPlugin, nextIntlJsPlugin, shadcnJsPlugin],
   options: {
     reportUnusedDisableDirectives: "error",
   },
@@ -104,6 +105,7 @@ export default defineConfig({
     "max-lines": ["error", { max: 500 }],
     "max-lines-per-function": ["error", { max: 100, skipBlankLines: true, skipComments: true }],
     "no-inline-comments": "off",
+    "next-intl/no-locale-from-route-params": "error",
     "no-restricted-imports": [
       "error",
       {

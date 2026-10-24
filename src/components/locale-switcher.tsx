@@ -1,7 +1,7 @@
 "use client";
 
 import { Globe } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { hasLocale, useLocale, useTranslations } from "next-intl";
 import { useSyncExternalStore } from "react";
 import {
   Select,
@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { usePathname, useRouter } from "@/libs/i18n/navigation";
+import { routing } from "@/libs/i18n/routing";
 import { AppConfig } from "@/utils/app-config";
 
 function subscribeToMount(_onStoreChange: () => void) {
@@ -44,7 +45,9 @@ export function LocaleSwitcher() {
   );
 
   function handleChange(value: string) {
-    router.replace(pathname, { locale: value });
+    if (hasLocale(routing.locales, value)) {
+      router.replace(pathname, { locale: value });
+    }
   }
 
   if (!mounted) {
