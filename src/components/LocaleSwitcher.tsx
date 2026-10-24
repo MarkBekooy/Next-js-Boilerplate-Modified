@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePathname } from "@/libs/I18nNavigation";
+import { usePathname } from "@/libs/i18n/navigation";
 import { AppConfig } from "@/utils/AppConfig";
 
 export const LocaleSwitcher = () => {
@@ -25,9 +25,9 @@ export const LocaleSwitcher = () => {
 
   return (
     <Select defaultValue={locale} onValueChange={handleChange} aria-label="lang-switcher">
-      <SelectTrigger className="w-[140px]">
+      <SelectTrigger className="w-35">
         <div className="flex items-center gap-2">
-          <Globe className="h-4 w-4" />
+          <Globe className="size-4" />
           <SelectValue placeholder="Select language" />
         </div>
       </SelectTrigger>

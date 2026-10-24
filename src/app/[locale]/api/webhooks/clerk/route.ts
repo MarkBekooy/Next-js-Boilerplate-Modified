@@ -32,9 +32,8 @@ export async function POST(req: Request) {
     );
   }
 
-  // Get the body
-  const payload = await req.json();
-  const body = JSON.stringify(payload);
+  // Use the raw body so Svix verifies the exact bytes Clerk signed.
+  const body = await req.text();
 
   // Create a new Svix instance with your secret.
   const wh = new Webhook(webhookSecret);
@@ -43,11 +42,12 @@ export async function POST(req: Request) {
 
   // Verify the payload with the headers
   try {
-    evt = wh.verify(body, {
+    wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
-    }) as WebhookEvent;
+    });
+    evt = JSON.parse(body) as WebhookEvent;
   } catch (err) {
     console.error("Error verifying webhook:", err);
     return NextResponse.json(

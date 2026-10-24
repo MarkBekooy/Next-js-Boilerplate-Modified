@@ -5,7 +5,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import ReactQueryProvider from "@/contexts/react-query-providers";
-import { routing } from "@/libs/I18nRouting";
+import { routing } from "@/libs/i18n/routing";
 import { ThemeProvider } from "@/libs/ThemeProvider";
 import { ClerkLocalizations } from "@/utils/AppConfig";
 import { getI18nPath } from "@/utils/Helpers";

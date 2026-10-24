@@ -11,7 +11,6 @@ export function ThemeToggle() {
 
   useEffect(() => {
     // Based on https://www.npmjs.com/package/next-themes#avoid-hydration-mismatch
-    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks-extra/no-direct-set-state-in-use-effect
     setMounted(true);
   }, []);
 
@@ -28,28 +27,28 @@ export function ThemeToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className={`h-8 w-8 ${theme === "system" ? "bg-muted" : ""}`}
+          className={`size-8 ${theme === "system" ? "bg-muted" : ""}`}
           onClick={() => setTheme("system")}
         >
-          <Monitor className="h-4 w-4" />
+          <Monitor className="size-4" />
           <span className="sr-only">System theme</span>
         </Button>
         <Button
           variant="ghost"
           size="icon"
-          className={`h-8 w-8 ${theme === "light" ? "bg-muted" : ""}`}
+          className={`size-8 ${theme === "light" ? "bg-muted" : ""}`}
           onClick={() => setTheme("light")}
         >
-          <Sun className="h-4 w-4" />
+          <Sun className="size-4" />
           <span className="sr-only">Light theme</span>
         </Button>
         <Button
           variant="ghost"
           size="icon"
-          className={`h-8 w-8 ${theme === "dark" ? "bg-muted" : ""}`}
+          className={`size-8 ${theme === "dark" ? "bg-muted" : ""}`}
           onClick={() => setTheme("dark")}
         >
-          <Moon className="h-4 w-4" />
+          <Moon className="size-4" />
           <span className="sr-only">Dark theme</span>
         </Button>
       </div>

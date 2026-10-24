@@ -1,5 +1,5 @@
 import { Env } from "@/libs/Env";
-import { routing } from "@/libs/I18nRouting";
+import { routing } from "@/libs/i18n/routing";
 
 export function getBaseUrl() {
   if (Env.NEXT_PUBLIC_APP_URL) {
