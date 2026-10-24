@@ -19,16 +19,15 @@ export const AppConfig = {
   ],
   defaultLocale: "en",
   localePrefix,
-};
+} as const;
 
 export const AllLocales = AppConfig.locales.map((locale) => locale.id);
 
 const supportedLocales = {
   en: enUS,
   nl: nlNL,
-} satisfies Record<string, LocalizationResource>;
+} satisfies Record<(typeof AppConfig.locales)[number]["id"], LocalizationResource>;
 
 export const ClerkLocalizations = {
-  defaultLocale: enUS,
   supportedLocales,
 };

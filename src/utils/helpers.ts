@@ -1,5 +1,4 @@
 import { Env } from "@/libs/env";
-import { routing } from "@/libs/i18n/routing";
 
 export function getBaseUrl() {
   if (Env.NEXT_PUBLIC_APP_URL) {
@@ -15,14 +14,6 @@ export function getBaseUrl() {
   }
 
   return "http://localhost:3000";
-}
-
-export function getI18nPath(url: string, locale: string) {
-  if (locale === routing.defaultLocale) {
-    return url;
-  }
-
-  return `/${locale}${url}`;
 }
 
 export function isServer() {
