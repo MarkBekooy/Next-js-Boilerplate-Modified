@@ -1,3 +1,5 @@
+shellEmulator: false
+
 allowBuilds:
   '@parcel/watcher': true
   '@posthog/cli': true

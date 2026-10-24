@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "@/libs/i18n/navigation";
 import ActionPanel from "@/components/ActionPanel";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "cn";
 
 export async function generateMetadata(props: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await props.params;
@@ -70,9 +71,12 @@ export default async function RootPage(props: PageProps<"/[locale]">) {
                   Visit the test page
                 </Link>
               )} */}
-            <Button variant="outline" asChild className="mt-2 p-5 text-sm font-medium">
-              <Link href="/test">Visit the test page</Link>
-            </Button>
+            <Link
+              href="/test"
+              className={cn(buttonVariants({ variant: "outline" }), "mt-2 p-5 text-sm font-medium")}
+            >
+              Visit the test page
+            </Link>
           </div>
         </CardContent>
       </Card>
