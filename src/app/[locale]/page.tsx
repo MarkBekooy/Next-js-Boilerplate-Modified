@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/libs/i18n/navigation";
 import ActionPanel from "@/components/ActionPanel";
@@ -6,15 +7,11 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "cn";
 
-export async function generateMetadata(props: PageProps<"/[locale]">): Promise<Metadata> {
-  const { locale } = await props.params;
-
-  const t = await getTranslations({
-    locale,
-    namespace: "RootPage",
-  });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("RootPage");
 
   return {
     title: t("meta_title"),
@@ -22,7 +19,15 @@ export async function generateMetadata(props: PageProps<"/[locale]">): Promise<M
   };
 }
 
-export default async function RootPage() {
+export default function RootPage() {
+  return (
+    <Suspense fallback={<RootPageSkeleton />}>
+      <RootPageContent />
+    </Suspense>
+  );
+}
+
+async function RootPageContent() {
   const t = await getTranslations("RootPage");
 
   // Track feature flags in PostHog
@@ -77,6 +82,37 @@ export default async function RootPage() {
 
       <ThemeToggle />
       <LocaleSwitcher />
+    </>
+  );
+}
+
+function RootPageSkeleton() {
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-7 w-40" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-4 w-64 max-w-full" />
+        </CardContent>
+      </Card>
+
+      <Card className="mx-auto my-3 max-w-3xl">
+        <CardHeader className="items-center">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-5 w-80 max-w-full" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="mx-auto h-10 w-36" />
+        </CardContent>
+      </Card>
+
+      <div className="flex justify-center gap-3">
+        <Skeleton className="h-9 w-28" />
+        <Skeleton className="h-9 w-28" />
+      </div>
     </>
   );
 }

@@ -2,12 +2,14 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { locale as getRootLocale } from "next/root-params";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { notFound } from "next/navigation";
+import { getMessages } from "next-intl/server";
+import { OfflineIndicator } from "@/components/offline-indicator";
 import ReactQueryProvider from "@/contexts/react-query-providers";
 import { routing } from "@/libs/i18n/routing";
 import { ThemeProvider } from "@/libs/ThemeProvider";
 import { ClerkLocalizations } from "@/utils/AppConfig";
 import { getI18nPath } from "@/utils/Helpers";
+import { Toaster } from "@/components/ui/sonner";
 import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -27,11 +29,13 @@ export function generateStaticParams() {
 }
 
 export default async function RootLayout(props: LayoutProps<"/[locale]">) {
-  const locale = await getRootLocale();
+  const requestedLocale = await getRootLocale();
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  const locale = hasLocale(routing.locales, requestedLocale)
+    ? requestedLocale
+    : routing.defaultLocale;
+
+  const messages = await getMessages({ locale });
 
   // SAFETY: `hasLocale` confirms this key exists in the Clerk localization map for the configured locales.
   const clerkLocale =
@@ -68,14 +72,18 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
           signUpFallbackRedirectUrl={dashboardUrl}
           afterSignOutUrl={afterSignOutUrl}
         >
-          <NextIntlClientProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
             >
-              <ReactQueryProvider>{props.children}</ReactQueryProvider>
+              <ReactQueryProvider>
+                <OfflineIndicator />
+                {props.children}
+              </ReactQueryProvider>
+              <Toaster />
             </ThemeProvider>
           </NextIntlClientProvider>
         </ClerkProvider>
