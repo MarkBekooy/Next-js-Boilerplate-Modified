@@ -3,8 +3,11 @@ import { SignUp } from "@clerk/nextjs";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getI18nPath } from "@/utils/Helpers";
 
-export async function generateMetadata(props: PageProps<"/[locale]/sign-up/[[...sign-up]]">): Promise<Metadata> {
+export async function generateMetadata(
+  props: PageProps<"/[locale]/sign-up/[[...sign-up]]">,
+): Promise<Metadata> {
   const { locale } = await props.params;
+
   const t = await getTranslations({
     locale,
     namespace: "SignUp",
@@ -20,7 +23,5 @@ export default async function SignUpPage(props: PageProps<"/[locale]/sign-up/[[.
   const { locale } = await props.params;
   setRequestLocale(locale);
 
-  return (
-    <SignUp path={getI18nPath("/sign-up", locale)} />
-  );
-};
+  return <SignUp path={getI18nPath("/sign-up", locale)} />;
+}

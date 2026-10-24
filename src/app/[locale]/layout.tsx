@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 export function generateStaticParams() {
-  return routing.locales.map(locale => ({ locale }));
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout(props: LayoutProps<"/[locale]">) {
@@ -36,7 +36,12 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
 
   setRequestLocale(locale);
 
-  const clerkLocale = ClerkLocalizations.supportedLocales[locale] ?? ClerkLocalizations.defaultLocale;
+  // SAFETY: `hasLocale` confirms this key exists in the Clerk localization map for the configured locales.
+  const clerkLocale =
+    ClerkLocalizations.supportedLocales[
+      locale as keyof typeof ClerkLocalizations.supportedLocales
+    ] ?? ClerkLocalizations.defaultLocale;
+
   let signInUrl = "/sign-in";
   let signUpUrl = "/sign-up";
   let dashboardUrl = "/dashboard";
@@ -70,9 +75,7 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
               enableSystem
               disableTransitionOnChange
             >
-              <ReactQueryProvider>
-                {props.children}
-              </ReactQueryProvider>
+              <ReactQueryProvider>{props.children}</ReactQueryProvider>
             </ThemeProvider>
           </NextIntlClientProvider>
         </ClerkProvider>

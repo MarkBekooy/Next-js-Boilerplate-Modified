@@ -1,46 +1,50 @@
 "use client";
 
-import posthog from "posthog-js";
+import { posthog } from "posthog-js";
 import { useState, useTransition } from "react";
 import { sayHelloFromServerAction } from "@/app/[locale]/api/_actions/hello-actions";
+import { tryCatch } from "@/utils/try-catch";
 
 export default function ActionPanel() {
-  const [serverActionResult, setServerActionResult] = useState<string | null>(
-    null,
-  );
-  const [routeHandlerResult, setRouteHandlerResult] = useState<string | null>(
-    null,
-  );
-  const [isServerPending, startServerAction] = useTransition();
-  const [isRoutePending, setRoutePending] = useState(false);
+  const [serverActionResult, setServerActionResult] = useState<string | null>(null);
 
-  const triggerServerAction = () => {
+  const [routeHandlerResult, setRouteHandlerResult] = useState<string | null>(null);
+
+  const [isServerPending, startServerAction] = useTransition();
+  const [isRoutePending, setIsRoutePending] = useState(false);
+
+  function triggerServerAction() {
     startServerAction(async () => {
-      try {
-        const message = await sayHelloFromServerAction();
-        setServerActionResult(message);
-      } catch {
-        setServerActionResult("Something went wrong");
-      }
+      const { data, error } = await tryCatch(sayHelloFromServerAction);
+      setServerActionResult(error ? "Something went wrong" : data);
     });
     posthog.capture("test_event");
-  };
+  }
 
-  const triggerRouteHandler = async () => {
-    setRoutePending(true);
-    try {
+  async function triggerRouteHandler() {
+    setIsRoutePending(true);
+
+    const { data: message, error } = await tryCatch(async () => {
       const response = await fetch("/api/hello", { cache: "no-store" });
+
       if (!response.ok) {
         throw new Error("Request failed");
       }
-      const data = await response.json() as { message?: string };
-      setRouteHandlerResult(data.message ?? "No response");
-    } catch {
+
+      // SAFETY: The request targets our /api/hello route, which returns an optional message string.
+      const data = (await response.json()) as { message?: string };
+
+      return data.message ?? "No response";
+    });
+
+    if (error) {
       setRouteHandlerResult("Something went wrong");
-    } finally {
-      setRoutePending(false);
+    } else {
+      setRouteHandlerResult(message);
     }
-  };
+
+    setIsRoutePending(false);
+  }
 
   return (
     <div className="flex w-full flex-col gap-6 rounded-2xl border border-zinc-200 bg-white/70 p-6 shadow-sm backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/70">
@@ -58,9 +62,7 @@ export default function ActionPanel() {
             {isServerPending ? "Working..." : "Invoke server action"}
           </button>
           {serverActionResult && (
-            <p className="text-sm text-zinc-600 dark:text-zinc-200">
-              {serverActionResult}
-            </p>
+            <p className="text-sm text-zinc-600 dark:text-zinc-200">{serverActionResult}</p>
           )}
         </div>
         <div className="flex flex-1 flex-col gap-3">
@@ -76,9 +78,7 @@ export default function ActionPanel() {
             {isRoutePending ? "Working..." : "Invoke API endpoint (route handler)"}
           </button>
           {routeHandlerResult && (
-            <p className="text-sm text-zinc-600 dark:text-zinc-200">
-              {routeHandlerResult}
-            </p>
+            <p className="text-sm text-zinc-600 dark:text-zinc-200">{routeHandlerResult}</p>
           )}
         </div>
       </div>

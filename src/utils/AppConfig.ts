@@ -21,12 +21,12 @@ export const AppConfig = {
   localePrefix,
 };
 
-export const AllLocales = AppConfig.locales.map(locale => locale.id);
+export const AllLocales = AppConfig.locales.map((locale) => locale.id);
 
-const supportedLocales: Record<string, LocalizationResource> = {
+const supportedLocales = {
   en: enUS,
   fr: frFR,
-};
+} satisfies Record<string, LocalizationResource>;
 
 export const ClerkLocalizations = {
   defaultLocale: enUS,

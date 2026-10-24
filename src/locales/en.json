@@ -1,4 +1,13 @@
 {
+  "App": {
+    "theme_selector": "Theme selector",
+    "theme_system": "System theme",
+    "theme_light": "Light theme",
+    "theme_dark": "Dark theme"
+  },
+  "Navigation": {
+    "language_switcher": "Language"
+  },
   "RootLayout": {
     "home_link": "Home",
     "about_link": "About",

@@ -9,10 +9,7 @@ import { routing } from "./libs/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
 
-const isProtectedRoute = createRouteMatcher([
-  "/dashboard(.*)",
-  "/:locale/dashboard(.*)",
-]);
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/:locale/dashboard(.*)"]);
 
 const isAuthPage = createRouteMatcher([
   "/sign-in(.*)",
@@ -35,10 +32,7 @@ const aj = arcjet.withRule(
   }),
 );
 
-export default async function proxy(
-  request: NextRequest,
-  event: NextFetchEvent,
-) {
+export default async function proxy(request: NextRequest, event: NextFetchEvent) {
   // Verify the request with Arcjet
   // Use `process.env` instead of Env to reduce bundle size in middleware
   if (Env.ARCJET_KEY) {
@@ -50,12 +44,10 @@ export default async function proxy(
   }
 
   // Clerk keyless mode doesn't work with i18n, this is why we need to run the middleware conditionally
-  if (
-    isAuthPage(request) || isProtectedRoute(request)
-  ) {
+  if (isAuthPage(request) || isProtectedRoute(request)) {
     return clerkMiddleware(async (auth, req) => {
       if (isProtectedRoute(req)) {
-        const locale = req.nextUrl.pathname.match(/(\/.*)\/dashboard/)?.at(1) ?? "";
+        const locale = req.nextUrl.pathname.slice(0, req.nextUrl.pathname.indexOf("/dashboard"));
 
         const signInUrl = new URL(`${locale}/sign-in`, req.url);
 

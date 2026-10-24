@@ -133,8 +133,8 @@ Clone this project and use it to create your own Next.js project. You can check 
 
 **Live demo: [Next.js Boilerplate](https://demo.nextjs-boilerplate.com)**
 
-| Sign Up | Sign In |
-| --- | --- |
+| Sign Up                                                                                                                                 | Sign In                                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | [![Next.js Boilerplate SaaS Sign Up](public/assets/images/nextjs-boilerplate-sign-in.png)](https://demo.nextjs-boilerplate.com/sign-up) | [![Next.js Boilerplate SaaS Sign In](public/assets/images/nextjs-boilerplate-sign-in.png)](https://demo.nextjs-boilerplate.com/sign-in) |
 
 ### Features
@@ -154,10 +154,9 @@ Developer experience first, extremely flexible code structure and only keep what
 - ♻️ Type-safe environment variables with T3 Env
 - ⌨️ Form handling with React Hook Form
 - 🔴 Validation library with Zod
-- 📏 Linter with [ESLint](https://eslint.org) (default Next.js, Next.js Core Web Vitals, Tailwind CSS and Antfu configuration)
-- 💖 Code Formatter with Prettier
-- 🦊 Husky for Git Hooks (replaced by Lefthook)
-- 🚫 Lint-staged for running linters on Git staged files
+- 📏 Linting with [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) and [Ultracite](https://www.ultracite.ai)
+- 💖 Formatting with [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) and Ultracite
+- 🦊 Git hooks and staged-file checks with Lefthook
 - 🚓 Lint git commit with Commitlint
 - 📓 Write standard compliant commit messages with Commitizen
 - 🔍 Unused files and dependencies detection with Knip
@@ -416,11 +415,11 @@ Arcjet is configured with a central client at `src/libs/Arcjet.ts` that includes
 
 The project includes several commands to ensure code quality and consistency. You can run:
 
-- `npm run lint` to check for linting errors
-- `npm run lint:fix` to automatically fix fixable issues from the linter
-- `npm run check:types` to verify type safety across the entire project
-- `npm run check:deps` help identify unused dependencies and files
-- `npm run check:i18n` ensures all translations are complete and properly formatted
+- `pnpm check` to run lint and formatting checks
+- `pnpm fix` to apply safe lint and formatting fixes
+- `pnpm check:types` to verify type safety across the entire project
+- `pnpm check:deps` to identify unused dependencies and files
+- `pnpm check:i18n` to check translation completeness and formatting
 
 #### Bundle Analyzer
 
@@ -446,7 +445,7 @@ Then, you can open https://local.drizzle.studio with your favorite browser to ex
 
 If you are VSCode user, you can have a better integration with VSCode by installing the suggested extension in `.vscode/extension.json`. The starter code comes up with Settings for a seamless integration with VSCode. The Debug configuration is also provided for frontend and backend debugging experience.
 
-With the plugins installed in your VSCode, ESLint and Prettier can automatically fix the code and display errors. The same applies to testing: you can install the VSCode Vitest extension to automatically run your tests, and it also shows the code coverage in context.
+With the Oxc extension installed in VS Code, Oxfmt formats files and Oxlint applies safe fixes on save. You can also install the VS Code Vitest extension to run tests and view coverage.
 
 Pro tips: if you need a project wide-type checking with TypeScript, you can run a build with <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> on Mac.
 
