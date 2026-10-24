@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/libs/i18n/navigation";
 import ActionPanel from "@/components/ActionPanel";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
@@ -22,14 +22,8 @@ export async function generateMetadata(props: PageProps<"/[locale]">): Promise<M
   };
 }
 
-export default async function RootPage(props: PageProps<"/[locale]">) {
-  const { locale } = await props.params;
-  setRequestLocale(locale);
-
-  const t = await getTranslations({
-    locale,
-    namespace: "RootPage",
-  });
+export default async function RootPage() {
+  const t = await getTranslations("RootPage");
 
   // Track feature flags in PostHog
   // const posthog = getPostHogServer();

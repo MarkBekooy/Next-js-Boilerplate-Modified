@@ -402,12 +402,14 @@ The project uses [Arcjet](https://launch.arcjet.com/Q6eLbRE), a security as code
 
 To set up Arcjet, [create a free account](https://launch.arcjet.com/Q6eLbRE) and get your API key. Then add it to the `ARCJET_KEY` environment variable.
 
-Arcjet is configured with two main features: bot detection and the Arcjet Shield WAF:
+Arcjet is configured with bot detection, the Arcjet Shield WAF, and a filter for requests without a `User-Agent` header:
 
-- [Bot detection](https://docs.arcjet.com/bot-protection/concepts) is configured to allow search engines, preview link generators e.g. Slack and Twitter previews, and to allow common uptime monitoring services. All other bots, such as scrapers and AI crawlers, will be blocked. You can [configure additional bot types](https://docs.arcjet.com/bot-protection/identifying-bots) to allow or block.
+- [Bot detection](https://docs.arcjet.com/bot-protection/identifying-bots) allows search engines, preview link generators such as Slack and Twitter, uptime monitors, and AI/LLM crawlers. Other detected bots, including unknown bots, are blocked. Arcjet checks allowed bots for spoofing.
 - [Arcjet Shield WAF](https://docs.arcjet.com/shield/concepts) will detect and block common attacks such as SQL injection, cross-site scripting, and other OWASP Top 10 vulnerabilities.
+- The request filter blocks requests without a `User-Agent`, which Arcjet cannot classify as a specific bot.
 
-Arcjet is configured with a central client at `src/libs/Arcjet.ts` that includes the Shield WAF rules. Additional rules are applied when Arcjet is called in `middleware.ts`.
+The shared client in `src/libs/Arcjet.ts` includes the Shield WAF and request filter. `src/proxy.ts` adds bot detection for Next.js 16.
+The proxy skips Arcjet for `/:locale/api/webhooks/*`; the Clerk webhook verifies requests with Svix signatures.
 
 ### Useful commands
 

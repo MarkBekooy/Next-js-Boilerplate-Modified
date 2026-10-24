@@ -4,7 +4,6 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import arcjet from "@/libs/Arcjet";
-import { Env } from "./libs/Env";
 import { routing } from "./libs/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
@@ -28,17 +27,20 @@ const aj = arcjet.withRule(
       "CATEGORY:SEARCH_ENGINE", // Allow search engines
       "CATEGORY:PREVIEW", // Allow preview links to show OG images
       "CATEGORY:MONITOR", // Allow uptime monitoring services
+      "CATEGORY:AI", // Allow AI and LLM crawlers
     ],
   }),
 );
 
 export default async function proxy(request: NextRequest, event: NextFetchEvent) {
   // Verify the request with Arcjet
-  // Use `process.env` instead of Env to reduce bundle size in middleware
-  if (Env.ARCJET_KEY) {
+  if (process.env.ARCJET_KEY && !request.nextUrl.pathname.includes("/api/webhooks/")) {
     const decision = await aj.protect(request);
 
-    if (decision.isDenied()) {
+    if (
+      decision.isDenied() ||
+      decision.results.some(({ reason }) => reason.isBot() && reason.isSpoofed())
+    ) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   }

@@ -58,6 +58,33 @@ export default defineConfig({
         "anti-slop/require-safety-comment-for-type-assertion": "off",
       },
     },
+    {
+      files: ["src/app/**/route.ts", "src/app/**/*-actions.ts"],
+      rules: {
+        "no-restricted-imports": [
+          "error",
+          {
+            paths: [
+              {
+                name: "next/link",
+                message: "Use `Link` from `@/libs/i18n/navigation`.",
+              },
+              {
+                name: "next-intl/server",
+                importNames: ["setRequestLocale"],
+                message:
+                  "Use `next/root-params`; next-intl recommends reading the root locale directly.",
+              },
+              {
+                name: "next/root-params",
+                message:
+                  "Root params are unavailable in Route Handlers and Server Actions. Pass the locale explicitly.",
+              },
+            ],
+          },
+        ],
+      },
+    },
   ],
   rules: {
     "anti-slop/no-module-mocking": "off",
@@ -77,6 +104,11 @@ export default defineConfig({
           {
             name: "next/link",
             message: "Use `Link` from `@/libs/i18n/navigation`.",
+          },
+          {
+            name: "next-intl/server",
+            importNames: ["setRequestLocale"],
+            message: "Use `next/root-params`; `setRequestLocale` is deprecated.",
           },
         ],
       },

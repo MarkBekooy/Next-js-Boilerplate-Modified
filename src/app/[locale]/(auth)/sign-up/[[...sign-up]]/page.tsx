@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SignUp } from "@clerk/nextjs";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { locale as getRootLocale } from "next/root-params";
+import { getTranslations } from "next-intl/server";
 import { getI18nPath } from "@/utils/Helpers";
 
 export async function generateMetadata(
@@ -19,9 +20,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function SignUpPage(props: PageProps<"/[locale]/sign-up/[[...sign-up]]">) {
-  const { locale } = await props.params;
-  setRequestLocale(locale);
+export default async function SignUpPage() {
+  const locale = await getRootLocale();
 
   return <SignUp path={getI18nPath("/sign-up", locale)} />;
 }

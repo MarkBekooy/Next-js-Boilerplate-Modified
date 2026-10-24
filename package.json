@@ -4,7 +4,7 @@
   "scripts": {
     "dev:next": "next dev",
     "dev": "npx run-p db-server:file dev:*",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true next build --webpack",
     "clean": "rimraf .next out coverage",
