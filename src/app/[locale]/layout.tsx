@@ -45,14 +45,12 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
 
   let signInUrl = "/sign-in";
   let signUpUrl = "/sign-up";
-  let dashboardUrl = "/dashboard";
-  let afterSignOutUrl = "/";
+  let homeUrl = "/";
 
   if (locale !== routing.defaultLocale) {
     signInUrl = getI18nPath(signInUrl, locale);
     signUpUrl = getI18nPath(signUpUrl, locale);
-    dashboardUrl = getI18nPath(dashboardUrl, locale);
-    afterSignOutUrl = getI18nPath(afterSignOutUrl, locale);
+    homeUrl = getI18nPath(homeUrl, locale);
   }
 
   return (
@@ -68,9 +66,9 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
           localization={clerkLocale}
           signInUrl={signInUrl}
           signUpUrl={signUpUrl}
-          signInFallbackRedirectUrl={dashboardUrl}
-          signUpFallbackRedirectUrl={dashboardUrl}
-          afterSignOutUrl={afterSignOutUrl}
+          signInFallbackRedirectUrl={homeUrl}
+          signUpFallbackRedirectUrl={homeUrl}
+          afterSignOutUrl={homeUrl}
         >
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider

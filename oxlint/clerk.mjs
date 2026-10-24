@@ -6,11 +6,14 @@ export default defineConfig({
     "@clerk/next/require-auth-protection": [
       "error",
       {
-        protected: ["src/app/[locale]/dashboard/**"],
+        protected: ["**"],
         public: [
           "src/app/[locale]/(auth)/**",
-          "src/app/[locale]/api/**",
-          "src/app/[locale]/page.tsx",
+          "src/app/[locale]/(public)/**",
+          "src/app/[locale]/api/_actions/hello-actions.ts",
+          "src/app/[locale]/api/error/**",
+          "src/app/[locale]/api/hello/**",
+          "src/app/[locale]/api/webhooks/**",
           "src/app/[locale]/test/**",
         ],
       },
