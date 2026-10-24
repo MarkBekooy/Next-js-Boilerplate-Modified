@@ -70,6 +70,17 @@ export default defineConfig({
     "max-lines": ["error", { max: 500 }],
     "max-lines-per-function": ["error", { max: 100, skipBlankLines: true, skipComments: true }],
     "no-inline-comments": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        paths: [
+          {
+            name: "next/link",
+            message: "Use `Link` from `@/libs/i18n/navigation`.",
+          },
+        ],
+      },
+    ],
     "no-use-before-define": ["error", { functions: false }],
     "no-warning-comments": "off",
     "react-doctor/no-giant-component": "off",
