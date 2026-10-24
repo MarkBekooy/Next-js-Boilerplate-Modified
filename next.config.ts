@@ -4,8 +4,6 @@ import { withPostHogConfig } from "@posthog/nextjs-config";
 import createNextIntlPlugin from "next-intl/plugin";
 import "./src/libs/Env";
 
-const isDev = process.env.NODE_ENV === "development";
-
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
   devIndicators: {
@@ -14,7 +12,7 @@ const baseConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
-  reactCompiler: !isDev,
+  reactCompiler: process.env.NODE_ENV !== "development",
   async rewrites() {
     return [
       {
@@ -31,26 +29,29 @@ const baseConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 };
 
-const configWithIntl = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
+// Compose plugins on the config only when their feature is enabled.
+// eslint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
+let configWithPlugins = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
 
-const configWithAnalyzer = process.env.ANALYZE === "true"
-  ? withBundleAnalyzer()(configWithIntl)
-  : configWithIntl;
+if (process.env.ANALYZE === "true") {
+  configWithPlugins = withBundleAnalyzer()(configWithPlugins);
+}
 
 // Upload source maps in production when PostHog credentials are configured.
-const configWithPostHog
-  = process.env.NODE_ENV === "production"
-    && process.env.POSTHOG_API_KEY
-    && process.env.POSTHOG_PROJECT_ID
-    ? withPostHogConfig(configWithAnalyzer, {
-        personalApiKey: process.env.POSTHOG_API_KEY,
-        projectId: process.env.POSTHOG_PROJECT_ID,
-        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-        sourcemaps: {
-          enabled: true,
-          deleteAfterUpload: true,
-        },
-      })
-    : configWithAnalyzer;
+if (
+  process.env.NODE_ENV === "production"
+  && process.env.POSTHOG_API_KEY
+  && process.env.POSTHOG_PROJECT_ID
+) {
+  configWithPlugins = withPostHogConfig(configWithPlugins, {
+    personalApiKey: process.env.POSTHOG_API_KEY,
+    projectId: process.env.POSTHOG_PROJECT_ID,
+    host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    sourcemaps: {
+      enabled: true,
+      deleteAfterUpload: true,
+    },
+  });
+}
 
-export default configWithPostHog;
+export default configWithPlugins;
