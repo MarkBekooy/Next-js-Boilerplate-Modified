@@ -5,7 +5,7 @@ import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import arcjet from "@/libs/Arcjet";
 import { Env } from "./libs/Env";
-import { routing } from "./libs/I18nRouting";
+import { routing } from "./libs/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
 

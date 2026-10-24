@@ -37,11 +37,11 @@ export default antfu(
   // --- Accessibility Rules ---
   jsxA11y.flatConfigs.recommended,
   // --- Tailwind CSS Rules ---
-  ...tailwind.configs["flat/recommended"],
+  tailwind.configs.recommended,
   {
     settings: {
       tailwindcss: {
-        config: `${dirname(fileURLToPath(import.meta.url))}/src/app/globals.css`,
+        cssConfigPath: `${dirname(fileURLToPath(import.meta.url))}/src/app/globals.css`,
       },
     },
   },

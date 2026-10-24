@@ -1,10 +1,10 @@
 import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
+  entry: ["src/libs/i18n/request.ts"],
   // Files to exclude from Knip analysis
   ignore: [
     "checkly.config.ts",
-    "src/libs/I18n.ts",
     "src/types/I18n.ts",
     "src/utils/Helpers.ts",
     "tests/**/*.ts",
@@ -12,7 +12,6 @@ const config: KnipConfig = {
   // Dependencies to ignore during analysis
   ignoreDependencies: [
     "@commitlint/types",
-    "@clerk/types",
     "conventional-changelog-conventionalcommits",
     "vite",
   ],

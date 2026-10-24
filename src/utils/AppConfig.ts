@@ -1,4 +1,4 @@
-import type { LocalizationResource } from "@clerk/types";
+import type { LocalizationResource } from "@clerk/nextjs/types";
 import type { LocalePrefixMode } from "next-intl/routing";
 import { enUS, frFR } from "@clerk/localizations";
 

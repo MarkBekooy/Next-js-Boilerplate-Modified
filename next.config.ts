@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import { withSentryConfig } from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs/config";
 import createNextIntlPlugin from "next-intl/plugin";
 import "./src/libs/Env";
 
@@ -32,7 +32,7 @@ const baseConfig: NextConfig = {
 };
 
 // Initialize the Next-Intl plugin
-let configWithPlugins = createNextIntlPlugin("./src/libs/I18n.ts")(baseConfig);
+let configWithPlugins = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
 
 // Conditionally enable bundle analysis
 if (process.env.ANALYZE === "true") {
@@ -62,6 +62,10 @@ if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
     // side errors will fail.
     tunnelRoute: "/monitoring",
 
+    reactComponentAnnotation: {
+      enabled: true,
+    },
+
     // Disable Sentry telemetry
     telemetry: false,
 
@@ -70,10 +74,6 @@ if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
       // Automatically tree-shake Sentry logger statements to reduce bundle size
       treeshake: {
         removeDebugLogging: true,
-      },
-      // Upload a larger set of source maps for prettier stack traces (increases build time)
-      reactComponentAnnotation: {
-        enabled: true,
       },
     },
   });

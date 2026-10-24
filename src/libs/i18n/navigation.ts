@@ -1,4 +1,4 @@
 import { createNavigation } from "next-intl/navigation";
-import { routing } from "@/libs/I18nRouting";
+import { routing } from "./routing";
 
 export const { Link, usePathname } = createNavigation(routing);

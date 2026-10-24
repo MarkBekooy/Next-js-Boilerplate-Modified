@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "@/libs/I18nNavigation";
+import { Link } from "@/libs/i18n/navigation";
 
 export default function TestPage() {
   return (
