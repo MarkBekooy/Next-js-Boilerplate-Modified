@@ -55,6 +55,8 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
 
   return (
     <html lang={locale} suppressHydrationWarning className={inter.variable}>
+      <head>{/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}</head>
+      {/* <ReactScan /> */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClerkProvider
           appearance={{
