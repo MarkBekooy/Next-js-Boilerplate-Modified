@@ -75,6 +75,6 @@ export const config = {
   // Match all pathnames except for
   // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
   // - … the ones containing a dot (e.g. `favicon.ico`)
-  // - … PostHog relay route and Sentry monitoring route
-  matcher: "/((?!_next|_vercel|monitoring|relay-FBSt|.*\\..*).*)",
+  // - … PostHog relay route
+  matcher: "/((?!_next|_vercel|relay-FBSt|.*\\..*).*)",
 };
