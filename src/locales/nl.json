@@ -1,0 +1,28 @@
+{
+  "App": {
+    "theme_selector": "Themakiezer",
+    "theme_system": "Systeemthema",
+    "theme_light": "Licht thema",
+    "theme_dark": "Donker thema"
+  },
+  "OfflineIndicator": {
+    "title": "Je bent offline",
+    "description": "Navigatie wordt hervat zodra je verbinding is hersteld."
+  },
+  "Navigation": {
+    "language_switcher": "Taal"
+  },
+  "RootPage": {
+    "meta_title": "Home",
+    "meta_description": "Beschrijving van de startpagina",
+    "hello_world": "Hallo wereld"
+  },
+  "SignIn": {
+    "meta_title": "Inloggen",
+    "meta_description": "Log eenvoudig in op je account."
+  },
+  "SignUp": {
+    "meta_title": "Registreren",
+    "meta_description": "Maak eenvoudig een account aan."
+  }
+}

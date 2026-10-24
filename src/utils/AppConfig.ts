@@ -1,6 +1,6 @@
 import type { LocalizationResource } from "@clerk/nextjs/types";
 import type { LocalePrefixMode } from "next-intl/routing";
-import { enUS, frFR } from "@clerk/localizations";
+import { enUS, nlNL } from "@clerk/localizations";
 
 const localePrefix: LocalePrefixMode = "as-needed";
 
@@ -13,8 +13,8 @@ export const AppConfig = {
       name: "English",
     },
     {
-      id: "fr",
-      name: "Français",
+      id: "nl",
+      name: "Nederlands",
     },
   ],
   defaultLocale: "en",
@@ -25,7 +25,7 @@ export const AllLocales = AppConfig.locales.map((locale) => locale.id);
 
 const supportedLocales = {
   en: enUS,
-  fr: frFR,
+  nl: nlNL,
 } satisfies Record<string, LocalizationResource>;
 
 export const ClerkLocalizations = {

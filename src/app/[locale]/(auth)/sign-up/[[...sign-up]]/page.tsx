@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { SignUp } from "@clerk/nextjs";
 import { locale as getRootLocale } from "next/root-params";
 import { getTranslations } from "next-intl/server";
+import { AuthFormSkeleton } from "@/components/loaders/auth-form-skeleton";
 import { getI18nPath } from "@/utils/Helpers";
 
 export async function generateMetadata(
@@ -23,5 +25,9 @@ export async function generateMetadata(
 export default async function SignUpPage() {
   const locale = await getRootLocale();
 
-  return <SignUp path={getI18nPath("/sign-up", locale)} />;
+  return (
+    <Suspense fallback={<AuthFormSkeleton />}>
+      <SignUp path={getI18nPath("/sign-up", locale)} />
+    </Suspense>
+  );
 }

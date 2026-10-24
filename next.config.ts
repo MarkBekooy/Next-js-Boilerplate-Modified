@@ -6,13 +6,23 @@ import "./src/libs/Env";
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
+  cacheComponents: true,
   devIndicators: {
     position: "bottom-right",
   },
+  experimental: {
+    globalNotFound: true,
+    useOffline: true,
+  },
+  logging: {
+    browserToTerminal: false,
+  },
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  partialPrefetching: true,
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
-  reactCompiler: process.env.NODE_ENV !== "development",
+  reactCompiler: true,
   rewrites() {
     return Promise.resolve([
       {
