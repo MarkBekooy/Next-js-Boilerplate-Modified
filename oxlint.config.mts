@@ -9,6 +9,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import tanstackJsPlugins from "ultracite/oxlint/tanstack/js-plugins";
 import vitestPreset from "ultracite/oxlint/vitest";
 import { jsPluginSettings, selectJsPlugins } from "ultracite/oxlint/js-plugins";
+
 import clerk from "./oxlint/clerk.mjs";
 import tailwind from "./oxlint/tailwind.mjs";
 

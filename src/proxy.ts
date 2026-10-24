@@ -1,21 +1,13 @@
 import type { NextFetchEvent, NextRequest } from "next/server";
 import { detectBot, slidingWindow } from "@arcjet/next";
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import arcjet from "@/libs/arcjet";
 import { routing } from "./libs/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
-
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/:locale/dashboard(.*)"]);
-
-const isAuthPage = createRouteMatcher([
-  "/sign-in(.*)",
-  "/:locale/sign-in(.*)",
-  "/sign-up(.*)",
-  "/:locale/sign-up(.*)",
-]);
+const handleClerk = clerkMiddleware((_auth, request) => handleI18nRouting(request));
 
 // Improve security with Arcjet
 const aj = arcjet
@@ -41,8 +33,18 @@ const aj = arcjet
   );
 
 export default async function proxy(request: NextRequest, event: NextFetchEvent) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname === "/relay-FBSt" || pathname.startsWith("/relay-FBSt/")) {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.delete("cookie");
+    requestHeaders.delete("authorization");
+
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  }
+
   // Verify the request with Arcjet
-  if (process.env.ARCJET_KEY && !request.nextUrl.pathname.includes("/api/webhooks/")) {
+  if (process.env.ARCJET_KEY && !pathname.includes("/api/webhooks/")) {
     const decision = await aj.protect(request);
 
     if (decision.isDenied() && decision.reason.isRateLimit()) {
@@ -57,30 +59,15 @@ export default async function proxy(request: NextRequest, event: NextFetchEvent)
     }
   }
 
-  // Clerk keyless mode doesn't work with i18n, this is why we need to run the middleware conditionally
-  if (isAuthPage(request) || isProtectedRoute(request)) {
-    return clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        const locale = req.nextUrl.pathname.slice(0, req.nextUrl.pathname.indexOf("/dashboard"));
-
-        const signInUrl = new URL(`${locale}/sign-in`, req.url);
-
-        await auth.protect({
-          unauthenticatedUrl: signInUrl.toString(),
-        });
-      }
-
-      return handleI18nRouting(req);
-    })(request, event);
-  }
-
-  return handleI18nRouting(request);
+  return handleClerk(request, event);
 }
 
 export const config = {
-  // Match all pathnames except for
-  // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
-  // - … the ones containing a dot (e.g. `favicon.ico`)
-  // - … PostHog relay route
-  matcher: "/((?!_next|_vercel|relay-FBSt|.*\\..*).*)",
+  matcher: [
+    "/relay-FBSt/:path*",
+    "/((?!_next|_vercel|relay-FBSt|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|txt|xml)).*)",
+    "/(api|trpc)(.*)",
+    "/:locale/api/:path*",
+    "/__clerk/(.*)",
+  ],
 };
