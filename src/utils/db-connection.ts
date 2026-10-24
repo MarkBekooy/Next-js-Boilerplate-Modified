@@ -1,8 +1,8 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { relations } from "@/libs/db/relations";
-import { Env } from "@/libs/Env";
-import { logger } from "@/libs/Logger";
+import { Env } from "@/libs/env";
+import { logger } from "@/libs/logger";
 
 export function createDbConnection() {
   const pool = new Pool({

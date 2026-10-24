@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { usePathname, useRouter } from "@/libs/i18n/navigation";
-import { AppConfig } from "@/utils/AppConfig";
+import { AppConfig } from "@/utils/app-config";
 
 function subscribeToMount(_onStoreChange: () => void) {
   return () => {

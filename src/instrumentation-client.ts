@@ -1,5 +1,5 @@
 import { posthog } from "posthog-js";
-import { Env } from "./libs/Env";
+import { Env } from "./libs/env";
 
 // Initialize PostHog
 posthog.init(Env.NEXT_PUBLIC_POSTHOG_KEY, {

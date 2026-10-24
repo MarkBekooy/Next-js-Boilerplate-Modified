@@ -7,8 +7,8 @@ import { OfflineIndicator } from "@/components/offline-indicator";
 import ReactQueryProvider from "@/providers/react-query-providers";
 import { routing } from "@/libs/i18n/routing";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { ClerkLocalizations } from "@/utils/AppConfig";
-import { getI18nPath } from "@/utils/Helpers";
+import { ClerkLocalizations } from "@/utils/app-config";
+import { getI18nPath } from "@/utils/helpers";
 import { Toaster } from "@/components/ui/sonner";
 import "@/app/globals.css";
 

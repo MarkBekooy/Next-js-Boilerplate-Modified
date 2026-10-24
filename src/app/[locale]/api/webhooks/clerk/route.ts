@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { db } from "@/libs/db/db";
 import { usersSchema } from "@/libs/db/schema";
-import { Env } from "@/libs/Env";
+import { Env } from "@/libs/env";
 
 type VerificationResult = { event: WebhookEvent } | { response: NextResponse };
 

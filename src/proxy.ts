@@ -3,7 +3,7 @@ import { detectBot, slidingWindow } from "@arcjet/next";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
-import arcjet from "@/libs/Arcjet";
+import arcjet from "@/libs/arcjet";
 import { routing } from "./libs/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);

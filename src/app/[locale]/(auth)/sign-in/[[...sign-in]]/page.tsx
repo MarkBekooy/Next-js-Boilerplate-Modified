@@ -4,7 +4,7 @@ import { SignIn } from "@clerk/nextjs";
 import { locale as getRootLocale } from "next/root-params";
 import { getTranslations } from "next-intl/server";
 import { AuthFormSkeleton } from "@/components/loaders/auth-form-skeleton";
-import { getI18nPath } from "@/utils/Helpers";
+import { getI18nPath } from "@/utils/helpers";
 
 export async function generateMetadata(
   props: PageProps<"/[locale]/sign-in/[[...sign-in]]">,
