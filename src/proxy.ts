@@ -35,7 +35,7 @@ const aj = arcjet.withRule(
   }),
 );
 
-export default async function middleware(
+export default async function proxy(
   request: NextRequest,
   event: NextFetchEvent,
 ) {
@@ -77,5 +77,4 @@ export const config = {
   // - … the ones containing a dot (e.g. `favicon.ico`)
   // - … PostHog relay route and Sentry monitoring route
   matcher: "/((?!_next|_vercel|monitoring|relay-FBSt|.*\\..*).*)",
-  runtime: "nodejs",
 };
