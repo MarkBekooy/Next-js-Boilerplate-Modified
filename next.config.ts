@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import { withSentryConfig } from "@sentry/nextjs/config";
+import { withPostHogConfig } from "@posthog/nextjs-config";
 import createNextIntlPlugin from "next-intl/plugin";
 import "./src/libs/Env";
 
@@ -31,53 +31,26 @@ const baseConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 };
 
-// Initialize the Next-Intl plugin
-let configWithPlugins = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
+const configWithIntl = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
 
-// Conditionally enable bundle analysis
-if (process.env.ANALYZE === "true") {
-  configWithPlugins = withBundleAnalyzer()(configWithPlugins);
-}
+const configWithAnalyzer = process.env.ANALYZE === "true"
+  ? withBundleAnalyzer()(configWithIntl)
+  : configWithIntl;
 
-// Conditionally enable Sentry configuration
-if (!process.env.NEXT_PUBLIC_SENTRY_DISABLED) {
-  configWithPlugins = withSentryConfig(configWithPlugins, {
-    // For all available options, see:
-    // https://www.npmjs.com/package/@sentry/webpack-plugin#options
-    org: process.env.SENTRY_ORGANIZATION,
-    project: process.env.SENTRY_PROJECT,
+// Upload source maps in production when PostHog credentials are configured.
+const configWithPostHog
+  = process.env.NODE_ENV === "production"
+    && process.env.POSTHOG_API_KEY
+    && process.env.POSTHOG_PROJECT_ID
+    ? withPostHogConfig(configWithAnalyzer, {
+        personalApiKey: process.env.POSTHOG_API_KEY,
+        projectId: process.env.POSTHOG_PROJECT_ID,
+        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+        sourcemaps: {
+          enabled: true,
+          deleteAfterUpload: true,
+        },
+      })
+    : configWithAnalyzer;
 
-    // Only print logs for uploading source maps in CI
-    silent: !process.env.CI,
-
-    // For all available options, see:
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
-    // Upload a larger set of source maps for prettier stack traces (increases build time)
-    widenClientFileUpload: true,
-
-    // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-    // This can increase your server load as well as your hosting bill.
-    // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-    // side errors will fail.
-    tunnelRoute: "/monitoring",
-
-    reactComponentAnnotation: {
-      enabled: true,
-    },
-
-    // Disable Sentry telemetry
-    telemetry: false,
-
-    // Webpack configuration options
-    webpack: {
-      // Automatically tree-shake Sentry logger statements to reduce bundle size
-      treeshake: {
-        removeDebugLogging: true,
-      },
-    },
-  });
-}
-
-const nextConfig = configWithPlugins;
-export default nextConfig;
+export default configWithPostHog;
