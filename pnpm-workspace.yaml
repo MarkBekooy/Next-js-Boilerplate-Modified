@@ -1,3 +1,12 @@
+allowBuilds:
+  '@parcel/watcher': true
+  '@posthog/cli': true
+  '@swc/core': true
+  core-js: true
+  esbuild: true
+  lefthook: true
+  msw: true
+
 minimumReleaseAgeExclude:
   - "@next/bundle-analyzer@16.4.3"
   - "@next/env@16.4.3"
