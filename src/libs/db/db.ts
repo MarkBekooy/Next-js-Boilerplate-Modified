@@ -1,4 +1,4 @@
-import { Env } from "@/libs/Env";
+import { Env } from "@/libs/env";
 import { createDbConnection } from "@/utils/db-connection";
 
 // Stores the db connection in the global scope to prevent multiple instances due to hot reloading with Next.js

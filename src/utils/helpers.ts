@@ -1,4 +1,4 @@
-import { Env } from "@/libs/Env";
+import { Env } from "@/libs/env";
 import { routing } from "@/libs/i18n/routing";
 
 export function getBaseUrl() {
