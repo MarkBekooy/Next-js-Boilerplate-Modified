@@ -14,6 +14,7 @@ import tailwind from "./oxlint/tailwind.mjs";
 
 const jsPlugins = selectJsPlugins(["github", "react-doctor"]);
 const drizzleJsPlugin = { name: "drizzle", specifier: "eslint-plugin-drizzle" };
+const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
 
 const vitest = {
   ...vitestPreset,
@@ -40,8 +41,13 @@ export default defineConfig({
     antiSlop,
     vitest,
   ],
-  ignorePatterns: [...(core.ignorePatterns ?? []), "migrations/**/*", "src/components/ui/**/*"],
-  jsPlugins: [...(jsPlugins.jsPlugins ?? []), drizzleJsPlugin],
+  ignorePatterns: [
+    ...(core.ignorePatterns ?? []),
+    ".agents/skills/**/*",
+    "migrations/**/*",
+    "src/components/ui/**/*",
+  ],
+  jsPlugins: [...(jsPlugins.jsPlugins ?? []), drizzleJsPlugin, shadcnJsPlugin],
   options: {
     reportUnusedDisableDirectives: "error",
   },
@@ -129,6 +135,9 @@ export default defineConfig({
   },
   settings: {
     ...jsPluginSettings,
+    shadcn: {
+      note: "Read DESIGN.md for design rules and approved exceptions.",
+    },
     tailwindcss: {
       entryPoint: "src/app/globals.css",
     },
