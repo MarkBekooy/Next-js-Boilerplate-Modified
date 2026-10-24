@@ -1,7 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { locale as getRootLocale } from "next/root-params";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import ReactQueryProvider from "@/contexts/react-query-providers";
@@ -28,13 +27,11 @@ export function generateStaticParams() {
 }
 
 export default async function RootLayout(props: LayoutProps<"/[locale]">) {
-  const { locale } = await props.params;
+  const locale = await getRootLocale();
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
-
-  setRequestLocale(locale);
 
   // SAFETY: `hasLocale` confirms this key exists in the Clerk localization map for the configured locales.
   const clerkLocale =
@@ -60,6 +57,9 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
         <ClerkProvider
           appearance={{
             cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
+            options: {
+              showOptionalFields: true,
+            },
           }}
           localization={clerkLocale}
           signInUrl={signInUrl}
