@@ -8,18 +8,13 @@ const isDev = process.env.NODE_ENV === "development";
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
-  eslint: { // This is required for Next 15. In Next 16 the eslint config option removed.
-    dirs: ["."],
-  },
   devIndicators: {
     position: "bottom-right",
   },
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
-  experimental: {
-    reactCompiler: !isDev,
-  },
+  reactCompiler: !isDev,
   async rewrites() {
     return [
       {
