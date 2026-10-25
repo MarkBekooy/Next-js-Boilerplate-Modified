@@ -38,7 +38,7 @@ export function MobileNavigation({
           <SheetTitle className="sr-only">{navigation}</SheetTitle>
           <IntentPrefetchLink
             href="/"
-            className="text-2xl font-semibold"
+            className="self-start text-2xl font-semibold"
             onClick={() => setIsOpen(false)}
           >
             <Logo />
