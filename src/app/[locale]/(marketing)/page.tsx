@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/libs/i18n/navigation";
 import ActionPanel from "@/components/action-panel";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "cn";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,15 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootPage() {
-  return (
-    <Suspense fallback={<RootPageSkeleton />}>
-      <RootPageContent />
-    </Suspense>
-  );
-}
-
-async function RootPageContent() {
-  const t = await getTranslations("RootPage");
+  const t = useTranslations("RootPage");
 
   // Track feature flags in PostHog
   // const posthog = getPostHogServer();
@@ -75,32 +66,6 @@ async function RootPageContent() {
               Visit the test page
             </Link>
           </div>
-        </CardContent>
-      </Card>
-    </>
-  );
-}
-
-function RootPageSkeleton() {
-  return (
-    <>
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-7 w-40" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-4 w-64 max-w-full" />
-        </CardContent>
-      </Card>
-
-      <Card className="mx-auto my-3 max-w-3xl">
-        <CardHeader className="items-center">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-5 w-80 max-w-full" />
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="mx-auto h-10 w-36" />
         </CardContent>
       </Card>
     </>

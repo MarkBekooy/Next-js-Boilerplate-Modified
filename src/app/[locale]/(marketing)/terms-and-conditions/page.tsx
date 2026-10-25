@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { generateSEOMetadata } from "@/utils/seo";
 import { AppConfig } from "@/utils/app-config";
@@ -16,8 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function TermsAndConditionsPage() {
-  const t = await getTranslations("TermsOfService");
+export default function TermsAndConditionsPage() {
+  const t = useTranslations("TermsOfService");
 
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-12 text-base leading-7 sm:text-lg">

@@ -12,6 +12,7 @@ const baseConfig: NextConfig = {
     position: "bottom-right",
   },
   experimental: {
+    exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === "1",
     globalNotFound: true,
     useOffline: true,
   },
