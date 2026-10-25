@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { SignIn } from "@clerk/nextjs";
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getI18nPath } from "@/utils/Helpers";
+import { getLocale, getTranslations } from "next-intl/server";
+import { AuthFormSkeleton } from "@/components/loaders/auth-form-skeleton";
+import { getPathname } from "@/libs/i18n/navigation";
 
-export async function generateMetadata(props: PageProps<"/[locale]/sign-in/[[...sign-in]]">): Promise<Metadata> {
-  const { locale } = await props.params;
-  const t = await getTranslations({
-    locale,
-    namespace: "SignIn",
-  });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("SignIn");
 
   return {
     title: t("meta_title"),
@@ -16,11 +14,12 @@ export async function generateMetadata(props: PageProps<"/[locale]/sign-in/[[...
   };
 }
 
-export default async function SignInPage(props: PageProps<"/[locale]/sign-in/[[...sign-in]]">) {
-  const { locale } = await props.params;
-  setRequestLocale(locale);
+export default async function SignInPage() {
+  const locale = await getLocale();
 
   return (
-    <SignIn path={getI18nPath("/sign-in", locale)} />
+    <Suspense fallback={<AuthFormSkeleton />}>
+      <SignIn path={getPathname({ locale, href: "/sign-in" })} />
+    </Suspense>
   );
-};
+}

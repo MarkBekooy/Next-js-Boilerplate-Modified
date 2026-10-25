@@ -1,14 +1,16 @@
 import { ClerkProvider } from "@clerk/nextjs";
-
-import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { supportedLocales } from "@/utils/app-config";
+import { NextIntlClientProvider } from "next-intl";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { notFound } from "next/navigation";
-import ReactQueryProvider from "@/contexts/react-query-providers";
-import { routing } from "@/libs/I18nRouting";
-import { ThemeProvider } from "@/libs/ThemeProvider";
-import { ClerkLocalizations } from "@/utils/AppConfig";
-import { getI18nPath } from "@/utils/Helpers";
+import { getLocale } from "next-intl/server";
+import { OfflineIndicator } from "@/components/offline-indicator";
+import ReactQueryProvider from "@/providers/react-query-providers";
+import { getPathname } from "@/libs/i18n/navigation";
+import { routing } from "@/libs/i18n/routing";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { Footer } from "@/components/footer";
+import { JsonLd } from "@/components/json-ld";
 import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -24,44 +26,35 @@ const geistMono = Geist_Mono({
 });
 
 export function generateStaticParams() {
-  return routing.locales.map(locale => ({ locale }));
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout(props: LayoutProps<"/[locale]">) {
-  const { locale } = await props.params;
-
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
-
-  setRequestLocale(locale);
-
-  const clerkLocale = ClerkLocalizations.supportedLocales[locale] ?? ClerkLocalizations.defaultLocale;
-  let signInUrl = "/sign-in";
-  let signUpUrl = "/sign-up";
-  let dashboardUrl = "/dashboard";
-  let afterSignOutUrl = "/";
-
-  if (locale !== routing.defaultLocale) {
-    signInUrl = getI18nPath(signInUrl, locale);
-    signUpUrl = getI18nPath(signUpUrl, locale);
-    dashboardUrl = getI18nPath(dashboardUrl, locale);
-    afterSignOutUrl = getI18nPath(afterSignOutUrl, locale);
-  }
+  const locale = await getLocale();
+  const clerkLocale = supportedLocales[locale];
+  const signInUrl = getPathname({ locale, href: "/sign-in" });
+  const signUpUrl = getPathname({ locale, href: "/sign-up" });
+  const homeUrl = getPathname({ locale, href: "/" });
 
   return (
     <html lang={locale} suppressHydrationWarning className={inter.variable}>
+      <head>{/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}</head>
+      {/* <ReactScan /> */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <JsonLd />
         <ClerkProvider
           appearance={{
             cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
+            options: {
+              showOptionalFields: true,
+            },
           }}
           localization={clerkLocale}
           signInUrl={signInUrl}
           signUpUrl={signUpUrl}
-          signInFallbackRedirectUrl={dashboardUrl}
-          signUpFallbackRedirectUrl={dashboardUrl}
-          afterSignOutUrl={afterSignOutUrl}
+          signInFallbackRedirectUrl={homeUrl}
+          signUpFallbackRedirectUrl={homeUrl}
+          afterSignOutUrl={homeUrl}
         >
           <NextIntlClientProvider>
             <ThemeProvider
@@ -71,8 +64,11 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
               disableTransitionOnChange
             >
               <ReactQueryProvider>
+                <OfflineIndicator />
                 {props.children}
+                <Footer />
               </ReactQueryProvider>
+              <Toaster />
             </ThemeProvider>
           </NextIntlClientProvider>
         </ClerkProvider>
