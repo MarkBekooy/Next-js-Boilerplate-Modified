@@ -13,7 +13,7 @@ export function FooterLegalLinks() {
 
   return (
     <nav
-      className="flex flex-wrap justify-center gap-3 text-xs sm:justify-start"
+      className="flex flex-wrap justify-center gap-3 text-xs lg:justify-start"
       aria-label={t("legal_navigation_label")}
     >
       <Link href="/privacy-policy" className="underline underline-offset-4 hover:text-foreground">
