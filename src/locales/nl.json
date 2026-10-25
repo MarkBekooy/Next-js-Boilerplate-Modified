@@ -12,6 +12,13 @@
   "Navigation": {
     "language_switcher": "Taal"
   },
+  "Blog": {
+    "article_details": "Artikelgegevens",
+    "by": "Door {author}",
+    "published": "Gepubliceerd op {date}",
+    "updated": "Bijgewerkt op {date}",
+    "keywords": "Onderwerpen"
+  },
   "RootPage": {
     "meta_title": "Home",
     "meta_description": "Beschrijving van de startpagina",
