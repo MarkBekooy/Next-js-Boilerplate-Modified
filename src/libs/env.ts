@@ -17,7 +17,8 @@ export const Env = createEnv({
     DATABASE_URL: z.string().min(1),
   },
   client: {
-    NEXT_PUBLIC_APP_URL: requiredInProduction(z.string()),
+    NEXT_PUBLIC_APP_URL:
+      typeof window === "undefined" ? requiredInProduction(z.string()) : z.string().optional(),
     NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: z.string().optional(),
     NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST: z.string().optional(),
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().startsWith("pk_").min(1),

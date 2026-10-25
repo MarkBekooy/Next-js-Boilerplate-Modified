@@ -64,9 +64,11 @@ export function LocaleSwitcher() {
           handleChange(value);
         }
       }}
-      aria-label={t("language_switcher")}
     >
-      <SelectTrigger className="w-35 bg-transparent! hover:bg-muted! dark:hover:bg-muted/50!">
+      <SelectTrigger
+        aria-label={t("language_switcher")}
+        className="w-35 bg-transparent! hover:bg-muted! dark:hover:bg-muted/50!"
+      >
         <div className="flex items-center gap-2">
           <Globe className="size-4" />
           <SelectValue />

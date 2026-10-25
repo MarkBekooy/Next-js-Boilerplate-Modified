@@ -20,10 +20,7 @@ export default async function PrivacyPolicyPage() {
   const t = await getTranslations("PrivacyPolicy");
 
   return (
-    <main
-      id="main-content"
-      className="mx-auto w-full max-w-3xl px-4 py-12 text-base leading-7 sm:text-lg"
-    >
+    <article className="mx-auto w-full max-w-3xl px-4 py-12 text-base leading-7 sm:text-lg">
       <h1 className="mb-8 text-4xl font-bold tracking-tight">{t("title")}</h1>
       <p className="mb-8 font-medium">{t("effective_date")}</p>
 
@@ -96,6 +93,6 @@ export default async function PrivacyPolicyPage() {
           {t("contact_email")}
         </a>
       </section>
-    </main>
+    </article>
   );
 }

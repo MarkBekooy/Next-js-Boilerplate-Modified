@@ -19,6 +19,7 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     name: AppConfig.name,
     short_name: AppConfig.name,
+    start_url: "/",
     theme_color: "#ffffff",
   };
 }
