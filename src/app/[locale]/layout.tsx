@@ -10,6 +10,7 @@ import { routing } from "@/libs/i18n/routing";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/footer";
+import { JsonLd } from "@/components/json-ld";
 import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -40,6 +41,7 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
       <head>{/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}</head>
       {/* <ReactScan /> */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <JsonLd />
         <ClerkProvider
           appearance={{
             cssLayerName: "clerk", // Ensure Clerk is compatible with Tailwind CSS v4
