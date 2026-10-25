@@ -10,7 +10,6 @@ export default defineConfig({
         public: [
           "src/app/[locale]/(auth)/**",
           "src/app/[locale]/(marketing)/**",
-          "src/app/[locale]/(public)/**",
           "src/app/[locale]/api/_actions/hello-actions.ts",
           "src/app/[locale]/api/error/**",
           "src/app/[locale]/api/hello/**",

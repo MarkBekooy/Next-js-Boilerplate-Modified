@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { supportedLocales } from "@/utils/app-config";
 import { NextIntlClientProvider } from "next-intl";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { getLocale } from "next-intl/server";
@@ -7,8 +8,8 @@ import ReactQueryProvider from "@/providers/react-query-providers";
 import { getPathname } from "@/libs/i18n/navigation";
 import { routing } from "@/libs/i18n/routing";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { ClerkLocalizations } from "@/utils/app-config";
 import { Toaster } from "@/components/ui/sonner";
+import { Footer } from "@/components/footer";
 import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -29,7 +30,7 @@ export function generateStaticParams() {
 
 export default async function RootLayout(props: LayoutProps<"/[locale]">) {
   const locale = await getLocale();
-  const clerkLocale = ClerkLocalizations.supportedLocales[locale];
+  const clerkLocale = supportedLocales[locale];
   const signInUrl = getPathname({ locale, href: "/sign-in" });
   const signUpUrl = getPathname({ locale, href: "/sign-up" });
   const homeUrl = getPathname({ locale, href: "/" });
@@ -63,6 +64,7 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
               <ReactQueryProvider>
                 <OfflineIndicator />
                 {props.children}
+                <Footer />
               </ReactQueryProvider>
               <Toaster />
             </ThemeProvider>

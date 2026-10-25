@@ -10,7 +10,29 @@
     "description": "Navigation will resume when your connection returns."
   },
   "Navigation": {
-    "language_switcher": "Language"
+    "about": "About",
+    "blog": "Blog",
+    "features": "Features",
+    "language_switcher": "Language switcher",
+    "navigation": "Navigation",
+    "open_navigation": "Open navigation",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up"
+  },
+  "MarketingFooter": {
+    "legal_navigation_label": "Legal links",
+    "privacy_policy_link": "Privacy Policy",
+    "terms_and_conditions_link": "Terms and Conditions"
+  },
+  "FeaturesPage": {
+    "meta_title": "Features",
+    "meta_description": "Features of Nextjs Starter.",
+    "title": "Features of Nextjs Starter"
+  },
+  "AboutPage": {
+    "meta_title": "About",
+    "meta_description": "About Nextjs Starter.",
+    "title": "About Nextjs Starter"
   },
   "Blog": {
     "article_details": "Article details",
@@ -22,7 +44,7 @@
   "RootPage": {
     "meta_title": "Home",
     "meta_description": "Home page description",
-    "hello_world": "Hello World"
+    "title": "Hello World"
   },
   "SignIn": {
     "meta_title": "Sign in",
@@ -31,5 +53,80 @@
   "SignUp": {
     "meta_title": "Sign up",
     "meta_description": "Effortlessly create an account through our intuitive sign-up process."
+  },
+  "PrivacyPolicy": {
+    "meta_title": "Privacy Policy",
+    "meta_description": "Learn how MyTasteRank collects, uses and protects your personal information.",
+    "title": "Privacy Policy",
+    "effective_date": "Effective date: August 19, 2026",
+    "introduction_title": "1. Introduction",
+    "introduction_content": "MyTasteRank is operated by FrostByte Software. This Privacy Policy explains how we collect, use and protect personal information when you use MyTasteRank.",
+    "information_title": "2. Information We Collect",
+    "user_provided_data": "Content you provide: your lists, rankings, scores, notes, product details and any images you upload.",
+    "account_information": "Account information: your name, email address and identifiers needed to create, secure and manage your account.",
+    "usage_data": "Usage and technical data: information about how you use the Service, plus device, browser and diagnostic data used to operate, secure and improve it.",
+    "usage_title": "3. How We Use Your Information",
+    "usage_content": "We use collected information to:",
+    "usage_point1": "Provide, maintain and improve MyTasteRank.",
+    "usage_point2": "Authenticate users and manage accounts.",
+    "usage_point3": "Store and display the lists, rankings and images you choose to add.",
+    "usage_point4": "Analyze usage trends, prevent abuse and diagnose technical issues.",
+    "usage_point5": "Comply with legal obligations and enforce our Terms and Conditions.",
+    "sharing_title": "4. Data Sharing and Third Parties",
+    "sharing_content": "We do not sell or rent your personal information. We may share information with:",
+    "sharing_point1": "Service providers that help us provide authentication, hosting, storage, analytics, error monitoring and security.",
+    "sharing_point2": "People who receive a sharing link you create; information included in a shared list is visible to anyone with that link.",
+    "sharing_point3": "Authorities or other parties when required by law or necessary to protect our rights, users or the Service.",
+    "security_title": "5. Data Security",
+    "security_content": "We use reasonable technical and organizational safeguards to protect your information. No internet transmission or storage system is completely secure, so please use a strong password and share links carefully.",
+    "retention_title": "6. Data Retention",
+    "retention_content": "We retain account and Service data for as long as needed to provide MyTasteRank, meet legal obligations and resolve disputes. You may request deletion of your personal data at any time.",
+    "rights_title": "7. Your Rights",
+    "rights_content": "Depending on where you live, you may have rights to:",
+    "rights_point1": "Access, correct or delete your personal data.",
+    "rights_point2": "Object to or restrict certain processing of your data.",
+    "rights_point3": "Withdraw consent where processing is based on consent.",
+    "rights_contact": "To exercise these rights, contact us at mark.bekooy+mytasterank@gmail.com.",
+    "changes_title": "8. Changes to This Policy",
+    "changes_content": "We may update this policy from time to time. We will post the revised policy here and, where appropriate, notify you of significant changes.",
+    "contact_title": "9. Contact Us",
+    "contact_content": "For questions about this Privacy Policy, contact us at:",
+    "contact_email": "mark.bekooy+mytasterank@gmail.com"
+  },
+  "TermsOfService": {
+    "meta_title": "Terms of Service",
+    "meta_description": "Read the Terms and Conditions governing use of MyTasteRank.",
+    "title": "Terms and Conditions",
+    "last_updated": "Last updated: August 19, 2026",
+    "introduction": "Welcome to MyTasteRank. These Terms and Conditions (\"Terms\") govern your access to and use of MyTasteRank's website, application and related services (collectively, the \"Service\"). MyTasteRank is operated by FrostByte Software, Chamber of Commerce no. 96814764. By using the Service, you agree to these Terms.",
+    "acceptance_title": "1. Acceptance of Terms",
+    "acceptance_content": "By accessing or using MyTasteRank, you acknowledge that you have read, understood and agree to these Terms and our Privacy Policy. If you do not agree, you may not use the Service.",
+    "description_title": "2. Description of Service",
+    "description_content": "MyTasteRank helps you create, score, organize and share personal food and drink rankings. The Service is provided for general use and does not guarantee the accuracy, completeness or suitability of any user-provided content.",
+    "user_accounts_title": "3. User Accounts and Responsibilities",
+    "user_accounts_point1": "You are responsible for keeping your account credentials secure and for activity that occurs under your account.",
+    "user_accounts_point2": "You must not use the Service for unlawful, harmful, misleading or abusive purposes.",
+    "content_title": "4. Your Content and Sharing",
+    "content_point1": "You retain ownership of the content you add to MyTasteRank.",
+    "content_point2": "You grant us a limited license to host, process and display your content solely to operate and improve the Service.",
+    "content_point3": "You are responsible for the content and images you upload, and for anyone you give access to through a sharing link.",
+    "intellectual_property_title": "5. Intellectual Property",
+    "intellectual_property_point1": "MyTasteRank and FrostByte Software retain all rights to their branding, design and proprietary software.",
+    "intellectual_property_point2": "You may not copy, modify, reverse engineer or redistribute any part of the Service except as permitted by law.",
+    "disclaimer_title": "6. Disclaimer of Warranties",
+    "disclaimer_point1": "The Service is provided \"as is\" and \"as available\" without warranties of any kind.",
+    "disclaimer_point2": "We do not guarantee that the Service will always be available, secure or error-free.",
+    "disclaimer_point3": "We are not responsible for decisions you make based on rankings, notes or other content in the Service.",
+    "limitation_title": "7. Limitation of Liability",
+    "limitation_content": "To the maximum extent permitted by law, MyTasteRank and FrostByte Software are not liable for indirect, incidental, special, consequential or punitive damages arising from your use of the Service.",
+    "termination_title": "8. Termination",
+    "termination_content": "We may suspend or terminate access to the Service if you violate these Terms or misuse the Service. You may stop using the Service at any time.",
+    "changes_title": "9. Changes to These Terms",
+    "changes_content": "We may update these Terms from time to time. Continued use of the Service after changes take effect means you accept the revised Terms.",
+    "governing_law_title": "10. Governing Law",
+    "governing_law_content": "These Terms are governed by the laws of the Netherlands. Any disputes shall be resolved by the courts of the Netherlands, unless mandatory law provides otherwise.",
+    "contact_title": "11. Contact Information",
+    "contact_content": "For questions about these Terms, contact us at:",
+    "contact_email": "mark.bekooy+mytasterank@gmail.com"
   }
 }
