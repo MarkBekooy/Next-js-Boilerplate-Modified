@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { generateSEOMetadata } from "@/utils/seo";
+import { AppConfig } from "@/utils/app-config";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -8,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return generateSEOMetadata({
     description: t("meta_description"),
-    keywords: ["privacy policy", "data privacy", "MyTasteRank"],
+    keywords: ["privacy policy", "data privacy", AppConfig.name],
     locale,
     path: "/privacy-policy",
     title: t("meta_title"),

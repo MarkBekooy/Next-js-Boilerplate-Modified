@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { LocaleSwitcher, LocaleSwitcherSkeleton } from "@/components/locale-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FooterLegalLinks } from "@/components/footer-legal-links";
+import { AppConfig } from "@/utils/app-config";
 
 // oxlint-disable-next-line require-await -- "use cache" requires an async function.
 async function getCurrentYear() {
@@ -19,7 +20,9 @@ export async function Footer() {
     <footer className="border-t">
       <div className="mx-auto flex min-h-14 w-full max-w-7xl flex-col items-center gap-3 p-4 sm:flex-row sm:flex-wrap sm:justify-between sm:py-2">
         <div className="min-w-0 text-center text-sm text-muted-foreground sm:text-left">
-          <span className="block sm:inline">&copy; {year} MyTasteRank</span>
+          <span className="block sm:inline">
+            &copy; {year} {AppConfig.name}
+          </span>
           <span className="mx-2 hidden sm:inline">·</span>
           <span className="mt-1 block sm:mt-0 sm:inline">
             Made with ❤️ by{" "}
