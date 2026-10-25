@@ -1,6 +1,7 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { getBaseUrl } from "@/utils/helpers";
 import { getPathname } from "@/libs/i18n/navigation";
+import { AppConfig } from "@/utils/app-config";
 
 export async function JsonLd() {
   const [locale, t] = await Promise.all([getLocale(), getTranslations("JsonLd")]);
@@ -17,7 +18,7 @@ export async function JsonLd() {
     },
     description: t("description"),
     inLanguage: locale,
-    name: "MyTasteRank",
+    name: AppConfig.name,
     operatingSystem: "Web",
     url,
   };
