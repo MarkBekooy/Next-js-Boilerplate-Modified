@@ -12,6 +12,13 @@
   "Navigation": {
     "language_switcher": "Language"
   },
+  "Blog": {
+    "article_details": "Article details",
+    "by": "By {author}",
+    "published": "Published {date}",
+    "updated": "Updated {date}",
+    "keywords": "Topics"
+  },
   "RootPage": {
     "meta_title": "Home",
     "meta_description": "Home page description",

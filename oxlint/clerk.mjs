@@ -9,6 +9,7 @@ export default defineConfig({
         protected: ["**"],
         public: [
           "src/app/[locale]/(auth)/**",
+          "src/app/[locale]/(marketing)/**",
           "src/app/[locale]/(public)/**",
           "src/app/[locale]/api/_actions/hello-actions.ts",
           "src/app/[locale]/api/error/**",

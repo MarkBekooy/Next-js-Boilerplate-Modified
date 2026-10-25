@@ -1,0 +1,27 @@
+---
+title: "Blog"
+description: "Articles from the Next.js starter."
+---
+
+import { Link } from "@/libs/i18n/navigation";
+import { blogContentPages } from "@/constants/seo-content-pages";
+
+export const metadata = {
+  title: frontmatter.title,
+  description: frontmatter.description,
+};
+
+# {frontmatter.title}
+
+<ul className="mt-6 list-none p-0">
+  {blogContentPages.map((post) => (
+    <li key={post.urlPath} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+      <Link className="font-medium text-primary underline underline-offset-4" href={post.urlPath}>
+        {post.title}
+      </Link>
+      <time className="text-sm text-muted-foreground" dateTime={post.publishedAt}>
+        {post.publishedAt}
+      </time>
+    </li>
+  ))}
+</ul>

@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
+import createMDX from "@next/mdx";
 import { withPostHogConfig } from "@posthog/nextjs-config";
 import createNextIntlPlugin from "next-intl/plugin";
 import "./src/libs/env";
@@ -39,15 +40,23 @@ const baseConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 };
 
-// Compose plugins on the config only when their feature is enabled.
-// oxlint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
-let configWithPlugins = createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig);
+const withMDX = createMDX({
+  extension: /\.(?:md|mdx)$/u,
+  options: {
+    remarkPlugins: ["remark-gfm", "remark-frontmatter", "remark-mdx-frontmatter"],
+  },
+});
 
+// Initialize the Next-Intl plugin
+// oxlint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
+let configWithPlugins = withMDX(createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig));
+
+// Conditionally enable bundle analysis
 if (process.env.ANALYZE === "true") {
   configWithPlugins = withBundleAnalyzer()(configWithPlugins);
 }
 
-// Upload source maps in production when PostHog credentials are configured.
+// Conditionally configure PostHog in production when credentials are available.
 if (
   process.env.NODE_ENV === "production" &&
   process.env.POSTHOG_API_KEY &&
