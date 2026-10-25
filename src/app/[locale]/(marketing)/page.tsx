@@ -3,8 +3,6 @@ import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/libs/i18n/navigation";
 import ActionPanel from "@/components/action-panel";
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -41,7 +39,7 @@ async function RootPageContent() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>{t("hello_world")}</CardTitle>
+          <CardTitle>{t("title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <p>This is just some filler text</p>
@@ -79,9 +77,6 @@ async function RootPageContent() {
           </div>
         </CardContent>
       </Card>
-
-      <ThemeToggle />
-      <LocaleSwitcher />
     </>
   );
 }
@@ -108,11 +103,6 @@ function RootPageSkeleton() {
           <Skeleton className="mx-auto h-10 w-36" />
         </CardContent>
       </Card>
-
-      <div className="flex justify-center gap-3">
-        <Skeleton className="h-9 w-28" />
-        <Skeleton className="h-9 w-28" />
-      </div>
     </>
   );
 }

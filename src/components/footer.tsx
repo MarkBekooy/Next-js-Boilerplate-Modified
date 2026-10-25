@@ -1,0 +1,51 @@
+import { cacheLife } from "next/cache";
+import { Suspense } from "react";
+import { LocaleSwitcher, LocaleSwitcherSkeleton } from "@/components/locale-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { FooterLegalLinks } from "@/components/footer-legal-links";
+
+// oxlint-disable-next-line require-await -- "use cache" requires an async function.
+async function getCurrentYear() {
+  "use cache";
+  cacheLife("max");
+
+  return new Date().getFullYear();
+}
+
+export async function Footer() {
+  const year = await getCurrentYear();
+
+  return (
+    <footer className="border-t">
+      <div className="mx-auto flex min-h-14 w-full max-w-7xl flex-col items-center gap-3 p-4 sm:flex-row sm:flex-wrap sm:justify-between sm:py-2">
+        <div className="min-w-0 text-center text-sm text-muted-foreground sm:text-left">
+          <span className="block sm:inline">&copy; {year} MyTasteRank</span>
+          <span className="mx-2 hidden sm:inline">·</span>
+          <span className="mt-1 block sm:mt-0 sm:inline">
+            Made with ❤️ by{" "}
+            <a
+              href="https://www.frostbytesoftware.org/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold text-foreground underline-offset-4 hover:underline sm:font-medium"
+            >
+              FrostByte Software
+            </a>
+          </span>
+        </div>
+
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
+          <Suspense fallback={null}>
+            <FooterLegalLinks />
+          </Suspense>
+          <div className="flex flex-wrap items-center justify-center gap-4 border-t pt-3 sm:justify-start sm:border-t-0 sm:pt-0">
+            <Suspense fallback={<LocaleSwitcherSkeleton />}>
+              <LocaleSwitcher />
+            </Suspense>
+            <ThemeToggle />
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

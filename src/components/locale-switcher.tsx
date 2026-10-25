@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { usePathname, useRouter } from "@/libs/i18n/navigation";
 import { routing } from "@/libs/i18n/routing";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AppConfig } from "@/utils/app-config";
 
 function subscribeToMount(_onStoreChange: () => void) {
@@ -28,8 +29,8 @@ function getServerMountedSnapshot() {
   return false;
 }
 
-function LocaleSwitcherSkeleton() {
-  return <div aria-hidden="true" className="h-9 w-35 animate-pulse rounded-md bg-muted" />;
+export function LocaleSwitcherSkeleton() {
+  return <Skeleton aria-hidden className="h-9 w-35" />;
 }
 
 export function LocaleSwitcher() {
@@ -57,6 +58,7 @@ export function LocaleSwitcher() {
   return (
     <Select
       value={locale}
+      items={AppConfig.locales.map((lang) => ({ label: lang.name, value: lang.id }))}
       onValueChange={(value) => {
         if (value) {
           handleChange(value);

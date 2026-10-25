@@ -11,10 +11,12 @@ export const AppConfig = {
     {
       id: "en",
       name: "English",
+      posixLocale: "en_US",
     },
     {
       id: "nl",
       name: "Nederlands",
+      posixLocale: "nl_NL",
     },
   ],
   defaultLocale: "en",
@@ -23,11 +25,7 @@ export const AppConfig = {
 
 export const AllLocales = AppConfig.locales.map((locale) => locale.id);
 
-const supportedLocales = {
+export const supportedLocales = {
   en: enUS,
   nl: nlNL,
 } satisfies Record<(typeof AppConfig.locales)[number]["id"], LocalizationResource>;
-
-export const ClerkLocalizations = {
-  supportedLocales,
-};
