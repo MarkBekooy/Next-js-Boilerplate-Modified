@@ -1,18 +1,12 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import NextError from "next/error";
-import posthog from "posthog-js";
+import { posthog } from "posthog-js";
 import { useEffect } from "react";
-import { routing } from "@/libs/I18nRouting";
+import { routing } from "@/libs/i18n/routing";
 
-export default function GlobalError({
-  error,
-}: {
-  error: Error & { digest?: string };
-}) {
+export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
   useEffect(() => {
-    Sentry.captureException(error);
     posthog.captureException(error);
   }, [error]);
 

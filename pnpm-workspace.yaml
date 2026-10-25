@@ -1,0 +1,29 @@
+shellEmulator: false
+
+allowBuilds:
+  "@parcel/watcher": true
+  "@posthog/cli": true
+  "@swc/core": true
+  core-js: true
+  esbuild: true
+  lefthook: true
+  msw: true
+
+minimumReleaseAgeExclude:
+  - "@next/bundle-analyzer@16.4.3"
+  - "@next/env@16.4.3"
+  - "@next/swc-darwin-arm64@16.4.3"
+  - "@next/swc-darwin-x64@16.4.3"
+  - "@next/swc-linux-arm64-gnu@16.4.3"
+  - "@next/swc-linux-arm64-musl@16.4.3"
+  - "@next/swc-linux-x64-gnu@16.4.3"
+  - "@next/swc-linux-x64-musl@16.4.3"
+  - "@next/swc-win32-arm64-msvc@16.4.3"
+  - "@next/swc-win32-x64-msvc@16.4.3"
+  - next@16.4.3
+  - "@posthog/core@1.60.1"
+  - "@posthog/nextjs-config@1.12.0"
+  - "@posthog/webpack-plugin@1.8.0"
+
+overrides:
+  "@types/react": 19.3.0

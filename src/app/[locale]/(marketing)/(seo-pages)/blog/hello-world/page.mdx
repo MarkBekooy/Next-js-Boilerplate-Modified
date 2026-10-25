@@ -1,0 +1,38 @@
+---
+title: "Hello world with MDX"
+description: "An example blog post with YAML frontmatter and GitHub Flavored Markdown."
+author: "Mark Bekooy"
+url_path: "/blog/hello-world"
+published_at: "2026-10-25"
+metadata_image: "/assets/images/metadata/hello-world.png"
+keywords:
+  - "MDX"
+  - "Next.js"
+  - "Markdown"
+---
+
+import { ArticleDetails, createArticleMetadata } from "@/components/marketing/content-page";
+
+export const metadata = createArticleMetadata(frontmatter);
+
+{/* --- Article content underneath --- */}
+
+<article>
+
+# {frontmatter.title}
+
+<ArticleDetails article={frontmatter} />
+
+Hello, world. This post uses **MDX**, YAML frontmatter, and GitHub Flavored Markdown.
+
+## GitHub Markdown
+
+| Feature       | Example                 |
+| ------------- | ----------------------- |
+| Strikethrough | ~~Old text~~            |
+| Autolink      | https://nextjs.org/docs |
+
+- [x] Frontmatter supplies article metadata
+- [x] Tables and task lists render through `remark-gfm`
+
+</article>
