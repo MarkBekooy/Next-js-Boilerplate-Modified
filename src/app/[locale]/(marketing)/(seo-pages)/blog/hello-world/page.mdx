@@ -15,7 +15,9 @@ import { ArticleDetails, createArticleMetadata } from "@/components/marketing/co
 
 export const metadata = createArticleMetadata(frontmatter);
 
-{/* --- Post Content underneath --- */}
+{/* --- Article content underneath --- */}
+
+<article>
 
 # {frontmatter.title}
 
@@ -32,3 +34,5 @@ Hello, world. This post uses **MDX**, YAML frontmatter, and GitHub Flavored Mark
 
 - [x] Frontmatter supplies article metadata
 - [x] Tables and task lists render through `remark-gfm`
+
+</article>
