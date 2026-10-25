@@ -9,6 +9,10 @@
     "title": "You are offline",
     "description": "Navigation will resume when your connection returns."
   },
+  "JsonLd": {
+    "application_subcategory": "",
+    "description": ""
+  },
   "Navigation": {
     "about": "About",
     "blog": "Blog",

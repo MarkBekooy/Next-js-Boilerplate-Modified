@@ -9,6 +9,10 @@
     "title": "Je bent offline",
     "description": "Navigatie wordt hervat zodra je verbinding is hersteld."
   },
+  "JsonLd": {
+    "application_subcategory": "",
+    "description": ""
+  },
   "Navigation": {
     "about": "Over ons",
     "blog": "Blog",
