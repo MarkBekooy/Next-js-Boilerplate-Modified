@@ -18,8 +18,8 @@ export async function Footer() {
 
   return (
     <footer className="border-t">
-      <div className="mx-auto flex min-h-14 w-full max-w-7xl flex-col items-center gap-3 p-4 sm:flex-row sm:flex-wrap sm:justify-between sm:py-2">
-        <div className="min-w-0 text-center text-sm text-muted-foreground sm:text-left">
+      <div className="mx-auto flex min-h-14 w-full max-w-7xl flex-col items-center gap-3 p-4 sm:py-2 lg:flex-row lg:justify-between">
+        <div className="min-w-0 text-center text-sm text-muted-foreground lg:text-left">
           <span className="block sm:inline">
             &copy; {year} {AppConfig.name}
           </span>
@@ -41,7 +41,7 @@ export async function Footer() {
           <Suspense fallback={null}>
             <FooterLegalLinks />
           </Suspense>
-          <div className="flex flex-wrap items-center justify-center gap-4 border-t pt-3 sm:justify-start sm:border-t-0 sm:pt-0">
+          <div className="flex flex-wrap items-center justify-center gap-4 border-t pt-3 sm:border-t-0 sm:pt-0 lg:justify-start">
             <Suspense fallback={<LocaleSwitcherSkeleton />}>
               <LocaleSwitcher />
             </Suspense>
