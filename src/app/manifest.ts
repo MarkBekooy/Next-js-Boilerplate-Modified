@@ -3,7 +3,7 @@ import { AppConfig } from "@/utils/app-config";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    background_color: "#ba1c0f",
+    background_color: "#ffffff",
     display: "standalone",
     icons: [
       {
