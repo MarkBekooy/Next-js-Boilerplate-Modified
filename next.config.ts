@@ -48,9 +48,13 @@ const withMDX = createMDX({
   },
 });
 
-// Initialize the Next-Intl plugin
 // oxlint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
-let configWithPlugins = withMDX(createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig));
+let configWithPlugins = withMDX(baseConfig);
+
+// Initialize the Next-Intl plugin
+const withNextIntl = createNextIntlPlugin("./src/libs/i18n/request.ts");
+
+configWithPlugins = withNextIntl(configWithPlugins);
 
 // Conditionally enable bundle analysis
 if (process.env.ANALYZE === "true") {
