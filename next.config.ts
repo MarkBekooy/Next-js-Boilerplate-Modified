@@ -12,8 +12,10 @@ const baseConfig: NextConfig = {
     position: "bottom-right",
   },
   experimental: {
+    agentUpgrade: "security",
     exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === "1",
     globalNotFound: true,
+    turbopackGc: true,
     useOffline: true,
   },
   logging: {
