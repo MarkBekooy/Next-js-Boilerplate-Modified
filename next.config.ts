@@ -3,7 +3,7 @@ import withBundleAnalyzer from "@next/bundle-analyzer";
 import createMDX from "@next/mdx";
 import { withPostHogConfig } from "@posthog/nextjs-config";
 import createNextIntlPlugin from "next-intl/plugin";
-import "./src/libs/env";
+import { Env } from "./src/libs/env";
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
@@ -64,15 +64,11 @@ if (process.env.ANALYZE === "true") {
 }
 
 // Conditionally configure PostHog in production when credentials are available.
-if (
-  process.env.NODE_ENV === "production" &&
-  process.env.POSTHOG_API_KEY &&
-  process.env.POSTHOG_PROJECT_ID
-) {
+if (Env.NODE_ENV === "production" && Env.POSTHOG_API_KEY && Env.POSTHOG_PROJECT_ID) {
   configWithPlugins = withPostHogConfig(configWithPlugins, {
-    personalApiKey: process.env.POSTHOG_API_KEY,
-    projectId: process.env.POSTHOG_PROJECT_ID,
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    personalApiKey: Env.POSTHOG_API_KEY,
+    projectId: Env.POSTHOG_PROJECT_ID,
+    host: Env.NEXT_PUBLIC_POSTHOG_HOST,
     sourcemaps: {
       enabled: true,
       deleteAfterUpload: true,

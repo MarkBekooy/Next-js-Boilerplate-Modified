@@ -19,6 +19,8 @@ export const Env = createEnv({
     CLERK_SECRET_KEY: requiredInProduction(z.string().startsWith("sk_").min(1)),
     CLERK_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
     DATABASE_URL: z.string().min(1),
+    POSTHOG_API_KEY: z.string().optional(),
+    POSTHOG_PROJECT_ID: z.string().optional(),
   },
   client: {
     NEXT_PUBLIC_APP_URL: requiredInProduction(z.url()),
@@ -37,6 +39,8 @@ export const Env = createEnv({
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
+    POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
+    POSTHOG_PROJECT_ID: process.env.POSTHOG_PROJECT_ID,
     NEXT_PUBLIC_APP_URL: previewHost ? `https://${previewHost}` : process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN,
     NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST: process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST,
@@ -45,4 +49,24 @@ export const Env = createEnv({
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     NODE_ENV: process.env.NODE_ENV,
   },
+  createFinalSchema: (schemas, isServer) =>
+    z
+      .object(schemas)
+      .refine(
+        (env) =>
+          Boolean(env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN) ===
+          Boolean(env.NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST),
+        {
+          message:
+            "NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN and NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST must be set together",
+          path: ["NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN"],
+        },
+      )
+      .refine(
+        (env) => !isServer || Boolean(env.POSTHOG_API_KEY) === Boolean(env.POSTHOG_PROJECT_ID),
+        {
+          message: "POSTHOG_API_KEY and POSTHOG_PROJECT_ID must be set together",
+          path: ["POSTHOG_API_KEY"],
+        },
+      ),
 });
