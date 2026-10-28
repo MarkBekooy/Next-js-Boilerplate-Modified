@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/.vitest/
 /vitest-test-results
 
 # next.js

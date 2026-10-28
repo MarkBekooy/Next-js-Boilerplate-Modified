@@ -1,8 +1,12 @@
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
-import { LocaleSwitcher, LocaleSwitcherSkeleton } from "@/components/locale-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
+
 import { FooterLegalLinks } from "@/components/footer-legal-links";
+import {
+  LocaleSwitcher,
+  LocaleSwitcherSkeleton,
+} from "@/components/locale-switcher";
+import { ThemeToggle, ThemeToggleSkeleton } from "@/components/theme-toggle";
 import { AppConfig } from "@/utils/app-config";
 
 // oxlint-disable-next-line require-await -- "use cache" requires an async function.
@@ -45,7 +49,9 @@ export async function Footer() {
             <Suspense fallback={<LocaleSwitcherSkeleton />}>
               <LocaleSwitcher />
             </Suspense>
-            <ThemeToggle />
+            <Suspense fallback={<ThemeToggleSkeleton />}>
+              <ThemeToggle />
+            </Suspense>
           </div>
         </div>
       </div>
