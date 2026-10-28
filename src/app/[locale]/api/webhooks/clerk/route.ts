@@ -8,6 +8,7 @@ import { db } from "@/libs/db/db";
 import { usersSchema } from "@/libs/db/schema";
 import { Env } from "@/libs/env";
 import { logger } from "@/libs/logger";
+import { tryCatch } from "@/utils/try-catch";
 import {
   clerkUserInsertSchema,
   clerkUserSoftDeleteSchema,
@@ -52,17 +53,23 @@ async function verifyWebhook(
 
   const body = await request.text();
 
-  try {
-    new Webhook(secret).verify(body, {
-      "svix-id": svixId,
-      "svix-timestamp": svixTimestamp,
-      "svix-signature": svixSignature,
-    });
+  const { data: verifiedWebhook, error: webhookVerificationError } = tryCatch(
+    () => {
+      new Webhook(secret).verify(body, {
+        "svix-id": svixId,
+        "svix-timestamp": svixTimestamp,
+        "svix-signature": svixSignature,
+      });
 
-    // SAFETY: Svix verified the signed Clerk payload before it is parsed as Clerk's event type.
-    return { event: JSON.parse(body) as WebhookEvent };
-  } catch (error) {
-    logger.error("Error verifying webhook", { error });
+      // SAFETY: Svix verified the signed Clerk payload before it is parsed as Clerk's event type.
+      return { event: JSON.parse(body) as WebhookEvent };
+    }
+  );
+
+  if (webhookVerificationError) {
+    logger.error("Error verifying webhook", {
+      error: webhookVerificationError,
+    });
 
     return {
       response: NextResponse.json(
@@ -71,6 +78,8 @@ async function verifyWebhook(
       ),
     };
   }
+
+  return verifiedWebhook;
 }
 
 async function createUser(event: UserCreatedEvent) {
@@ -89,7 +98,7 @@ async function createUser(event: UserCreatedEvent) {
     );
   }
 
-  try {
+  const { error: userCreationError } = await tryCatch(async () => {
     const [createdUser] = await db
       .insert(usersSchema)
       .values(
@@ -108,8 +117,10 @@ async function createUser(event: UserCreatedEvent) {
     } else {
       logger.info(`User already exists ${id}`);
     }
-  } catch (error) {
-    logger.error(`Error creating user ${id}`, { error });
+  });
+
+  if (userCreationError) {
+    logger.error(`Error creating user ${id}`, { error: userCreationError });
 
     return NextResponse.json({ error: "Error creating user" }, { status: 500 });
   }
@@ -125,7 +136,7 @@ async function updateUser(event: UserUpdatedEvent) {
   )?.email_address;
 
   if (email) {
-    try {
+    const { error: userUpdateError } = await tryCatch(async () => {
       const [updatedUser] = await db
         .update(usersSchema)
         .set(
@@ -145,8 +156,10 @@ async function updateUser(event: UserUpdatedEvent) {
       } else {
         logger.warn(`No active user found to update for ${id}`);
       }
-    } catch (error) {
-      logger.error(`Error updating user ${id}`, { error });
+    });
+
+    if (userUpdateError) {
+      logger.error(`Error updating user ${id}`, { error: userUpdateError });
 
       return NextResponse.json(
         { error: "Error updating user" },
@@ -162,7 +175,7 @@ async function deleteUser(event: UserDeletedEvent) {
   const { id } = event.data;
 
   if (id) {
-    try {
+    const { error: userDeletionError } = await tryCatch(async () => {
       const [deletedUser] = await db
         .update(usersSchema)
         .set(clerkUserSoftDeleteSchema.parse({ deletedAt: new Date() }))
@@ -176,8 +189,10 @@ async function deleteUser(event: UserDeletedEvent) {
       } else {
         logger.warn(`No active user found to soft delete for ${id}`);
       }
-    } catch (error) {
-      logger.error(`Error deleting user ${id}`, { error });
+    });
+
+    if (userDeletionError) {
+      logger.error(`Error deleting user ${id}`, { error: userDeletionError });
 
       return NextResponse.json(
         { error: "Error deleting user" },

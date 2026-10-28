@@ -16,13 +16,19 @@ import clerk from "./oxlint/clerk.mjs";
 import nextIntl from "./oxlint/next-intl.mjs";
 import tailwind from "./oxlint/tailwind.mjs";
 
+// --- Start of JavaScript plugin configurations for oxlint ---
 const jsPlugins = selectJsPlugins(["github", "react-doctor"]);
 const databaseJsPlugin = {
   name: "database",
   specifier: "./oxlint/database-plugin.mjs",
 };
 const drizzleJsPlugin = { name: "drizzle", specifier: "eslint-plugin-drizzle" };
+const errorHandlingJsPlugin = {
+  name: "error-handling",
+  specifier: "./oxlint/error-handling-plugin.mjs",
+};
 const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
+// --- End of JavaScript plugin configurations for oxlint ---
 
 const vitest = {
   ...vitestPreset,
@@ -60,6 +66,7 @@ export default defineConfig({
     ...(jsPlugins.jsPlugins ?? []),
     databaseJsPlugin,
     drizzleJsPlugin,
+    errorHandlingJsPlugin,
     ...(nextIntl.jsPlugins ?? []),
     shadcnJsPlugin,
   ],
@@ -67,6 +74,13 @@ export default defineConfig({
     reportUnusedDisableDirectives: "error",
   },
   overrides: [
+    {
+      // The helper implements the native error handling used by all callers.
+      files: ["src/utils/try-catch.ts"],
+      rules: {
+        "error-handling/prefer-try-catch": "off",
+      },
+    },
     {
       files: ["src/libs/db/schema.ts"],
       rules: {
@@ -84,6 +98,7 @@ export default defineConfig({
     "anti-slop/no-module-mocking": "off",
     "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
     "database/require-validated-writes": "error",
+    "error-handling/prefer-try-catch": "error",
     "drizzle/enforce-delete-with-where": [
       "error",
       { drizzleObjectName: ["db", "tx"] },

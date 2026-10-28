@@ -6,12 +6,19 @@ type ResultSync<T, E> = Success<T> | Failure<E>;
 
 type ResultAsync<T, E> = Promise<ResultSync<T, E>>;
 
-export function tryCatch<T, E = Error>(operation: Promise<T>): ResultAsync<T, E>;
 export function tryCatch<T, E = Error>(
-  operation: () => T | Promise<T>,
+  operation: Promise<T>
+): ResultAsync<T, E>;
+export function tryCatch<T, E = Error>(
+  operation: () => T
+):
+  | ResultSync<Awaited<T>, E>
+  | (T extends Promise<unknown> ? ResultAsync<Awaited<T>, E> : never);
+export function tryCatch<T, E = Error>(
+  operation: () => T | Promise<T>
 ): ResultSync<T, E> | ResultAsync<T, E>;
 export function tryCatch<T, E = Error>(
-  operation: Promise<T> | (() => T | Promise<T>),
+  operation: Promise<T> | (() => T | Promise<T>)
 ): ResultSync<T, E> | ResultAsync<T, E> {
   if (!isOperationFunction(operation)) {
     return tryCatchAsync<T, E>(operation);
@@ -31,7 +38,7 @@ export function tryCatch<T, E = Error>(
 }
 
 function isOperationFunction<T>(
-  operation: Promise<T> | (() => T | Promise<T>),
+  operation: Promise<T> | (() => T | Promise<T>)
 ): operation is () => T | Promise<T> {
   return typeof operation === "function";
 }
