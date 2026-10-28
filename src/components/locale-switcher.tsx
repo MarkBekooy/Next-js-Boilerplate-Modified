@@ -3,6 +3,7 @@
 import { Globe } from "lucide-react";
 import { hasLocale, useLocale, useTranslations } from "next-intl";
 import { useSyncExternalStore } from "react";
+
 import {
   Select,
   SelectContent,
@@ -10,9 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname, useRouter } from "@/libs/i18n/navigation";
 import { routing } from "@/libs/i18n/routing";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AppConfig } from "@/utils/app-config";
 
 function subscribeToMount(_onStoreChange: () => void) {
@@ -42,7 +43,7 @@ export function LocaleSwitcher() {
   const mounted = useSyncExternalStore(
     subscribeToMount,
     getMountedSnapshot,
-    getServerMountedSnapshot,
+    getServerMountedSnapshot
   );
 
   function handleChange(value: string) {
@@ -58,7 +59,10 @@ export function LocaleSwitcher() {
   return (
     <Select
       value={locale}
-      items={AppConfig.locales.map((lang) => ({ label: lang.name, value: lang.id }))}
+      items={AppConfig.locales.map((lang) => ({
+        label: lang.name,
+        value: lang.id,
+      }))}
       onValueChange={(value) => {
         if (value) {
           handleChange(value);
@@ -67,7 +71,8 @@ export function LocaleSwitcher() {
     >
       <SelectTrigger
         aria-label={t("language_switcher")}
-        className="w-35 bg-transparent! hover:bg-muted! dark:hover:bg-muted/50!"
+        variant="ghost"
+        className="w-35"
       >
         <div className="flex items-center gap-2">
           <Globe className="size-4" />
