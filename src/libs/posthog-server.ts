@@ -1,10 +1,10 @@
+import "server-only";
 import { PostHog } from "posthog-node";
 import { z } from "zod";
 
 import { tryCatch } from "@/utils/try-catch";
 
 import { Env } from "./env";
-import "server-only";
 
 let posthogInstance: PostHog | null = null;
 
