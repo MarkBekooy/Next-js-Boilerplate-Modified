@@ -11,3 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## UI work
 
 Read `DESIGN.md` and `.agents/skills/shadcn/SKILL.md` before creating or changing shadcn UI. Use `components.json` and `src/app/globals.css` as the source for component setup and theme tokens.
+
+## Soft-deleted users
+
+Normal user reads and profile updates must filter with `isNull(usersSchema.deletedAt)`. Relational queries use `where: { deletedAt: { isNull: true } }`. Drizzle does not apply this filter globally.
