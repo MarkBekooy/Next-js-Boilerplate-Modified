@@ -1,3 +1,5 @@
+// oxlint-disable anti-slop/require-readable-spacing -- Avoid databaseJsPlugin spacing issues
+
 import { defineConfig } from "oxlint";
 import type { OxlintConfig } from "oxlint";
 import antiSlop from "ultracite/oxlint/anti-slop";
@@ -15,6 +17,10 @@ import nextIntl from "./oxlint/next-intl.mjs";
 import tailwind from "./oxlint/tailwind.mjs";
 
 const jsPlugins = selectJsPlugins(["github", "react-doctor"]);
+const databaseJsPlugin = {
+  name: "database",
+  specifier: "./oxlint/database-plugin.mjs",
+};
 const drizzleJsPlugin = { name: "drizzle", specifier: "eslint-plugin-drizzle" };
 const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
 
@@ -52,6 +58,7 @@ export default defineConfig({
   ],
   jsPlugins: [
     ...(jsPlugins.jsPlugins ?? []),
+    databaseJsPlugin,
     drizzleJsPlugin,
     ...(nextIntl.jsPlugins ?? []),
     shadcnJsPlugin,
@@ -76,6 +83,7 @@ export default defineConfig({
   rules: {
     "anti-slop/no-module-mocking": "off",
     "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
+    "database/require-validated-writes": "error",
     "drizzle/enforce-delete-with-where": [
       "error",
       { drizzleObjectName: ["db", "tx"] },
