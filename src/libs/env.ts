@@ -1,4 +1,5 @@
 import { createEnv } from "@t3-oss/env-nextjs";
+import { neonVercel, vercel } from "@t3-oss/env-nextjs/presets-zod";
 import * as z from "zod";
 
 const isProduction =
@@ -14,6 +15,7 @@ function requiredInProduction<T extends z.ZodType>(schema: T) {
 
 export const Env = createEnv({
   emptyStringAsUndefined: true,
+  extends: [vercel(), neonVercel()],
   server: {
     ARCJET_KEY: z.string().startsWith("ajkey_").optional(),
     CLERK_SECRET_KEY: requiredInProduction(z.string().startsWith("sk_").min(1)),
@@ -33,14 +35,7 @@ export const Env = createEnv({
   shared: {
     NODE_ENV: z.enum(["test", "development", "production"]).optional(),
   },
-  // You need to destructure all the keys manually
-  runtimeEnv: {
-    ARCJET_KEY: process.env.ARCJET_KEY,
-    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
-    DATABASE_URL: process.env.DATABASE_URL,
-    POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
-    POSTHOG_PROJECT_ID: process.env.POSTHOG_PROJECT_ID,
+  experimental__runtimeEnv: {
     NEXT_PUBLIC_APP_URL: previewHost ? `https://${previewHost}` : process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN: process.env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN,
     NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST: process.env.NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST,
