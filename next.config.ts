@@ -1,8 +1,8 @@
-import type { NextConfig } from "next";
-import withBundleAnalyzer from "@next/bundle-analyzer";
 import createMDX from "@next/mdx";
 import { withPostHogConfig } from "@posthog/nextjs-config";
+import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+
 import { Env } from "./src/libs/env";
 
 // Define the base Next.js configuration
@@ -46,7 +46,11 @@ const baseConfig: NextConfig = {
 const withMDX = createMDX({
   extension: /\.(?:md|mdx)$/u,
   options: {
-    remarkPlugins: ["remark-gfm", "remark-frontmatter", "remark-mdx-frontmatter"],
+    remarkPlugins: [
+      "remark-gfm",
+      "remark-frontmatter",
+      "remark-mdx-frontmatter",
+    ],
   },
 });
 
@@ -58,13 +62,12 @@ const withNextIntl = createNextIntlPlugin("./src/libs/i18n/request.ts");
 
 configWithPlugins = withNextIntl(configWithPlugins);
 
-// Conditionally enable bundle analysis
-if (process.env.ANALYZE === "true") {
-  configWithPlugins = withBundleAnalyzer()(configWithPlugins);
-}
-
 // Conditionally configure PostHog in production when credentials are available.
-if (Env.NODE_ENV === "production" && Env.POSTHOG_API_KEY && Env.POSTHOG_PROJECT_ID) {
+if (
+  Env.NODE_ENV === "production" &&
+  Env.POSTHOG_API_KEY &&
+  Env.POSTHOG_PROJECT_ID
+) {
   configWithPlugins = withPostHogConfig(configWithPlugins, {
     personalApiKey: Env.POSTHOG_API_KEY,
     projectId: Env.POSTHOG_PROJECT_ID,
