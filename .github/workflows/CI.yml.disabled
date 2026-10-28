@@ -31,9 +31,13 @@ jobs:
             .next/cache
           # Generate a new cache whenever packages or source files change.
           key: nextjs-${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('src/**') }}
+          restore-keys: |
+            nextjs-${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Build Next.js
         run: pnpm build
+        env:
+          EXPOSE_TESTING_API: "1"
 
       - if: matrix.node-version == '22.x' && success()
         name: Cache Next.js build output
@@ -98,9 +102,9 @@ jobs:
         run: pnpm test --coverage
 
       - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v5
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   e2e:
     strategy:

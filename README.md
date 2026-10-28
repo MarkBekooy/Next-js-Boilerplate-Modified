@@ -133,8 +133,8 @@ Clone this project and use it to create your own Next.js project. You can check 
 
 **Live demo: [Next.js Boilerplate](https://demo.nextjs-boilerplate.com)**
 
-| Sign Up                                                                                                                                 | Sign In                                                                                                                                 |
-| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Sign Up | Sign In |
+| --- | --- |
 | [![Next.js Boilerplate SaaS Sign Up](public/assets/images/nextjs-boilerplate-sign-in.png)](https://demo.nextjs-boilerplate.com/sign-up) | [![Next.js Boilerplate SaaS Sign In](public/assets/images/nextjs-boilerplate-sign-in.png)](https://demo.nextjs-boilerplate.com/sign-in) |
 
 ### Features
@@ -409,8 +409,7 @@ Arcjet is configured with bot detection, a per-IP rate limit, the Arcjet Shield 
 - [Arcjet Shield WAF](https://docs.arcjet.com/shield/concepts) will detect and block common attacks such as SQL injection, cross-site scripting, and other OWASP Top 10 vulnerabilities.
 - The request filter blocks requests without a `User-Agent`, which Arcjet cannot classify as a specific bot.
 
-The shared client in `src/libs/Arcjet.ts` includes the Shield WAF and request filter. `src/proxy.ts` adds rate limiting and bot detection for Next.js 16.
-The proxy skips Arcjet for `/:locale/api/webhooks/*`; the Clerk webhook verifies requests with Svix signatures.
+The shared client in `src/libs/Arcjet.ts` includes the Shield WAF and request filter. `src/proxy.ts` adds rate limiting and bot detection for Next.js 16. The proxy skips Arcjet for `/:locale/api/webhooks/*`; the Clerk webhook verifies requests with Svix signatures.
 
 ### Useful commands
 
@@ -420,19 +419,19 @@ The project includes several commands to ensure code quality and consistency. Yo
 
 - `pnpm check` to run lint and formatting checks
 - `pnpm fix` to apply safe lint and formatting fixes
-- `pnpm check:types` to verify type safety across the entire project
+- `pnpm check:types` to generate route types and verify type safety across the entire project
 - `pnpm check:deps` to identify unused dependencies and files
 - `pnpm check:i18n` to check translation completeness and formatting
 
-#### Bundle Analyzer
+#### Bundle analyzer
 
-Next.js Boilerplate includes a built-in bundle analyzer. It can be used to analyze the size of your JavaScript bundles. To begin, run the following command:
+Analyze Turbopack bundles, import chains, and client/server boundaries:
 
 ```shell
-npm run build-stats
+pnpm build-stats
 ```
 
-By running the command, it'll automatically open a new browser window with the results.
+The command generates SEO content and serves the interactive analyzer at `http://localhost:4000`. It does not produce a deployable build. To save a snapshot without starting the analyzer server, run `pnpm build-stats --output --snapshot baseline`.
 
 #### Database Studio
 
