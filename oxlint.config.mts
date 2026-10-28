@@ -27,6 +27,10 @@ const errorHandlingJsPlugin = {
   name: "error-handling",
   specifier: "./oxlint/error-handling-plugin.mjs",
 };
+const httpJsPlugin = {
+  name: "http",
+  specifier: "./oxlint/http-plugin.mjs",
+};
 const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
 // --- End of JavaScript plugin configurations for oxlint ---
 
@@ -67,6 +71,7 @@ export default defineConfig({
     databaseJsPlugin,
     drizzleJsPlugin,
     errorHandlingJsPlugin,
+    httpJsPlugin,
     ...(nextIntl.jsPlugins ?? []),
     shadcnJsPlugin,
   ],
@@ -99,6 +104,7 @@ export default defineConfig({
     "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
     "database/require-validated-writes": "error",
     "error-handling/prefer-try-catch": "error",
+    "http/no-discarded-response": "error",
     "drizzle/enforce-delete-with-where": [
       "error",
       { drizzleObjectName: ["db", "tx"] },
