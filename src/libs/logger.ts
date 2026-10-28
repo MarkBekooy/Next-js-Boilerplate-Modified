@@ -6,6 +6,7 @@ import {
   getJsonLinesFormatter,
   getLogger,
 } from "@logtape/logtape";
+
 import { Env } from "./env";
 
 async function betterStackSink(record: Parameters<AsyncSink>[0]) {
@@ -25,11 +26,16 @@ await configure({
     betterStack: fromAsyncSink(betterStackSink),
   },
   loggers: [
-    { category: ["logtape", "meta"], sinks: ["console"], lowestLevel: "warning" },
+    {
+      category: ["logtape", "meta"],
+      sinks: ["console"],
+      lowestLevel: "warning",
+    },
     {
       category: ["app"],
       sinks:
-        Env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN && Env.NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST
+        Env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN &&
+        Env.NEXT_PUBLIC_BETTER_STACK_INGESTING_HOST
           ? ["console", "betterStack"]
           : ["console"],
       lowestLevel: "debug",
