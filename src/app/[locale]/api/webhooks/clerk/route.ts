@@ -3,9 +3,15 @@ import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
+
 import { db } from "@/libs/db/db";
 import { usersSchema } from "@/libs/db/schema";
 import { Env } from "@/libs/env";
+import {
+  clerkUserInsertSchema,
+  clerkUserSoftDeleteSchema,
+  clerkUserUpdateSchema,
+} from "@/validations/user-validation";
 
 type VerificationResult = { event: WebhookEvent } | { response: NextResponse };
 
@@ -25,14 +31,22 @@ function isUserUpdatedEvent(event: WebhookEvent): event is UserUpdatedEvent {
   return event.type === "user.updated";
 }
 
-async function verifyWebhook(request: Request, secret: string): Promise<VerificationResult> {
+async function verifyWebhook(
+  request: Request,
+  secret: string
+): Promise<VerificationResult> {
   const headerPayload = await headers();
   const svixId = headerPayload.get("svix-id");
   const svixTimestamp = headerPayload.get("svix-timestamp");
   const svixSignature = headerPayload.get("svix-signature");
 
   if (!svixId || !svixTimestamp || !svixSignature) {
-    return { response: NextResponse.json({ error: "Missing svix headers" }, { status: 400 }) };
+    return {
+      response: NextResponse.json(
+        { error: "Missing svix headers" },
+        { status: 400 }
+      ),
+    };
   }
 
   const body = await request.text();
@@ -49,7 +63,12 @@ async function verifyWebhook(request: Request, secret: string): Promise<Verifica
   } catch (error) {
     console.error("Error verifying webhook:", error);
 
-    return { response: NextResponse.json({ error: "Error verifying webhook" }, { status: 400 }) };
+    return {
+      response: NextResponse.json(
+        { error: "Error verifying webhook" },
+        { status: 400 }
+      ),
+    };
   }
 }
 
@@ -57,13 +76,16 @@ async function createUser(event: UserCreatedEvent) {
   const { id, email_addresses, first_name, last_name } = event.data;
 
   const email = email_addresses.find(
-    (item) => item.id === event.data.primary_email_address_id,
+    (item) => item.id === event.data.primary_email_address_id
   )?.email_address;
 
   if (!email) {
     console.error("No email found for user:", id);
 
-    return NextResponse.json({ error: "No email found for user" }, { status: 400 });
+    return NextResponse.json(
+      { error: "No email found for user" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -74,12 +96,14 @@ async function createUser(event: UserCreatedEvent) {
       .limit(1);
 
     if (existingUsers.length === 0) {
-      await db.insert(usersSchema).values({
-        authUserId: id,
-        email,
-        firstName: first_name ?? null,
-        lastName: last_name ?? null,
-      });
+      await db.insert(usersSchema).values(
+        clerkUserInsertSchema.parse({
+          authUserId: id,
+          email,
+          firstName: first_name ?? null,
+          lastName: last_name ?? null,
+        })
+      );
       console.log("Created user:", id);
     } else {
       console.log("User already exists:", id);
@@ -97,20 +121,29 @@ async function updateUser(event: UserUpdatedEvent) {
   const { id, email_addresses, first_name, last_name } = event.data;
 
   const email = email_addresses.find(
-    (item) => item.id === event.data.primary_email_address_id,
+    (item) => item.id === event.data.primary_email_address_id
   )?.email_address;
 
   if (email) {
     try {
       await db
         .update(usersSchema)
-        .set({ email, firstName: first_name ?? null, lastName: last_name ?? null })
+        .set(
+          clerkUserUpdateSchema.parse({
+            email,
+            firstName: first_name ?? null,
+            lastName: last_name ?? null,
+          })
+        )
         .where(eq(usersSchema.authUserId, id));
       console.log("Updated user:", id);
     } catch (error) {
       console.error("Error updating user:", error);
 
-      return NextResponse.json({ error: "Error updating user" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Error updating user" },
+        { status: 500 }
+      );
     }
   }
 
@@ -124,13 +157,16 @@ async function deleteUser(event: UserDeletedEvent) {
     try {
       await db
         .update(usersSchema)
-        .set({ deletedAt: new Date() })
+        .set(clerkUserSoftDeleteSchema.parse({ deletedAt: new Date() }))
         .where(eq(usersSchema.authUserId, id));
       console.log("Soft deleted user:", id);
     } catch (error) {
       console.error("Error deleting user:", error);
 
-      return NextResponse.json({ error: "Error deleting user" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Error deleting user" },
+        { status: 500 }
+      );
     }
   }
 
@@ -141,7 +177,10 @@ export async function POST(request: Request) {
   if (!webhookSecret) {
     console.error("CLERK_WEBHOOK_SECRET is not configured");
 
-    return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Webhook secret not configured" },
+      { status: 500 }
+    );
   }
 
   const verification = await verifyWebhook(request, webhookSecret);
