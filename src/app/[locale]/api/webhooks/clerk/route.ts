@@ -90,21 +90,20 @@ async function createUser(event: UserCreatedEvent) {
   }
 
   try {
-    const existingUsers = await db
-      .select()
-      .from(usersSchema)
-      .where(eq(usersSchema.authUserId, id))
-      .limit(1);
-
-    if (existingUsers.length === 0) {
-      await db.insert(usersSchema).values(
+    const [createdUser] = await db
+      .insert(usersSchema)
+      .values(
         clerkUserInsertSchema.parse({
           authUserId: id,
           email,
           firstName: first_name ?? null,
           lastName: last_name ?? null,
         })
-      );
+      )
+      .onConflictDoNothing({ target: usersSchema.authUserId })
+      .returning({ id: usersSchema.id });
+
+    if (createdUser) {
       logger.info(`Created user ${id}`);
     } else {
       logger.info(`User already exists ${id}`);
