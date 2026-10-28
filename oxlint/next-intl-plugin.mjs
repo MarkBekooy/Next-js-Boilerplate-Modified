@@ -42,7 +42,7 @@ const noLocaleFromRouteParams = {
         "Use `getLocale()` in async Server Components or `useLocale()` in Client Components instead of reading `locale` from route params.",
     },
   },
-  create(context) {
+  createOnce(context) {
     return {
       VariableDeclarator(node) {
         const { init } = node;
