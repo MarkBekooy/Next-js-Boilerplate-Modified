@@ -6,14 +6,20 @@ type ResultSync<T, E> = Success<T> | Failure<E>;
 
 type ResultAsync<T, E> = Promise<ResultSync<T, E>>;
 
+type CallbackResult<T, E> =
+  | ResultSync<T extends Promise<unknown> ? Awaited<T> : T, E>
+  | (T extends Promise<unknown>
+      ? ResultAsync<Awaited<T>, E>
+      : Promise<unknown> extends T
+        ? ResultAsync<unknown, E>
+        : never);
+
 export function tryCatch<T, E = Error>(
   operation: Promise<T>
 ): ResultAsync<T, E>;
 export function tryCatch<T, E = Error>(
   operation: () => T
-):
-  | ResultSync<Awaited<T>, E>
-  | (T extends Promise<unknown> ? ResultAsync<Awaited<T>, E> : never);
+): CallbackResult<T, E>;
 export function tryCatch<T, E = Error>(
   operation: () => T | Promise<T>
 ): ResultSync<T, E> | ResultAsync<T, E>;
