@@ -1,11 +1,12 @@
+import { cn } from "cn";
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/libs/i18n/navigation";
+
 import ActionPanel from "@/components/action-panel";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "cn";
+import { Link } from "@/libs/i18n/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RootPage");
@@ -39,10 +40,11 @@ export default function RootPage() {
 
       <Card className="mx-auto my-3 max-w-3xl">
         <CardHeader className="flex flex-col items-center text-center">
-          <CardTitle className="text-2xl font-bold">Action Panel</CardTitle>
+          <CardTitle size="lg">Action Panel</CardTitle>
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="text-lg text-zinc-600 dark:text-zinc-300">
-              Tap a button below to see a message returned directly from the server.
+              Tap a button below to see a message returned directly from the
+              server.
             </p>
           </div>
         </CardHeader>
@@ -61,7 +63,10 @@ export default function RootPage() {
               )} */}
             <Link
               href="/test"
-              className={cn(buttonVariants({ variant: "outline" }), "mt-2 p-5 text-sm font-medium")}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "mt-2 p-5 text-sm font-medium"
+              )}
             >
               Visit the test page
             </Link>

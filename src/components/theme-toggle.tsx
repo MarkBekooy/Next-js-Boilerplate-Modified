@@ -1,9 +1,10 @@
 "use client";
 
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
+
 import { Button } from "@/components/ui/button";
 
 const themeToggleFrameClassName =
@@ -42,7 +43,7 @@ export function ThemeToggle() {
   const mounted = useSyncExternalStore(
     subscribeToMount,
     getMountedSnapshot,
-    getServerMountedSnapshot,
+    getServerMountedSnapshot
   );
 
   if (!mounted) {
@@ -53,27 +54,24 @@ export function ThemeToggle() {
     <fieldset className="items-center gap-2" aria-label={t("theme_selector")}>
       <div className={mountedThemeToggleFrameClassName}>
         <Button
-          variant="ghost"
+          variant={theme === "system" ? "secondary" : "ghost"}
           size="icon"
-          className={`size-8 ${theme === "system" ? "bg-muted" : ""}`}
           onClick={() => setTheme("system")}
         >
           <Monitor className="size-4" />
           <span className="sr-only">{t("theme_system")}</span>
         </Button>
         <Button
-          variant="ghost"
+          variant={theme === "light" ? "secondary" : "ghost"}
           size="icon"
-          className={`size-8 ${theme === "light" ? "bg-muted" : ""}`}
           onClick={() => setTheme("light")}
         >
           <Sun className="size-4" />
           <span className="sr-only">{t("theme_light")}</span>
         </Button>
         <Button
-          variant="ghost"
+          variant={theme === "dark" ? "secondary" : "ghost"}
           size="icon"
-          className={`size-8 ${theme === "dark" ? "bg-muted" : ""}`}
           onClick={() => setTheme("dark")}
         >
           <Moon className="size-4" />
