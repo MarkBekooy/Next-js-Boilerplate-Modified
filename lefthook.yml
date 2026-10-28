@@ -10,7 +10,7 @@ pre-commit:
   commands:
     lint-and-format:
       run: pnpm fix -- {staged_files}
-      glob: "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css}"
+      glob: "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css,md,mdx,yaml,yml}"
       stage_fixed: true
       priority: 1
     type-check:
