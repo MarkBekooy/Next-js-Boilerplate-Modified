@@ -1,5 +1,5 @@
 import type { UserWebhookEvent, WebhookEvent } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
@@ -136,13 +136,15 @@ async function updateUser(event: UserUpdatedEvent) {
             lastName: last_name ?? null,
           })
         )
-        .where(eq(usersSchema.authUserId, id))
+        .where(
+          and(eq(usersSchema.authUserId, id), isNull(usersSchema.deletedAt))
+        )
         .returning({ id: usersSchema.id });
 
       if (updatedUser) {
         logger.info(`Updated user ${id}`);
       } else {
-        logger.warn(`No user found to update for ${id}`);
+        logger.warn(`No active user found to update for ${id}`);
       }
     } catch (error) {
       logger.error(`Error updating user ${id}`, { error });
@@ -165,13 +167,15 @@ async function deleteUser(event: UserDeletedEvent) {
       const [deletedUser] = await db
         .update(usersSchema)
         .set(clerkUserSoftDeleteSchema.parse({ deletedAt: new Date() }))
-        .where(eq(usersSchema.authUserId, id))
+        .where(
+          and(eq(usersSchema.authUserId, id), isNull(usersSchema.deletedAt))
+        )
         .returning({ id: usersSchema.id });
 
       if (deletedUser) {
         logger.info(`Soft deleted user ${id}`);
       } else {
-        logger.warn(`No user found to soft delete for ${id}`);
+        logger.warn(`No active user found to soft delete for ${id}`);
       }
     } catch (error) {
       logger.error(`Error deleting user ${id}`, { error });
