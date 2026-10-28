@@ -7,6 +7,7 @@ import { Webhook } from "svix";
 import { db } from "@/libs/db/db";
 import { usersSchema } from "@/libs/db/schema";
 import { Env } from "@/libs/env";
+import { logger } from "@/libs/logger";
 import {
   clerkUserInsertSchema,
   clerkUserSoftDeleteSchema,
@@ -126,7 +127,7 @@ async function updateUser(event: UserUpdatedEvent) {
 
   if (email) {
     try {
-      await db
+      const [updatedUser] = await db
         .update(usersSchema)
         .set(
           clerkUserUpdateSchema.parse({
@@ -135,8 +136,16 @@ async function updateUser(event: UserUpdatedEvent) {
             lastName: last_name ?? null,
           })
         )
-        .where(eq(usersSchema.authUserId, id));
-      console.log("Updated user:", id);
+        .where(eq(usersSchema.authUserId, id))
+        .returning({ id: usersSchema.id });
+
+      if (updatedUser) {
+        logger.info("Updated user {authUserId}", { authUserId: id });
+      } else {
+        logger.warn("No user found to update for {authUserId}", {
+          authUserId: id,
+        });
+      }
     } catch (error) {
       console.error("Error updating user:", error);
 
@@ -155,11 +164,19 @@ async function deleteUser(event: UserDeletedEvent) {
 
   if (id) {
     try {
-      await db
+      const [deletedUser] = await db
         .update(usersSchema)
         .set(clerkUserSoftDeleteSchema.parse({ deletedAt: new Date() }))
-        .where(eq(usersSchema.authUserId, id));
-      console.log("Soft deleted user:", id);
+        .where(eq(usersSchema.authUserId, id))
+        .returning({ id: usersSchema.id });
+
+      if (deletedUser) {
+        logger.info("Soft deleted user {authUserId}", { authUserId: id });
+      } else {
+        logger.warn("No user found to soft delete for {authUserId}", {
+          authUserId: id,
+        });
+      }
     } catch (error) {
       console.error("Error deleting user:", error);
 

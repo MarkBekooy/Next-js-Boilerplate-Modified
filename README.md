@@ -293,17 +293,28 @@ You have full access to the source code for further customization. The provided 
 
 ### Change database schema
 
-To modify the database schema in the project, you can update the schema file located at `./src/models/Schema.ts`. This file defines the structure of your database tables using the Drizzle ORM library.
+To modify the database schema, update `src/libs/db/schema.ts`.
 
 After making changes to the schema, generate a migration by running the following command:
 
 ```shell
-npm run db:generate
+pnpm db:generate --name=describe-change
 ```
 
 [![Run the command in Warp](public/assets/images/warp-banner.png)](https://go.warp.dev/nextjs-bp)
 
-This will create a migration file that reflects your schema changes. The migration is automatically applied during the next database interaction, so there is no need to run it manually or restart the Next.js server.
+Generation writes SQL files under `migrations/`. It does not change the database. Review and commit the generated files, check migration history, then apply the migrations explicitly:
+
+```shell
+pnpm db:check
+pnpm db:migrate
+```
+
+`db:check` detects conflicting migration histories across branches without connecting to a database. It does not check the live database for schema differences.
+
+To preview schema differences against a database, run `pnpm db:preview` for development or `pnpm db:preview:prod` for production. These commands load the matching environment, connect to its `DATABASE_URL` and print the planned SQL without applying it. They compare the declared schema with the database, not the pending migration files. `verbose: true` alone is not a dry run.
+
+Migrations do not run automatically during database queries, builds or application startup.
 
 ### Commit Message Format
 
@@ -342,7 +353,14 @@ npm run test:e2e
 
 ### Deploy to production
 
-During the build process, database migrations are automatically executed, so there's no need to run them manually. However, you must define `DATABASE_URL` in your environment variables.
+Set `DATABASE_URL` for production. Review the generated migration SQL, check migration history and apply pending migrations explicitly as part of deployment:
+
+```shell
+pnpm db:check
+pnpm db:migrate:prod
+```
+
+The build does not apply database migrations.
 
 Then, you can generate a production build with:
 
