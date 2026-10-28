@@ -24,12 +24,14 @@ export async function onRequestError(
     : sessionIdHeader;
 
   const { error: posthogCaptureError } = await tryCatch(async () => {
-    const { getPostHogServer } = await import("@/libs/posthog-server");
-    const posthog = getPostHogServer();
+    const { getPostHogDistinctId, getPostHogServer } =
+      await import("@/libs/posthog-server");
 
-    await posthog.captureExceptionImmediate(error, distinctId, {
-      $session_id: sessionId,
-    });
+    await getPostHogServer().captureExceptionImmediate(
+      error,
+      distinctId || getPostHogDistinctId(request.headers.cookie),
+      { $session_id: sessionId }
+    );
   });
 
   if (posthogCaptureError) {

@@ -8,6 +8,7 @@ import { db } from "@/libs/db/db";
 import { usersSchema } from "@/libs/db/schema";
 import { Env } from "@/libs/env";
 import { logger } from "@/libs/logger";
+import { getPostHogServer } from "@/libs/posthog-server";
 import { tryCatch } from "@/utils/try-catch";
 import {
   clerkUserInsertSchema,
@@ -31,6 +32,27 @@ function isUserCreatedEvent(event: WebhookEvent): event is UserCreatedEvent {
 
 function isUserUpdatedEvent(event: WebhookEvent): event is UserUpdatedEvent {
   return event.type === "user.updated";
+}
+
+async function reportWebhookFailure({
+  error,
+  event,
+}: {
+  error: Error;
+  event: UserWebhookEvent;
+}) {
+  const { error: posthogCaptureError } = await tryCatch(() =>
+    getPostHogServer().captureExceptionImmediate(error, event.data.id, {
+      source: "clerk_webhook",
+      operation: event.type,
+    })
+  );
+
+  if (posthogCaptureError) {
+    logger.error("Could not capture PostHog webhook error", {
+      error: posthogCaptureError,
+    });
+  }
 }
 
 async function verifyWebhook(
@@ -122,6 +144,11 @@ async function createUser(event: UserCreatedEvent) {
   if (userCreationError) {
     logger.error(`Error creating user ${id}`, { error: userCreationError });
 
+    await reportWebhookFailure({
+      error: userCreationError,
+      event,
+    });
+
     return NextResponse.json({ error: "Error creating user" }, { status: 500 });
   }
 
@@ -161,6 +188,11 @@ async function updateUser(event: UserUpdatedEvent) {
     if (userUpdateError) {
       logger.error(`Error updating user ${id}`, { error: userUpdateError });
 
+      await reportWebhookFailure({
+        error: userUpdateError,
+        event,
+      });
+
       return NextResponse.json(
         { error: "Error updating user" },
         { status: 500 }
@@ -193,6 +225,11 @@ async function deleteUser(event: UserDeletedEvent) {
 
     if (userDeletionError) {
       logger.error(`Error deleting user ${id}`, { error: userDeletionError });
+
+      await reportWebhookFailure({
+        error: userDeletionError,
+        event,
+      });
 
       return NextResponse.json(
         { error: "Error deleting user" },
