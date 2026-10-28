@@ -102,6 +102,20 @@ export default defineConfig({
       { max: 100, skipBlankLines: true, skipComments: true },
     ],
     "no-inline-comments": "off",
+    "no-restricted-globals": [
+      "error",
+      {
+        checkGlobalObject: true,
+        globalObjects: ["global"],
+        globals: [
+          {
+            name: "console",
+            message:
+              "Use logger from @/libs/logger instead of console methods.",
+          },
+        ],
+      },
+    ],
     "no-use-before-define": ["error", { functions: false }],
     "no-warning-comments": "off",
     "react-doctor/no-giant-component": "off",

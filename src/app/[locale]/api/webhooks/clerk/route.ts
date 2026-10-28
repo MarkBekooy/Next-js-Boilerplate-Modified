@@ -62,7 +62,7 @@ async function verifyWebhook(
     // SAFETY: Svix verified the signed Clerk payload before it is parsed as Clerk's event type.
     return { event: JSON.parse(body) as WebhookEvent };
   } catch (error) {
-    console.error("Error verifying webhook:", error);
+    logger.error("Error verifying webhook", { error });
 
     return {
       response: NextResponse.json(
@@ -81,7 +81,7 @@ async function createUser(event: UserCreatedEvent) {
   )?.email_address;
 
   if (!email) {
-    console.error("No email found for user:", id);
+    logger.error(`No email found for user ${id}`);
 
     return NextResponse.json(
       { error: "No email found for user" },
@@ -105,12 +105,12 @@ async function createUser(event: UserCreatedEvent) {
           lastName: last_name ?? null,
         })
       );
-      console.log("Created user:", id);
+      logger.info(`Created user ${id}`);
     } else {
-      console.log("User already exists:", id);
+      logger.info(`User already exists ${id}`);
     }
   } catch (error) {
-    console.error("Error creating user:", error);
+    logger.error(`Error creating user ${id}`, { error });
 
     return NextResponse.json({ error: "Error creating user" }, { status: 500 });
   }
@@ -140,14 +140,12 @@ async function updateUser(event: UserUpdatedEvent) {
         .returning({ id: usersSchema.id });
 
       if (updatedUser) {
-        logger.info("Updated user {authUserId}", { authUserId: id });
+        logger.info(`Updated user ${id}`);
       } else {
-        logger.warn("No user found to update for {authUserId}", {
-          authUserId: id,
-        });
+        logger.warn(`No user found to update for ${id}`);
       }
     } catch (error) {
-      console.error("Error updating user:", error);
+      logger.error(`Error updating user ${id}`, { error });
 
       return NextResponse.json(
         { error: "Error updating user" },
@@ -171,14 +169,12 @@ async function deleteUser(event: UserDeletedEvent) {
         .returning({ id: usersSchema.id });
 
       if (deletedUser) {
-        logger.info("Soft deleted user {authUserId}", { authUserId: id });
+        logger.info(`Soft deleted user ${id}`);
       } else {
-        logger.warn("No user found to soft delete for {authUserId}", {
-          authUserId: id,
-        });
+        logger.warn(`No user found to soft delete for ${id}`);
       }
     } catch (error) {
-      console.error("Error deleting user:", error);
+      logger.error(`Error deleting user ${id}`, { error });
 
       return NextResponse.json(
         { error: "Error deleting user" },
@@ -192,7 +188,7 @@ async function deleteUser(event: UserDeletedEvent) {
 
 export async function POST(request: Request) {
   if (!webhookSecret) {
-    console.error("CLERK_WEBHOOK_SECRET is not configured");
+    logger.error("CLERK_WEBHOOK_SECRET is not configured");
 
     return NextResponse.json(
       { error: "Webhook secret not configured" },
