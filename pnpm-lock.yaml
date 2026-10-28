@@ -29,9 +29,6 @@ importers:
       '@logtape/logtape':
         specifier: ^2.4.2
         version: 2.4.2
-      '@mdx-js/loader':
-        specifier: ^3.1.1
-        version: 3.1.1(supports-color@8.1.1)(webpack@5.112.2(@swc/core@1.16.20(@swc/helpers@0.5.23))(esbuild@0.27.1)(lightningcss@1.33.0)(postcss@8.5.31)(sharp@0.35.5(@types/node@26.6.5))(uglify-js@3.19.3))
       '@mdx-js/react':
         specifier: ^3.1.1
         version: 3.1.1(@types/react@19.3.0)(react@19.3.1)
@@ -44,9 +41,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.104.5
         version: 5.104.5(@types/react@19.3.0)(react@19.3.1)
-      babel-plugin-react-compiler:
-        specifier: ^1.0.0
-        version: 1.0.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -56,9 +50,6 @@ importers:
       drizzle-orm:
         specifier: 1.0.0-rc.5
         version: 1.0.0-rc.5(@electric-sql/pglite@0.5.11)(@opentelemetry/api@1.10.0)(@types/pg@8.23.1)(pg@8.23.1)(zod@4.6.7)
-      front-matter:
-        specifier: ^4.0.2
-        version: 4.0.2
       lucide-react:
         specifier: ^1.61.0
         version: 1.61.0(@types/react@19.3.0)(react@19.3.1)
@@ -89,30 +80,15 @@ importers:
       react-hook-form:
         specifier: ^7.90.0
         version: 7.90.0(@types/react@19.3.0)(react@19.3.1)
-      remark-frontmatter:
-        specifier: ^5.0.0
-        version: 5.0.0(supports-color@8.1.1)
-      remark-gfm:
-        specifier: ^4.0.1
-        version: 4.0.1(supports-color@8.1.1)
-      remark-mdx-frontmatter:
-        specifier: ^6.0.0
-        version: 6.0.0
       server-only:
         specifier: 0.0.1
         version: 0.0.1
-      shadcn:
-        specifier: ^4.22.1
-        version: 4.22.1(supports-color@8.1.1)
       sonner:
         specifier: ^2.0.8
         version: 2.0.8(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       svix:
         specifier: ^2.8.0
         version: 2.8.0
-      tw-animate-css:
-        specifier: ^1.4.0
-        version: 1.4.0
       uuid:
         specifier: ^14.0.3
         version: 14.0.3
@@ -150,6 +126,9 @@ importers:
       '@lingual/i18n-check':
         specifier: ^0.9.5
         version: 0.9.5(@vue/compiler-core@3.5.25)
+      '@mdx-js/loader':
+        specifier: ^3.1.1
+        version: 3.1.1(supports-color@8.1.1)(webpack@5.112.2(@swc/core@1.16.20(@swc/helpers@0.5.23))(esbuild@0.27.1)(lightningcss@1.33.0)(postcss@8.5.31)(sharp@0.35.5(@types/node@26.6.5))(uglify-js@3.19.3))
       '@next/playwright':
         specifier: 16.4.3
         version: 16.4.3(@playwright/test@1.64.1)
@@ -201,6 +180,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^5.0.5
         version: 5.0.5(@vitest/browser@5.0.5)(vitest@5.0.5)
+      babel-plugin-react-compiler:
+        specifier: ^1.0.0
+        version: 1.0.0
       commitizen:
         specifier: ^4.3.2
         version: 4.3.2(@types/node@26.6.5)(typescript@7.0.2)
@@ -219,6 +201,9 @@ importers:
       eslint-plugin-github:
         specifier: 6.1.2
         version: 6.1.2(eslint@9.39.5(jiti@2.6.1)(supports-color@8.1.1))(supports-color@8.1.1)
+      front-matter:
+        specifier: ^4.0.2
+        version: 4.0.2
       knip:
         specifier: ^6.42.1
         version: 6.42.1
@@ -249,15 +234,30 @@ importers:
       react-scan:
         specifier: ^0.5.7
         version: 0.5.7(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(esbuild@0.27.1)(eslint@9.39.5(jiti@2.6.1)(supports-color@8.1.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rolldown@1.2.15)(supports-color@8.1.1)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.27.1)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.2))(webpack@5.112.2(@swc/core@1.16.20(@swc/helpers@0.5.23))(esbuild@0.27.1)(lightningcss@1.33.0)(postcss@8.5.31)(sharp@0.35.5(@types/node@26.6.5))(uglify-js@3.19.3))
+      remark-frontmatter:
+        specifier: ^5.0.0
+        version: 5.0.0(supports-color@8.1.1)
+      remark-gfm:
+        specifier: ^4.0.1
+        version: 4.0.1(supports-color@8.1.1)
+      remark-mdx-frontmatter:
+        specifier: ^6.0.0
+        version: 6.0.0
       rimraf:
         specifier: ^6.1.3
         version: 6.1.3
       semantic-release:
         specifier: ^25.0.9
         version: 25.0.9(supports-color@8.1.1)(typescript@7.0.2)
+      shadcn:
+        specifier: ^4.22.1
+        version: 4.22.1(supports-color@8.1.1)
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
