@@ -11,16 +11,11 @@ import tanstackJsPlugins from "ultracite/oxlint/tanstack/js-plugins";
 import vitestPreset from "ultracite/oxlint/vitest";
 
 import clerk from "./oxlint/clerk.mjs";
+import nextIntl from "./oxlint/next-intl.mjs";
 import tailwind from "./oxlint/tailwind.mjs";
 
 const jsPlugins = selectJsPlugins(["github", "react-doctor"]);
 const drizzleJsPlugin = { name: "drizzle", specifier: "eslint-plugin-drizzle" };
-
-const nextIntlJsPlugin = {
-  name: "next-intl",
-  specifier: "./oxlint/next-intl.mjs",
-};
-
 const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
 
 const vitest = {
@@ -47,6 +42,7 @@ export default defineConfig({
     tailwind,
     antiSlop,
     vitest,
+    nextIntl,
   ],
   ignorePatterns: [
     ...(core.ignorePatterns ?? []),
@@ -57,7 +53,7 @@ export default defineConfig({
   jsPlugins: [
     ...(jsPlugins.jsPlugins ?? []),
     drizzleJsPlugin,
-    nextIntlJsPlugin,
+    ...(nextIntl.jsPlugins ?? []),
     shadcnJsPlugin,
   ],
   options: {
@@ -76,33 +72,6 @@ export default defineConfig({
         "anti-slop/require-safety-comment-for-type-assertion": "off",
       },
     },
-    {
-      files: ["src/app/**/route.ts", "src/app/**/*-actions.ts"],
-      rules: {
-        "no-restricted-imports": [
-          "error",
-          {
-            paths: [
-              {
-                name: "next/link",
-                message: "Use `Link` from `@/libs/i18n/navigation`.",
-              },
-              {
-                name: "next-intl/server",
-                importNames: ["setRequestLocale"],
-                message:
-                  "Use `next/root-params`; next-intl recommends reading the root locale directly.",
-              },
-              {
-                name: "next/root-params",
-                message:
-                  "Root params are unavailable in Route Handlers and Server Actions. Pass the locale explicitly.",
-              },
-            ],
-          },
-        ],
-      },
-    },
   ],
   rules: {
     "anti-slop/no-module-mocking": "off",
@@ -116,6 +85,7 @@ export default defineConfig({
       { drizzleObjectName: ["db", "tx"] },
     ],
     "func-style": ["error", "declaration"],
+    "github/filenames-match-regex": "off",
     "jsdoc/require-param": "error",
     "jsdoc/require-returns": "error",
     "max-lines": ["error", { max: 500 }],
@@ -124,24 +94,6 @@ export default defineConfig({
       { max: 100, skipBlankLines: true, skipComments: true },
     ],
     "no-inline-comments": "off",
-    "next-intl/no-locale-from-route-params": "error",
-    "no-restricted-imports": [
-      "error",
-      {
-        paths: [
-          {
-            name: "next/link",
-            message: "Use `Link` from `@/libs/i18n/navigation`.",
-          },
-          {
-            name: "next-intl/server",
-            importNames: ["setRequestLocale"],
-            message:
-              "Use `next/root-params`; `setRequestLocale` is deprecated.",
-          },
-        ],
-      },
-    ],
     "no-use-before-define": ["error", { functions: false }],
     "no-warning-comments": "off",
     "react-doctor/no-giant-component": "off",
@@ -157,22 +109,10 @@ export default defineConfig({
     "shadcn/require-static-classes": "error",
     "typescript/consistent-type-definitions": ["error", "type"],
     "unicorn/filename-case": "off",
-    "github/filenames-match-regex": "off",
   },
   settings: {
     ...jsPluginSettings,
-    "jsx-a11y": {
-      components: {
-        IntentPrefetchLink: "a",
-        Link: "a",
-      },
-    },
-    react: {
-      linkComponents: [
-        { name: "Link", attribute: "href" },
-        { name: "IntentPrefetchLink", attribute: "href" },
-      ],
-    },
+    ...nextIntl.settings,
     shadcn: {
       note: "Read DESIGN.md for design rules and approved exceptions.",
     },
