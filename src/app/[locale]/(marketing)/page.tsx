@@ -25,7 +25,7 @@ export default function RootPage() {
   // const flags = await posthog.getAllFlags(
   //   "user_distinct_id", // replace with a user's distinct ID
   // );
-  // await posthog.shutdown();
+  // await posthog.flush();
 
   return (
     <>
