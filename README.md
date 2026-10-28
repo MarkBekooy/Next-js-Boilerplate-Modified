@@ -316,15 +316,15 @@ To preview schema differences against a database, run `pnpm db:preview` for deve
 
 Migrations do not run automatically during database queries, builds or application startup.
 
-### Commit Message Format
+### Commit message format
 
-The project follows the [Conventional Commits](https://www.conventionalcommits.org/) specification, meaning all commit messages must be formatted accordingly. To help you write commit messages, the project uses [Commitizen](https://github.com/commitizen/cz-cli), an interactive CLI that guides you through the commit process. To use it, run the following command:
+The project follows [Conventional Commits](https://www.conventionalcommits.org/). Write messages directly with Git or your editor. Lefthook runs commitlint to validate each message.
 
 ```shell
-npm run commit
+git commit -m "chore: Remove unused commit wizard"
 ```
 
-One of the benefits of using Conventional Commits is the ability to automatically generate a `CHANGELOG` file. It also allows us to automatically determine the next version number based on the types of commits that are included in a release.
+The semantic-release configuration uses commit types to determine release versions and generate the changelog.
 
 ### CodeRabbit AI Code Reviews
 
