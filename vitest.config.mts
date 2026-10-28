@@ -6,6 +6,9 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  optimizeDeps: {
+    include: ["react-dom/client", "react-dom/server"],
+  },
   test: {
     coverage: {
       include: ["src/**/*"],

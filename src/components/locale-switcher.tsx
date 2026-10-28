@@ -2,7 +2,6 @@
 
 import { Globe } from "lucide-react";
 import { hasLocale, useLocale, useTranslations } from "next-intl";
-import { useSyncExternalStore } from "react";
 
 import {
   Select,
@@ -16,20 +15,6 @@ import { usePathname, useRouter } from "@/libs/i18n/navigation";
 import { routing } from "@/libs/i18n/routing";
 import { AppConfig } from "@/utils/app-config";
 
-function subscribeToMount(_onStoreChange: () => void) {
-  return () => {
-    // Mount snapshot never changes.
-  };
-}
-
-function getMountedSnapshot() {
-  return true;
-}
-
-function getServerMountedSnapshot() {
-  return false;
-}
-
 export function LocaleSwitcherSkeleton() {
   return <Skeleton aria-hidden className="h-9 w-35" />;
 }
@@ -40,20 +25,10 @@ export function LocaleSwitcher() {
   const locale = useLocale();
   const t = useTranslations("Navigation");
 
-  const mounted = useSyncExternalStore(
-    subscribeToMount,
-    getMountedSnapshot,
-    getServerMountedSnapshot
-  );
-
   function handleChange(value: string) {
     if (hasLocale(routing.locales, value)) {
       router.replace(pathname, { locale: value });
     }
-  }
-
-  if (!mounted) {
-    return <LocaleSwitcherSkeleton />;
   }
 
   return (
