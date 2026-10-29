@@ -1,63 +1,71 @@
-function getPropertyName(node) {
-  if (node.type === "Identifier") {
-    return node.name;
-  }
+import { fileURLToPath } from "node:url";
 
-  if (node.type === "Literal") {
-    return node.value;
-  }
-}
+import { defineConfig } from "oxlint";
 
-function isRouteParams(node) {
-  if (node.type === "Identifier") {
-    return node.name === "params";
-  }
+const localizedLink = {
+  name: "next/link",
+  message: "Use `Link` from `@/libs/i18n/navigation`.",
+};
 
-  return (
-    node.type === "MemberExpression" &&
-    getPropertyName(node.property) === "params" &&
-    node.object.type === "Identifier" &&
-    node.object.name === "props"
-  );
-}
+const requestLocale = {
+  name: "next-intl/server",
+  importNames: ["setRequestLocale"],
+  message: "Use `next/root-params`; `setRequestLocale` is deprecated.",
+};
 
-function hasLocaleProperty(node) {
-  return (
-    node.type === "ObjectPattern" &&
-    node.properties.some(
-      (property) => property.type === "Property" && getPropertyName(property.key) === "locale",
-    )
-  );
-}
-
-const noLocaleFromRouteParams = {
-  meta: {
-    type: "problem",
-    docs: { description: "Use next-intl to read the current locale" },
-    schema: [],
-    messages: {
-      useNextIntlLocale:
-        "Use `getLocale()` in async Server Components or `useLocale()` in Client Components instead of reading `locale` from route params.",
+export default defineConfig({
+  jsPlugins: [
+    {
+      name: "next-intl",
+      specifier: fileURLToPath(
+        new URL("next-intl-plugin.mjs", import.meta.url)
+      ),
+    },
+  ],
+  rules: {
+    "next-intl/no-locale-from-route-params": "error",
+    "no-restricted-imports": [
+      "error",
+      { paths: [localizedLink, requestLocale] },
+    ],
+  },
+  overrides: [
+    {
+      files: ["src/app/**/route.ts", "src/app/**/*-actions.ts"],
+      rules: {
+        "no-restricted-imports": [
+          "error",
+          {
+            paths: [
+              localizedLink,
+              {
+                ...requestLocale,
+                message:
+                  "Use `next/root-params`; next-intl recommends reading the root locale directly.",
+              },
+              {
+                name: "next/root-params",
+                message:
+                  "Root params are unavailable in Route Handlers and Server Actions. Pass the locale explicitly.",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+  settings: {
+    "jsx-a11y": {
+      components: {
+        IntentPrefetchLink: "a",
+        Link: "a",
+      },
+    },
+    react: {
+      linkComponents: [
+        { name: "Link", attribute: "href" },
+        { name: "IntentPrefetchLink", attribute: "href" },
+      ],
     },
   },
-  create(context) {
-    return {
-      VariableDeclarator(node) {
-        const { init } = node;
-
-        if (
-          init?.type === "AwaitExpression" &&
-          isRouteParams(init.argument) &&
-          hasLocaleProperty(node.id)
-        ) {
-          context.report({ node: node.id, messageId: "useNextIntlLocale" });
-        }
-      },
-    };
-  },
-};
-
-export default {
-  meta: { name: "next-intl" },
-  rules: { "no-locale-from-route-params": noLocaleFromRouteParams },
-};
+});

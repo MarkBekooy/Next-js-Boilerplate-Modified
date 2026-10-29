@@ -1,31 +1,29 @@
-# Don't forget to run `pnpx lefthook install` to install the hooks
+# Don't forget to run `pnpm exec lefthook install` to install the hooks
+
+assert_lefthook_installed: true
+min_version: 2.2.2
+glob_matcher: doublestar
 
 # Validate staged content before committing
 pre-commit:
+  piped: true
   commands:
-    lint-fix:
+    lint-and-format:
       run: pnpm fix -- {staged_files}
-      glob:
-        - "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}"
-        - "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}"
-      stage_fixed: true
-      priority: 1
-    format:
-      run: pnpm exec oxfmt {staged_files}
-      glob:
-        - "*.{json,jsonc,css}"
-        - "**/*.{json,jsonc,css}"
+      glob: "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css,md,mdx,yaml,yml}"
       stage_fixed: true
       priority: 1
     type-check:
       run: pnpm check:types
       glob:
-        - "*.{ts,tsx,mts,cts}"
         - "**/*.{ts,tsx,mts,cts}"
+        - "tsconfig.json"
+        - "package.json"
+        - "pnpm-lock.yaml"
       priority: 2
 
 # Validate commit messages
 commit-msg:
   commands:
     commitlint:
-      run: pnpm exec commitlint < $(git rev-parse --git-path COMMIT_EDITMSG)
+      run: pnpm exec commitlint --edit '{1}'

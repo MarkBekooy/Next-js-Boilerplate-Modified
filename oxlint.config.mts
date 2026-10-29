@@ -1,22 +1,38 @@
+// oxlint-disable anti-slop/require-readable-spacing -- Avoid databaseJsPlugin spacing issues
+
 import { defineConfig } from "oxlint";
 import type { OxlintConfig } from "oxlint";
 import antiSlop from "ultracite/oxlint/anti-slop";
 import core from "ultracite/oxlint/core";
+import { jsPluginSettings, selectJsPlugins } from "ultracite/oxlint/js-plugins";
 import next from "ultracite/oxlint/next";
 import nextJsPlugins from "ultracite/oxlint/next/js-plugins";
 import react from "ultracite/oxlint/react";
 import tanstack from "ultracite/oxlint/tanstack";
 import tanstackJsPlugins from "ultracite/oxlint/tanstack/js-plugins";
 import vitestPreset from "ultracite/oxlint/vitest";
-import { jsPluginSettings, selectJsPlugins } from "ultracite/oxlint/js-plugins";
 
 import clerk from "./oxlint/clerk.mjs";
+import nextIntl from "./oxlint/next-intl.mjs";
 import tailwind from "./oxlint/tailwind.mjs";
 
+// --- Start of JavaScript plugin configurations for oxlint ---
 const jsPlugins = selectJsPlugins(["github", "react-doctor"]);
+const databaseJsPlugin = {
+  name: "database",
+  specifier: "./oxlint/database-plugin.mjs",
+};
 const drizzleJsPlugin = { name: "drizzle", specifier: "eslint-plugin-drizzle" };
-const nextIntlJsPlugin = { name: "next-intl", specifier: "./oxlint/next-intl.mjs" };
+const errorHandlingJsPlugin = {
+  name: "error-handling",
+  specifier: "./oxlint/error-handling-plugin.mjs",
+};
+const httpJsPlugin = {
+  name: "http",
+  specifier: "./oxlint/http-plugin.mjs",
+};
 const shadcnJsPlugin = { name: "shadcn", specifier: "@shadcn/lint" };
+// --- End of JavaScript plugin configurations for oxlint ---
 
 const vitest = {
   ...vitestPreset,
@@ -42,6 +58,7 @@ export default defineConfig({
     tailwind,
     antiSlop,
     vitest,
+    nextIntl,
   ],
   ignorePatterns: [
     ...(core.ignorePatterns ?? []),
@@ -49,11 +66,26 @@ export default defineConfig({
     "migrations/**/*",
     "src/components/ui/**/*",
   ],
-  jsPlugins: [...(jsPlugins.jsPlugins ?? []), drizzleJsPlugin, nextIntlJsPlugin, shadcnJsPlugin],
+  jsPlugins: [
+    ...(jsPlugins.jsPlugins ?? []),
+    databaseJsPlugin,
+    drizzleJsPlugin,
+    errorHandlingJsPlugin,
+    httpJsPlugin,
+    ...(nextIntl.jsPlugins ?? []),
+    shadcnJsPlugin,
+  ],
   options: {
     reportUnusedDisableDirectives: "error",
   },
   overrides: [
+    {
+      // The helper implements the native error handling used by all callers.
+      files: ["src/utils/try-catch.ts"],
+      rules: {
+        "error-handling/prefer-try-catch": "off",
+      },
+    },
     {
       files: ["src/libs/db/schema.ts"],
       rules: {
@@ -66,58 +98,41 @@ export default defineConfig({
         "anti-slop/require-safety-comment-for-type-assertion": "off",
       },
     },
-    {
-      files: ["src/app/**/route.ts", "src/app/**/*-actions.ts"],
-      rules: {
-        "no-restricted-imports": [
-          "error",
-          {
-            paths: [
-              {
-                name: "next/link",
-                message: "Use `Link` from `@/libs/i18n/navigation`.",
-              },
-              {
-                name: "next-intl/server",
-                importNames: ["setRequestLocale"],
-                message:
-                  "Use `next/root-params`; next-intl recommends reading the root locale directly.",
-              },
-              {
-                name: "next/root-params",
-                message:
-                  "Root params are unavailable in Route Handlers and Server Actions. Pass the locale explicitly.",
-              },
-            ],
-          },
-        ],
-      },
-    },
   ],
   rules: {
     "anti-slop/no-module-mocking": "off",
     "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
-    "drizzle/enforce-delete-with-where": ["error", { drizzleObjectName: ["db", "tx"] }],
-    "drizzle/enforce-update-with-where": ["error", { drizzleObjectName: ["db", "tx"] }],
+    "database/require-validated-writes": "error",
+    "error-handling/prefer-try-catch": "error",
+    "http/no-discarded-response": "error",
+    "drizzle/enforce-delete-with-where": [
+      "error",
+      { drizzleObjectName: ["db", "tx"] },
+    ],
+    "drizzle/enforce-update-with-where": [
+      "error",
+      { drizzleObjectName: ["db", "tx"] },
+    ],
     "func-style": ["error", "declaration"],
+    "github/filenames-match-regex": "off",
     "jsdoc/require-param": "error",
     "jsdoc/require-returns": "error",
     "max-lines": ["error", { max: 500 }],
-    "max-lines-per-function": ["error", { max: 100, skipBlankLines: true, skipComments: true }],
+    "max-lines-per-function": [
+      "error",
+      { max: 100, skipBlankLines: true, skipComments: true },
+    ],
     "no-inline-comments": "off",
-    "next-intl/no-locale-from-route-params": "error",
-    "no-restricted-imports": [
+    "no-restricted-globals": [
       "error",
       {
-        paths: [
+        checkGlobalObject: true,
+        globalObjects: ["global"],
+        globals: [
           {
-            name: "next/link",
-            message: "Use `Link` from `@/libs/i18n/navigation`.",
-          },
-          {
-            name: "next-intl/server",
-            importNames: ["setRequestLocale"],
-            message: "Use `next/root-params`; `setRequestLocale` is deprecated.",
+            name: "console",
+            message:
+              "Use logger from @/libs/logger instead of console methods.",
           },
         ],
       },
@@ -132,12 +147,15 @@ export default defineConfig({
         unnamedComponents: "function-expression",
       },
     ],
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-restyle": ["error", { allow: ["layout"] }],
+    "shadcn/require-static-classes": "error",
     "typescript/consistent-type-definitions": ["error", "type"],
     "unicorn/filename-case": "off",
-    "github/filenames-match-regex": "off",
   },
   settings: {
     ...jsPluginSettings,
+    ...nextIntl.settings,
     shadcn: {
       note: "Read DESIGN.md for design rules and approved exceptions.",
     },

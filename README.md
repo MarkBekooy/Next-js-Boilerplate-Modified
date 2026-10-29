@@ -133,8 +133,8 @@ Clone this project and use it to create your own Next.js project. You can check 
 
 **Live demo: [Next.js Boilerplate](https://demo.nextjs-boilerplate.com)**
 
-| Sign Up                                                                                                                                 | Sign In                                                                                                                                 |
-| --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Sign Up | Sign In |
+| --- | --- |
 | [![Next.js Boilerplate SaaS Sign Up](public/assets/images/nextjs-boilerplate-sign-in.png)](https://demo.nextjs-boilerplate.com/sign-up) | [![Next.js Boilerplate SaaS Sign In](public/assets/images/nextjs-boilerplate-sign-in.png)](https://demo.nextjs-boilerplate.com/sign-in) |
 
 ### Features
@@ -293,27 +293,38 @@ You have full access to the source code for further customization. The provided 
 
 ### Change database schema
 
-To modify the database schema in the project, you can update the schema file located at `./src/models/Schema.ts`. This file defines the structure of your database tables using the Drizzle ORM library.
+To modify the database schema, update `src/libs/db/schema.ts`.
 
 After making changes to the schema, generate a migration by running the following command:
 
 ```shell
-npm run db:generate
+pnpm db:generate --name=describe-change
 ```
 
 [![Run the command in Warp](public/assets/images/warp-banner.png)](https://go.warp.dev/nextjs-bp)
 
-This will create a migration file that reflects your schema changes. The migration is automatically applied during the next database interaction, so there is no need to run it manually or restart the Next.js server.
-
-### Commit Message Format
-
-The project follows the [Conventional Commits](https://www.conventionalcommits.org/) specification, meaning all commit messages must be formatted accordingly. To help you write commit messages, the project uses [Commitizen](https://github.com/commitizen/cz-cli), an interactive CLI that guides you through the commit process. To use it, run the following command:
+Generation writes SQL files under `migrations/`. It does not change the database. Review and commit the generated files, check migration history, then apply the migrations explicitly:
 
 ```shell
-npm run commit
+pnpm db:check
+pnpm db:migrate
 ```
 
-One of the benefits of using Conventional Commits is the ability to automatically generate a `CHANGELOG` file. It also allows us to automatically determine the next version number based on the types of commits that are included in a release.
+`db:check` detects conflicting migration histories across branches without connecting to a database. It does not check the live database for schema differences.
+
+To preview schema differences against a database, run `pnpm db:preview` for development or `pnpm db:preview:prod` for production. These commands load the matching environment, connect to its `DATABASE_URL` and print the planned SQL without applying it. They compare the declared schema with the database, not the pending migration files. `verbose: true` alone is not a dry run.
+
+Migrations do not run automatically during database queries, builds or application startup.
+
+### Commit message format
+
+The project follows [Conventional Commits](https://www.conventionalcommits.org/). Write messages directly with Git or your editor. Lefthook runs commitlint to validate each message.
+
+```shell
+git commit -m "chore: Remove unused commit wizard"
+```
+
+The semantic-release configuration uses commit types to determine release versions and generate the changelog.
 
 ### CodeRabbit AI Code Reviews
 
@@ -342,7 +353,14 @@ npm run test:e2e
 
 ### Deploy to production
 
-During the build process, database migrations are automatically executed, so there's no need to run them manually. However, you must define `DATABASE_URL` in your environment variables.
+Set `DATABASE_URL` for production. Review the generated migration SQL, check migration history and apply pending migrations explicitly as part of deployment:
+
+```shell
+pnpm db:check
+pnpm db:migrate:prod
+```
+
+The build does not apply database migrations.
 
 Then, you can generate a production build with:
 
@@ -409,8 +427,7 @@ Arcjet is configured with bot detection, a per-IP rate limit, the Arcjet Shield 
 - [Arcjet Shield WAF](https://docs.arcjet.com/shield/concepts) will detect and block common attacks such as SQL injection, cross-site scripting, and other OWASP Top 10 vulnerabilities.
 - The request filter blocks requests without a `User-Agent`, which Arcjet cannot classify as a specific bot.
 
-The shared client in `src/libs/Arcjet.ts` includes the Shield WAF and request filter. `src/proxy.ts` adds rate limiting and bot detection for Next.js 16.
-The proxy skips Arcjet for `/:locale/api/webhooks/*`; the Clerk webhook verifies requests with Svix signatures.
+The shared client in `src/libs/Arcjet.ts` includes the Shield WAF and request filter. `src/proxy.ts` adds rate limiting and bot detection for Next.js 16. The proxy skips Arcjet for `/:locale/api/webhooks/*`; the Clerk webhook verifies requests with Svix signatures.
 
 ### Useful commands
 
@@ -420,19 +437,19 @@ The project includes several commands to ensure code quality and consistency. Yo
 
 - `pnpm check` to run lint and formatting checks
 - `pnpm fix` to apply safe lint and formatting fixes
-- `pnpm check:types` to verify type safety across the entire project
+- `pnpm check:types` to generate route types and verify type safety across the entire project
 - `pnpm check:deps` to identify unused dependencies and files
 - `pnpm check:i18n` to check translation completeness and formatting
 
-#### Bundle Analyzer
+#### Bundle analyzer
 
-Next.js Boilerplate includes a built-in bundle analyzer. It can be used to analyze the size of your JavaScript bundles. To begin, run the following command:
+Analyze Turbopack bundles, import chains, and client/server boundaries:
 
 ```shell
-npm run build-stats
+pnpm build-stats
 ```
 
-By running the command, it'll automatically open a new browser window with the results.
+The command generates SEO content and serves the interactive analyzer at `http://localhost:4000`. It does not produce a deployable build. To save a snapshot without starting the analyzer server, run `pnpm build-stats --output --snapshot baseline`.
 
 #### Database Studio
 

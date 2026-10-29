@@ -1,3 +1,4 @@
+import "server-only";
 import { Env } from "@/libs/env";
 import { createDbConnection } from "@/utils/db-connection";
 

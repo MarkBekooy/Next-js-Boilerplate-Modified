@@ -10,8 +10,8 @@
     "description": "Navigation will resume when your connection returns."
   },
   "JsonLd": {
-    "application_subcategory": "",
-    "description": ""
+    "application_subcategory": "Web development",
+    "description": "A starter for building web applications."
   },
   "Navigation": {
     "about": "About",

@@ -1,12 +1,19 @@
 "use client";
 
-import type { ComponentProps, FocusEvent, MouseEvent, PointerEvent } from "react";
+import type {
+  ComponentProps,
+  FocusEvent,
+  MouseEvent,
+  PointerEvent,
+} from "react";
 import { useState } from "react";
+
 import { Link } from "@/libs/i18n/navigation";
 
 type IntentPrefetchLinkProps = Omit<ComponentProps<typeof Link>, "prefetch">;
 
 export function IntentPrefetchLink({
+  children,
   href,
   onFocus,
   onMouseEnter,
@@ -38,6 +45,8 @@ export function IntentPrefetchLink({
       onFocus={handleFocus}
       onMouseEnter={handleMouseEnter}
       onPointerEnter={handlePointerEnter}
-    />
+    >
+      {children}
+    </Link>
   );
 }

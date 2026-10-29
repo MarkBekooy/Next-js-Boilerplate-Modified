@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("AboutPage");
@@ -9,24 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function AboutPage() {
-  return (
-    <Suspense fallback={<AboutPageSkeleton />}>
-      <AboutPageContent />
-    </Suspense>
-  );
-}
-
-async function AboutPageContent() {
-  const t = await getTranslations("AboutPage");
+  const t = useTranslations("AboutPage");
 
   return <h1>{t("title")}</h1>;
-}
-
-function AboutPageSkeleton() {
-  return (
-    <div className="space-y-4">
-      <div className="h-8 w-48 rounded bg-gray-300 dark:bg-gray-700" />
-      <div className="h-4 w-80 rounded bg-gray-300 dark:bg-gray-700" />
-    </div>
-  );
 }

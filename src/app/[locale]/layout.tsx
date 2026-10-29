@@ -1,16 +1,20 @@
 import { ClerkProvider } from "@clerk/nextjs";
-import { supportedLocales } from "@/utils/app-config";
 import { NextIntlClientProvider } from "next-intl";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { getLocale } from "next-intl/server";
-import { OfflineIndicator } from "@/components/offline-indicator";
-import ReactQueryProvider from "@/providers/react-query-providers";
-import { getPathname } from "@/libs/i18n/navigation";
-import { routing } from "@/libs/i18n/routing";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Suspense } from "react";
+
+import { ClerkPostHogIdentity } from "@/components/clerk-posthog-identity";
 import { Footer } from "@/components/footer";
 import { JsonLd } from "@/components/json-ld";
+import { OfflineIndicator } from "@/components/offline-indicator";
+import { Toaster } from "@/components/ui/sonner";
+import { getPathname } from "@/libs/i18n/navigation";
+import { routing } from "@/libs/i18n/routing";
+import ReactQueryProvider from "@/providers/react-query-providers";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { supportedLocales } from "@/utils/app-config";
+
 import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -38,9 +42,13 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
 
   return (
     <html lang={locale} suppressHydrationWarning className={inter.variable}>
-      <head>{/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}</head>
+      <head>
+        {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}
+      </head>
       {/* <ReactScan /> */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <JsonLd />
         <ClerkProvider
           appearance={{
@@ -56,6 +64,9 @@ export default async function RootLayout(props: LayoutProps<"/[locale]">) {
           signUpFallbackRedirectUrl={homeUrl}
           afterSignOutUrl={homeUrl}
         >
+          <Suspense fallback={null}>
+            <ClerkPostHogIdentity />
+          </Suspense>
           <NextIntlClientProvider>
             <ThemeProvider
               attribute="class"
