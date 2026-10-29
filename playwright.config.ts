@@ -29,8 +29,8 @@ export default defineConfig({
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
   webServer: {
     command: process.env.CI
-      ? 'npx pglite-server --run "npm run start"'
-      : "npx run-p db-server:memory dev:next",
+      ? 'pnpm exec pglite-server --run "pnpm start"'
+      : "pnpm exec run-p db-server:memory dev:next",
     url: baseURL,
     timeout: 2 * 60 * 1000,
     reuseExistingServer: !process.env.CI,

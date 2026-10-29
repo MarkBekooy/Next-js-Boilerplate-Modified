@@ -1,0 +1,4 @@
+interface:
+  display_name: "Try-Catch Utility"
+  short_description: "Apply consistent typed error handling"
+  default_prompt: "Use $try-catch-utility to implement typed error handling with meaningful destructured names."

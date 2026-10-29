@@ -51,8 +51,7 @@ export function createArticleMetadata(article: ArticleFrontmatter): Metadata {
   };
 }
 
-// oxlint-disable-next-line react-doctor/only-export-components -- Keep serialization beside the article component and test its escaping.
-export function createArticleJsonLd(article: ArticleFrontmatter): string {
+function createArticleJsonLd(article: ArticleFrontmatter): string {
   const url = new URL(article.url_path, getBaseUrl()).toString();
 
   return JSON.stringify({

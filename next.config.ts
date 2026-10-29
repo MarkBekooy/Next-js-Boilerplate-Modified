@@ -1,9 +1,9 @@
-import type { NextConfig } from "next";
-import withBundleAnalyzer from "@next/bundle-analyzer";
 import createMDX from "@next/mdx";
 import { withPostHogConfig } from "@posthog/nextjs-config";
+import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
-import "./src/libs/env";
+
+import { Env } from "./src/libs/env";
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
@@ -12,7 +12,10 @@ const baseConfig: NextConfig = {
     position: "bottom-right",
   },
   experimental: {
+    agentUpgrade: "security",
+    exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === "1",
     globalNotFound: true,
+    turbopackGc: true,
     useOffline: true,
   },
   logging: {
@@ -43,29 +46,32 @@ const baseConfig: NextConfig = {
 const withMDX = createMDX({
   extension: /\.(?:md|mdx)$/u,
   options: {
-    remarkPlugins: ["remark-gfm", "remark-frontmatter", "remark-mdx-frontmatter"],
+    remarkPlugins: [
+      "remark-gfm",
+      "remark-frontmatter",
+      "remark-mdx-frontmatter",
+    ],
   },
 });
 
-// Initialize the Next-Intl plugin
 // oxlint-disable-next-line import/no-mutable-exports -- Next config plugins are conditionally composed into this accumulator.
-let configWithPlugins = withMDX(createNextIntlPlugin("./src/libs/i18n/request.ts")(baseConfig));
+let configWithPlugins = withMDX(baseConfig);
 
-// Conditionally enable bundle analysis
-if (process.env.ANALYZE === "true") {
-  configWithPlugins = withBundleAnalyzer()(configWithPlugins);
-}
+// Initialize the Next-Intl plugin
+const withNextIntl = createNextIntlPlugin("./src/libs/i18n/request.ts");
+
+configWithPlugins = withNextIntl(configWithPlugins);
 
 // Conditionally configure PostHog in production when credentials are available.
 if (
-  process.env.NODE_ENV === "production" &&
-  process.env.POSTHOG_API_KEY &&
-  process.env.POSTHOG_PROJECT_ID
+  Env.NODE_ENV === "production" &&
+  Env.POSTHOG_API_KEY &&
+  Env.POSTHOG_PROJECT_ID
 ) {
   configWithPlugins = withPostHogConfig(configWithPlugins, {
-    personalApiKey: process.env.POSTHOG_API_KEY,
-    projectId: process.env.POSTHOG_PROJECT_ID,
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    personalApiKey: Env.POSTHOG_API_KEY,
+    projectId: Env.POSTHOG_PROJECT_ID,
+    host: Env.NEXT_PUBLIC_POSTHOG_HOST,
     sourcemaps: {
       enabled: true,
       deleteAfterUpload: true,
