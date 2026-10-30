@@ -103,18 +103,17 @@ async function main() {
     return;
   }
 
+  const nextEnv = { ...process.env, DATABASE_URL: databaseUrl };
+
+  // An inherited PORT disables Next's automatic retry on occupied ports.
+  delete nextEnv.PORT;
+
   nextProcess = spawn(
     process.execPath,
-    [
-      require.resolve("next/dist/bin/next"),
-      "dev",
-      "--port",
-      "0",
-      ...process.argv.slice(2),
-    ],
+    [require.resolve("next/dist/bin/next"), "dev", ...process.argv.slice(2)],
     {
       cwd: directory,
-      env: { ...process.env, DATABASE_URL: databaseUrl },
+      env: nextEnv,
       stdio: "inherit",
     }
   );

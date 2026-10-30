@@ -8,6 +8,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+## Development servers
+
+Use `pnpm dev` from the worktree root. Next starts at port 3000 and tries higher ports through 3010 when occupied. The launcher ignores inherited `PORT`; read the actual app URL from Next's startup output. PGlite gets a dynamic port. Run one session per worktree. The launcher maintains `DATABASE_URL` in `.env.development.local` for separate database commands.
+
 ## UI work
 
 Read `DESIGN.md` and `.agents/skills/shadcn/SKILL.md` before creating or changing shadcn UI. Use `components.json` and `src/app/globals.css` as the source for component setup and theme tokens.
@@ -15,7 +19,3 @@ Read `DESIGN.md` and `.agents/skills/shadcn/SKILL.md` before creating or changin
 ## Soft-deleted users
 
 Normal user reads and profile updates must filter with `isNull(usersSchema.deletedAt)`. Relational queries use `where: { deletedAt: { isNull: true } }`. Drizzle does not apply this filter globally.
-
-## Development servers
-
-Use `pnpm dev` from the worktree root. Read the app URL from Next's startup output, since app and PGlite ports change each launch. Run one session per worktree. The launcher maintains `DATABASE_URL` in `.env.development.local` for separate database commands.

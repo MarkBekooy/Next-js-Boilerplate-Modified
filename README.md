@@ -221,11 +221,11 @@ npm run dev
 
 [![Run the command in Warp](public/assets/images/warp-banner.png)](https://go.warp.dev/nextjs-bp)
 
-Open the application URL printed by Next.js. The app and its PGlite database each get an available port, so several git worktrees can run at once. Each worktree keeps its database in `local.db`. Run one dev session per worktree.
+Open the application URL printed by Next.js. Next starts at port 3000 and tries higher ports through 3010 when occupied. The launcher ignores inherited `PORT` settings to enable this fallback. PGlite gets a dynamically assigned port, and each worktree keeps its database in `local.db`. Run one dev session per worktree.
 
 The launcher updates only `DATABASE_URL` in `.env.development.local`, preserving your other settings. While that session runs, `pnpm db:migrate`, `pnpm db:preview`, and `pnpm db:studio` use its database from another terminal. Remove any stale `DATABASE_URL` exported in your shell, since shell variables override env files. Migrations remain explicit.
 
-Use `pnpm db-server:file` to start only the local database. Use `pnpm test:dev` to check the launcher. Playwright has a separate startup configuration and still uses its existing ports.
+Use `pnpm db-server:file` to start only the local database. Playwright has a separate startup configuration and still uses its existing ports.
 
 ### Set up authentication
 
