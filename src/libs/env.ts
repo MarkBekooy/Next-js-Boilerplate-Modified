@@ -24,6 +24,7 @@ export const Env = createEnv({
     CLERK_SECRET_KEY: requiredInProduction(z.string().startsWith("sk_").min(1)),
     CLERK_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
     DATABASE_URL: z.string().min(1),
+    PORT: z.coerce.number().int().min(1).max(65_535).optional(),
     POSTHOG_API_KEY: z.string().optional(),
     POSTHOG_PROJECT_ID: z.string().optional(),
   },
