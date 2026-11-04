@@ -267,10 +267,183 @@ const requireFetchSignal = {
   },
 };
 
+function fetchBinding(node, context) {
+  const use = resultUse(node);
+  const declaration = use.parent;
+
+  if (declaration?.type !== "VariableDeclarator") {
+    return;
+  }
+
+  if (declaration.id.type === "Identifier") {
+    return findVariable(declaration.id, context);
+  }
+
+  if (declaration.id.type === "ObjectPattern") {
+    const data = declaration.id.properties.find(
+      (property) =>
+        property.type === "Property" &&
+        (property.key.name ?? property.key.value) === "data"
+    );
+
+    if (data?.value.type === "Identifier") {
+      return findVariable(data.value, context);
+    }
+  }
+}
+
+function isFetchPromise(node, context) {
+  const expression = unwrap(node);
+
+  if (isFetchCall(expression, context)) {
+    return true;
+  }
+
+  if (expression?.type === "Identifier") {
+    const [definition] = findVariable(expression, context)?.defs ?? [];
+
+    return isFetchCall(definition?.node.init, context);
+  }
+
+  return false;
+}
+
+const noFetchPromiseChain = {
+  meta: {
+    type: "suggestion",
+    docs: { description: "Await fetch instead of chaining promise handlers" },
+    schema: [],
+    messages: {
+      awaitFetch:
+        "Await fetch and handle failures with tryCatch from @/utils/try-catch instead of chaining .then(), .catch(), or .finally(). Check response.ok before reading the body.",
+    },
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        const callee = unwrap(node.callee);
+
+        if (
+          callee.type === "MemberExpression" &&
+          ["then", "catch", "finally"].includes(propertyName(callee)) &&
+          isFetchPromise(callee.object, context)
+        ) {
+          context.report({ node, messageId: "awaitFetch" });
+        }
+      },
+    };
+  },
+};
+
+function executionScope(node) {
+  let scope = node;
+
+  while (
+    scope.parent &&
+    ![
+      "ArrowFunctionExpression",
+      "FunctionExpression",
+      "FunctionDeclaration",
+      "Program",
+    ].includes(scope.type)
+  ) {
+    scope = scope.parent;
+  }
+
+  return scope;
+}
+
+// shortcut: Checks local status reads, not control flow; add path analysis if conditional checks cause misses.
+function checksFetchStatus(node, variable) {
+  const reads = variable.references.filter((reference) => reference.isRead());
+
+  const members = [];
+
+  for (const { identifier } of reads) {
+    if (
+      identifier.parent.type === "MemberExpression" &&
+      identifier.parent.object === identifier
+    ) {
+      members.push(identifier.parent);
+    }
+  }
+
+  const bodyReads = members.filter((member) =>
+    [
+      "json",
+      "text",
+      "blob",
+      "arrayBuffer",
+      "formData",
+      "bytes",
+      "body",
+    ].includes(propertyName(member))
+  );
+
+  const checks = members.filter((member) => propertyName(member) === "ok");
+
+  if (bodyReads.length) {
+    return bodyReads.every((body) =>
+      checks.some(
+        (check) =>
+          check.range[0] < body.range[0] &&
+          executionScope(check) === executionScope(body)
+      )
+    );
+  }
+
+  return (
+    checks.some((check) => executionScope(check) === executionScope(node)) ||
+    reads.some(
+      (reference) => reference.identifier.parent.type === "ReturnStatement"
+    )
+  );
+}
+
+const requireFetchOk = {
+  meta: {
+    type: "problem",
+    docs: { description: "Check fetch response.ok before consuming the body" },
+    schema: [],
+    messages: {
+      checkStatus:
+        "Check response.ok before reading the fetch response body. fetch does not reject HTTP error statuses; tryCatch only handles rejected operations.",
+    },
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        const fetchCall = isFetchCall(node, context);
+
+        const wrappedFetch =
+          isTryCatchCall(node, context) &&
+          returnsFetchResponse(node.arguments[0], context);
+
+        if (!fetchCall && !wrappedFetch) {
+          return;
+        }
+
+        const variable = fetchBinding(node, context);
+
+        if (variable && !checksFetchStatus(node, variable)) {
+          context.report({ node, messageId: "checkStatus" });
+        } else if (
+          !variable &&
+          resultUse(node).parent?.type === "MemberExpression"
+        ) {
+          context.report({ node, messageId: "checkStatus" });
+        }
+      },
+    };
+  },
+};
+
 export default {
   meta: { name: "http" },
   rules: {
     "no-discarded-response": noDiscardedResponse,
+    "no-fetch-promise-chain": noFetchPromiseChain,
+    "require-fetch-ok": requireFetchOk,
     "require-fetch-signal": requireFetchSignal,
   },
 };

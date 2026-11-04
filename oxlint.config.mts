@@ -111,6 +111,8 @@ export default defineConfig({
     "database/require-validated-writes": "error",
     "error-handling/prefer-try-catch": "error",
     "http/no-discarded-response": "error",
+    "http/no-fetch-promise-chain": "warn",
+    "http/require-fetch-ok": "warn",
     "drizzle/enforce-delete-with-where": [
       "error",
       { drizzleObjectName: ["db", "tx"] },
