@@ -92,7 +92,7 @@ export default defineConfig({
         "scripts/dev.mjs",
       ],
       rules: {
-        "node/no-process-env": "off",
+        "no-restricted-properties": "off",
       },
     },
     {
@@ -148,8 +148,15 @@ export default defineConfig({
       { max: 100, skipBlankLines: true, skipComments: true },
     ],
     "no-inline-comments": "off",
-    // Read application environment variables through @/libs/env so they are validated.
-    "node/no-process-env": "error",
+    "no-restricted-properties": [
+      "error",
+      {
+        object: "process",
+        property: "env",
+        message:
+          'Import { Env } from "@/libs/env" and read Env.YOUR_VARIABLE so it is validated. Add missing variables to src/libs/env.ts.',
+      },
+    ],
     "no-restricted-globals": [
       "error",
       {
