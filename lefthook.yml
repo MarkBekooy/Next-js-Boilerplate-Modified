@@ -9,7 +9,7 @@ pre-commit:
   piped: true
   commands:
     lint-and-format:
-      run: pnpm fix -- {staged_files}
+      run: pnpm fix --no-error-on-unmatched-pattern -- {staged_files}
       glob: "**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css,md,mdx,yaml,yml}"
       stage_fixed: true
       priority: 1
