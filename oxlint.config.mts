@@ -80,6 +80,12 @@ export default defineConfig({
   },
   overrides: [
     {
+      files: ["src/libs/**", "**/route.ts"],
+      rules: {
+        "http/require-fetch-signal": "warn",
+      },
+    },
+    {
       // The helper implements the native error handling used by all callers.
       files: ["src/utils/try-catch.ts"],
       rules: {

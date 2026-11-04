@@ -20,6 +20,7 @@ async function betterStackSink(record: Parameters<AsyncSink>[0]) {
         Authorization: `Bearer ${Env.NEXT_PUBLIC_BETTER_STACK_SOURCE_TOKEN}`,
       },
       body: JSON.stringify(record),
+      signal: AbortSignal.timeout(5000),
     }
   );
 

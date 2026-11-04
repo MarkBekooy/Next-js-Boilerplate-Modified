@@ -213,7 +213,64 @@ const noDiscardedResponse = {
   },
 };
 
+// shortcut: Only checks inline options; add binding analysis if shared options become common.
+function hasFetchSignal(node) {
+  const options = unwrap(node.arguments[1]);
+
+  if (options?.type !== "ObjectExpression") {
+    return false;
+  }
+
+  let hasSignal = false;
+
+  for (const property of options.properties) {
+    if (
+      property.type === "SpreadElement" ||
+      (property.computed && property.key.type !== "Literal")
+    ) {
+      hasSignal = false;
+    } else if ((property.key.name ?? property.key.value) === "signal") {
+      const value = unwrap(property.value);
+
+      hasSignal =
+        property.kind === "init" &&
+        !property.method &&
+        !(value.type === "Literal" && value.value === null) &&
+        !(value.type === "Identifier" && value.name === "undefined") &&
+        !(value.type === "UnaryExpression" && value.operator === "void");
+    }
+  }
+
+  return hasSignal;
+}
+
+const requireFetchSignal = {
+  meta: {
+    type: "problem",
+    docs: {
+      description: "Require an explicit abort signal on server fetch calls",
+    },
+    schema: [],
+    messages: {
+      missingSignal:
+        "Pass an explicit signal, preferably AbortSignal.timeout(ms), or an inherited signal. For intentional streams, suppress this rule with an explanation.",
+    },
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        if (isFetchCall(node, context) && !hasFetchSignal(node)) {
+          context.report({ node, messageId: "missingSignal" });
+        }
+      },
+    };
+  },
+};
+
 export default {
   meta: { name: "http" },
-  rules: { "no-discarded-response": noDiscardedResponse },
+  rules: {
+    "no-discarded-response": noDiscardedResponse,
+    "require-fetch-signal": requireFetchSignal,
+  },
 };
