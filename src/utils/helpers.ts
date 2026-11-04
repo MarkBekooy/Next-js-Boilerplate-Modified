@@ -13,7 +13,7 @@ export function getBaseUrl() {
     return `https://${Env.VERCEL_URL}`;
   }
 
-  return `http://localhost:${process.env.PORT || 3000}`;
+  return `http://localhost:${Env.PORT ?? 3000}`;
 }
 
 export function isServer() {

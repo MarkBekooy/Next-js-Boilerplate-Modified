@@ -80,6 +80,22 @@ export default defineConfig({
   },
   overrides: [
     {
+      // Config and startup files run before the validated application environment is available.
+      files: [
+        "src/libs/env.ts",
+        "src/libs/arcjet.ts",
+        "src/proxy.ts",
+        "src/instrumentation*.ts",
+        "next.config.ts",
+        "drizzle.config.ts",
+        "playwright.config.ts",
+        "scripts/dev.mjs",
+      ],
+      rules: {
+        "node/no-process-env": "off",
+      },
+    },
+    {
       files: ["src/libs/**", "**/route.ts"],
       rules: {
         "http/require-fetch-signal": "warn",
@@ -132,6 +148,8 @@ export default defineConfig({
       { max: 100, skipBlankLines: true, skipComments: true },
     ],
     "no-inline-comments": "off",
+    // Read application environment variables through @/libs/env so they are validated.
+    "node/no-process-env": "error",
     "no-restricted-globals": [
       "error",
       {
