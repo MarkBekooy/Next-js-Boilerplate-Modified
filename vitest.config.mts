@@ -1,11 +1,13 @@
 import react from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
 import { loadEnv } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
+  resolve: {
+    tsconfigPaths: true,
+  },
   optimizeDeps: {
     include: ["react-dom/client", "react-dom/server"],
   },
@@ -16,7 +18,6 @@ export default defineConfig({
     },
     projects: [
       {
-        extends: true,
         test: {
           name: "unit",
           include: ["src/**/*.test.{js,ts}"],
@@ -25,7 +26,6 @@ export default defineConfig({
         },
       },
       {
-        extends: true,
         test: {
           name: "ui",
           include: ["**/*.test.tsx", "src/hooks/**/*.test.ts"],
