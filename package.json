@@ -20,7 +20,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "db-server:file": "node scripts/dev.mjs --database-only",
-    "db-server:memory": "pglite-server --run 'pnpm db:migrate'",
+    "db-server:memory": "pglite-server --run \"pnpm db:migrate\"",
     "db:generate": "drizzle-kit generate",
     "db:check": "drizzle-kit check",
     "db:preview": "dotenv -c development -- drizzle-kit push --explain",

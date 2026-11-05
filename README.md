@@ -199,7 +199,7 @@ Built-in feature from Next.js:
 
 ### Requirements
 
-- Node.js 22+ and npm
+- Node.js 22.22.2+ within 22.x, or 24.15.0+ and pnpm
 
 ### Getting started
 
