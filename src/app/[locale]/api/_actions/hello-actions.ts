@@ -1,6 +1,6 @@
 "use server";
 
-// oxlint-disable-next-line require-await -- Next.js server actions must be async.
-export async function sayHelloFromServerAction() {
+// oxlint-disable-next-line @clerk/next/require-auth-protection -- This examplary server action is public so no need for authentication.
+export function sayHelloFromServerAction() {
   return "Hello from server action";
 }
