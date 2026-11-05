@@ -1,8 +1,10 @@
-import * as rootParams from "next/root-params";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
+import { notFound } from "next/navigation";
+import * as rootParams from "next/root-params";
+
 import { tryCatch } from "@/utils/try-catch";
+
 import { routing } from "./routing";
 
 export default getRequestConfig(async ({ locale }) => {
@@ -13,7 +15,7 @@ export default getRequestConfig(async ({ locale }) => {
   }
 
   const { data: localeModule, error: localeLoadError } = await tryCatch(
-    import(`../../locales/${resolvedLocale}.json`),
+    import(`../../locales/${resolvedLocale}.json`)
   );
 
   if (localeLoadError) {

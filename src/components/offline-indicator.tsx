@@ -1,8 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useOffline } from "next/offline";
 import { useEffect } from "react";
-import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 const offlineToastId = "offline-status";

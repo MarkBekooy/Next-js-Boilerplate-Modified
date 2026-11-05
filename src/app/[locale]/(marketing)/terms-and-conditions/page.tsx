@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
-import { generateSEOMetadata } from "@/utils/seo";
+
 import { AppConfig } from "@/utils/app-config";
+import { generateSEOMetadata } from "@/utils/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -54,7 +55,9 @@ export default function TermsAndConditionsPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="mb-4 text-2xl font-bold">{t("intellectual_property_title")}</h2>
+        <h2 className="mb-4 text-2xl font-bold">
+          {t("intellectual_property_title")}
+        </h2>
         <ul className="ml-6 list-disc space-y-2">
           <li>{t("intellectual_property_point1")}</li>
           <li>{t("intellectual_property_point2")}</li>
@@ -93,7 +96,10 @@ export default function TermsAndConditionsPage() {
       <section className="mt-8">
         <h2 className="mb-4 text-2xl font-bold">{t("contact_title")}</h2>
         <p className="mb-2">{t("contact_content")}</p>
-        <a className="underline underline-offset-4" href={`mailto:${t("contact_email")}`}>
+        <a
+          className="underline underline-offset-4"
+          href={`mailto:${t("contact_email")}`}
+        >
           {t("contact_email")}
         </a>
       </section>

@@ -1,11 +1,21 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+
 import parseFrontmatter from "front-matter";
 
 const scriptDirectory = import.meta.dirname;
 const projectDirectory = path.resolve(scriptDirectory, "..");
-const contentDirectory = path.join(projectDirectory, "src/app/[locale]/(marketing)/(seo-pages)");
-const outputPath = path.join(projectDirectory, "src/constants/seo-content-pages.ts");
+
+const contentDirectory = path.join(
+  projectDirectory,
+  "src/app/[locale]/(marketing)/(seo-pages)"
+);
+
+const outputPath = path.join(
+  projectDirectory,
+  "src/constants/seo-content-pages.ts"
+);
+
 const contentTypes = new Set(["blog", "compare", "guides", "solutions"]);
 
 async function findMdxFiles(directory) {
@@ -20,7 +30,7 @@ async function findMdxFiles(directory) {
       }
 
       return entry.name === "page.mdx" ? [entryPath] : [];
-    }),
+    })
   );
 
   return files.flat();
@@ -45,7 +55,12 @@ async function getContentPages() {
       const segments = relativePath.split(path.sep);
       const [contentType, slug, fileName] = segments;
 
-      if (!contentType || !slug || fileName !== "page.mdx" || !contentTypes.has(contentType)) {
+      if (
+        !contentType ||
+        !slug ||
+        fileName !== "page.mdx" ||
+        !contentTypes.has(contentType)
+      ) {
         return null;
       }
 
@@ -66,7 +81,7 @@ async function getContentPages() {
         updatedAt: isString(attributes.updated_at) ? attributes.updated_at : "",
         urlPath,
       };
-    }),
+    })
   );
 
   return pages

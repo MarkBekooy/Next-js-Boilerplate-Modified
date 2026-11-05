@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { MenuIcon } from "lucide-react";
+import { useState } from "react";
+
 import { IntentPrefetchLink } from "@/components/intent-prefetch-link";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 type MobileNavigationProps = {
   about: string;
@@ -28,7 +35,12 @@ export function MobileNavigation({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger
         render={
-          <Button variant="outline" size="icon" className="md:hidden" aria-label={openNavigation} />
+          <Button
+            variant="outline"
+            size="icon"
+            className="md:hidden"
+            aria-label={openNavigation}
+          />
         }
       >
         <MenuIcon aria-hidden="true" />

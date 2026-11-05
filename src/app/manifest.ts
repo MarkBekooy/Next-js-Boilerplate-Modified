@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+
 import { AppConfig } from "@/utils/app-config";
 
 export default function manifest(): MetadataRoute.Manifest {

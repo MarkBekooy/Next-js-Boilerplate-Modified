@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+
+import { getPathname } from "@/libs/i18n/navigation";
 import { AppConfig, AllLocales } from "@/utils/app-config";
 import { getBaseUrl } from "@/utils/helpers";
-import { getPathname } from "@/libs/i18n/navigation";
 
 type SEOConfig = {
   description: string;
@@ -23,7 +24,7 @@ export function generateSEOMetadata({
   const canonical = new URL(localizedPath, baseUrl).toString();
 
   const openGraphLocale = AppConfig.locales.find(
-    (appLocale) => appLocale.id === locale,
+    (appLocale) => appLocale.id === locale
   )?.posixLocale;
 
   return {
@@ -59,7 +60,10 @@ function getLanguageAlternates(baseUrl: string, path: string) {
     ]),
     [
       "x-default",
-      new URL(getPathname({ locale: AppConfig.defaultLocale, href: path }), baseUrl).toString(),
+      new URL(
+        getPathname({ locale: AppConfig.defaultLocale, href: path }),
+        baseUrl
+      ).toString(),
     ],
   ]);
 }

@@ -1,6 +1,7 @@
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { Suspense } from "react";
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
+
 import { HeaderAuthFallback } from "@/components/header-auth-fallback";
 import { IntentPrefetchLink } from "@/components/intent-prefetch-link";
 import { Logo } from "@/components/logo";

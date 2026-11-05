@@ -1,6 +1,7 @@
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { Suspense } from "react";
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
+
 import { HeaderAuthFallback } from "@/components/header-auth-fallback";
 import { IntentPrefetchLink } from "@/components/intent-prefetch-link";
 import { Logo } from "@/components/logo";
@@ -19,7 +20,10 @@ export function MarketingHeader() {
           </IntentPrefetchLink>
 
           <nav className="hidden items-center gap-4 text-sm text-muted-foreground md:flex">
-            <IntentPrefetchLink href="/features" className="hover:text-foreground">
+            <IntentPrefetchLink
+              href="/features"
+              className="hover:text-foreground"
+            >
               {t("features")}
             </IntentPrefetchLink>
             <IntentPrefetchLink href="/about" className="hover:text-foreground">

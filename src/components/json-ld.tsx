@@ -1,10 +1,15 @@
 import { getTranslations, getLocale } from "next-intl/server";
-import { getBaseUrl } from "@/utils/helpers";
+
 import { getPathname } from "@/libs/i18n/navigation";
 import { AppConfig } from "@/utils/app-config";
+import { getBaseUrl } from "@/utils/helpers";
 
 export async function JsonLd() {
-  const [locale, t] = await Promise.all([getLocale(), getTranslations("JsonLd")]);
+  const [locale, t] = await Promise.all([
+    getLocale(),
+    getTranslations("JsonLd"),
+  ]);
+
   const url = `${getBaseUrl()}${getPathname({ locale, href: "/" })}`;
 
   const jsonLd = {

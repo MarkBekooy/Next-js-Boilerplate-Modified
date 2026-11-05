@@ -1,13 +1,18 @@
-import type { NextFetchEvent, NextRequest } from "next/server";
 import { detectBot, slidingWindow } from "@arcjet/next";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
+import type { NextFetchEvent, NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
 import arcjet from "@/libs/arcjet";
+
 import { routing } from "./libs/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
-const handleClerk = clerkMiddleware((_auth, request) => handleI18nRouting(request));
+
+const handleClerk = clerkMiddleware((_auth, request) =>
+  handleI18nRouting(request)
+);
 
 // Improve security with Arcjet
 const aj = arcjet
@@ -16,7 +21,7 @@ const aj = arcjet
       mode: "LIVE",
       interval: 60,
       max: 100,
-    }),
+    })
   )
   .withRule(
     detectBot({
@@ -29,10 +34,13 @@ const aj = arcjet
         "CATEGORY:MONITOR", // Allow uptime monitoring services
         "CATEGORY:AI", // Allow AI and LLM crawlers
       ],
-    }),
+    })
   );
 
-export default async function proxy(request: NextRequest, event: NextFetchEvent) {
+export default async function proxy(
+  request: NextRequest,
+  event: NextFetchEvent
+) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/relay-FBSt" || pathname.startsWith("/relay-FBSt/")) {
@@ -53,7 +61,9 @@ export default async function proxy(request: NextRequest, event: NextFetchEvent)
 
     if (
       decision.isDenied() ||
-      decision.results.some(({ reason }) => reason.isBot() && reason.isSpoofed())
+      decision.results.some(
+        ({ reason }) => reason.isBot() && reason.isSpoofed()
+      )
     ) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }

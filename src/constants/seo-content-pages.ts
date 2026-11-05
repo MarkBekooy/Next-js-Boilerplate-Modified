@@ -15,7 +15,8 @@ export type SeoContentPage = {
 export const allSeoContentPages: SeoContentPage[] = [
   {
     contentType: "blog",
-    description: "An example blog post with YAML frontmatter and GitHub Flavored Markdown.",
+    description:
+      "An example blog post with YAML frontmatter and GitHub Flavored Markdown.",
     publishedAt: "2026-10-25",
     title: "Hello world with MDX",
     updatedAt: "",
@@ -26,7 +27,8 @@ export const allSeoContentPages: SeoContentPage[] = [
 export const blogContentPages: SeoContentPage[] = [
   {
     contentType: "blog",
-    description: "An example blog post with YAML frontmatter and GitHub Flavored Markdown.",
+    description:
+      "An example blog post with YAML frontmatter and GitHub Flavored Markdown.",
     publishedAt: "2026-10-25",
     title: "Hello world with MDX",
     updatedAt: "",

@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import { Suspense } from "react";
 import { SignUp } from "@clerk/nextjs";
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
+import { Suspense } from "react";
+
 import { AuthFormSkeleton } from "@/components/loaders/auth-form-skeleton";
 import { getPathname } from "@/libs/i18n/navigation";
 

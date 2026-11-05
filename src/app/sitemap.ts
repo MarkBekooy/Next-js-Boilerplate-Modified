@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+
 import { allSeoContentPages } from "@/constants/seo-content-pages";
 import { getBaseUrl } from "@/utils/helpers";
 

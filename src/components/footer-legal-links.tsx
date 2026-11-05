@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+
 import { Link, usePathname } from "@/libs/i18n/navigation";
 
 export function FooterLegalLinks() {
@@ -16,7 +17,10 @@ export function FooterLegalLinks() {
       className="flex flex-wrap justify-center gap-3 text-xs lg:justify-start"
       aria-label={t("legal_navigation_label")}
     >
-      <Link href="/privacy-policy" className="underline underline-offset-4 hover:text-foreground">
+      <Link
+        href="/privacy-policy"
+        className="underline underline-offset-4 hover:text-foreground"
+      >
         {t("privacy_policy_link")}
       </Link>
       <Link

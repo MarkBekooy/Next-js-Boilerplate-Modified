@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
+
 import { Badge } from "@/components/ui/badge";
 import { AppConfig } from "@/utils/app-config";
 import { getBaseUrl } from "@/utils/helpers";
@@ -57,7 +58,9 @@ function createArticleJsonLd(article: ArticleFrontmatter): string {
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    author: article.author ? { "@type": "Person", name: article.author } : undefined,
+    author: article.author
+      ? { "@type": "Person", name: article.author }
+      : undefined,
     dateModified: article.updated_at || article.published_at,
     datePublished: article.published_at,
     description: article.description,
@@ -73,12 +76,17 @@ function createArticleJsonLd(article: ArticleFrontmatter): string {
 }
 
 function formatDate(value: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" }).format(
-    new Date(`${value}T00:00:00Z`),
-  );
+  return new Intl.DateTimeFormat(locale, {
+    dateStyle: "long",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00Z`));
 }
 
-export async function ArticleDetails({ article }: { article: ArticleFrontmatter }) {
+export async function ArticleDetails({
+  article,
+}: {
+  article: ArticleFrontmatter;
+}) {
   const [locale, t] = await Promise.all([getLocale(), getTranslations("Blog")]);
 
   return (
@@ -93,7 +101,9 @@ export async function ArticleDetails({ article }: { article: ArticleFrontmatter 
         aria-label={t("article_details")}
         className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm text-muted-foreground"
       >
-        {article.author ? <span>{t("by", { author: article.author })}</span> : null}
+        {article.author ? (
+          <span>{t("by", { author: article.author })}</span>
+        ) : null}
         <time dateTime={article.published_at}>
           {t("published", { date: formatDate(article.published_at, locale) })}
         </time>
