@@ -221,7 +221,11 @@ npm run dev
 
 [![Run the command in Warp](public/assets/images/warp-banner.png)](https://go.warp.dev/nextjs-bp)
 
-Open http://localhost:3000 with your favorite browser to see your project. For your information, the project is already pre-configured with a local database using PGlite. No extra setup is required to run the project locally.
+Open the application URL printed by Next.js. Next starts at port 3000 and tries higher ports through 3010 when occupied. The launcher ignores inherited `PORT` settings to enable this fallback. PGlite gets a dynamically assigned port, and each worktree keeps its database in `local.db`. Run one dev session per worktree.
+
+The launcher updates only `DATABASE_URL` in `.env.development.local`, preserving your other settings. While that session runs, `pnpm db:migrate`, `pnpm db:preview`, and `pnpm db:studio` use its database from another terminal. Remove any stale `DATABASE_URL` exported in your shell, since shell variables override env files. Migrations remain explicit.
+
+Use `pnpm db-server:file` to start only the local database. Playwright has a separate startup configuration and still uses its existing ports.
 
 ### Set up authentication
 
@@ -241,6 +245,8 @@ The project uses DrizzleORM, a type-safe ORM that is compatible with PostgreSQL,
 To set up a remote and production database, you need to create a PostgreSQL database and obtain the connection string. One recommended option is to use [Prisma PostgreSQL](https://www.prisma.io/?via=nextjs-boilerplate), which provides a free PostgreSQL database. This database is compatible and has been tested with Next.js Boilerplate.
 
 After creating your Prisma account, you can get the connection string in the `Connect to your database` section and select the `Any client` tab. Then, you can generate the connection string by clicking the `Generate database credentials` button. Finally, you can copy the connection string and add the `DATABASE_URL` variable to the `.env.local` file.
+
+For remote database development, set `DATABASE_URL` in `.env.development.local` and use `pnpm dev:next`. The regular `pnpm dev` command starts local PGlite and replaces that URL.
 
 ### Translation (i18n) setup
 
