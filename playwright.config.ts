@@ -32,8 +32,11 @@ export default defineConfig({
       ? 'pnpm exec pglite-server --run "pnpm start"'
       : "pnpm exec run-p db-server:memory dev:next",
     url: baseURL,
+    env: {
+      DATABASE_URL: "postgresql://postgres:postgres@127.0.0.1:5432/postgres",
+    },
     timeout: 2 * 60 * 1000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
 
   // Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions.
