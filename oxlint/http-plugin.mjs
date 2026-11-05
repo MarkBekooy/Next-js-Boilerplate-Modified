@@ -1,3 +1,5 @@
+import noSecretInUrl from "./http-url-rule.mjs";
+
 function findVariable(node, context) {
   for (
     let scope = context.sourceCode.getScope(node);
@@ -335,7 +337,7 @@ const noFetchPromiseChain = {
   },
 };
 
-function executionScope(node) {
+function executionScope(node, context, guardScope) {
   let scope = node;
 
   while (
@@ -350,11 +352,41 @@ function executionScope(node) {
     scope = scope.parent;
   }
 
+  if (!context || scope === guardScope) {
+    return scope;
+  }
+
+  const use = resultUse(scope);
+  const call = use.parent;
+
+  if (
+    call?.type === "CallExpression" &&
+    call.arguments[0] === use &&
+    isTryCatchCall(call, context)
+  ) {
+    return executionScope(call, context, guardScope);
+  }
+
   return scope;
 }
 
+function isBodyRead(member) {
+  return (
+    member?.type === "MemberExpression" &&
+    [
+      "json",
+      "text",
+      "blob",
+      "arrayBuffer",
+      "formData",
+      "bytes",
+      "body",
+    ].includes(propertyName(member))
+  );
+}
+
 // shortcut: Checks local status reads, not control flow; add path analysis if conditional checks cause misses.
-function checksFetchStatus(node, variable) {
+function checksFetchStatus(node, variable, context) {
   const reads = variable.references.filter((reference) => reference.isRead());
 
   const members = [];
@@ -368,27 +400,20 @@ function checksFetchStatus(node, variable) {
     }
   }
 
-  const bodyReads = members.filter((member) =>
-    [
-      "json",
-      "text",
-      "blob",
-      "arrayBuffer",
-      "formData",
-      "bytes",
-      "body",
-    ].includes(propertyName(member))
-  );
+  const bodyReads = members.filter(isBodyRead);
 
   const checks = members.filter((member) => propertyName(member) === "ok");
 
   if (bodyReads.length) {
     return bodyReads.every((body) =>
-      checks.some(
-        (check) =>
+      checks.some((check) => {
+        const guardScope = executionScope(check);
+
+        return (
           check.range[0] < body.range[0] &&
-          executionScope(check) === executionScope(body)
-      )
+          guardScope === executionScope(body, context, guardScope)
+        );
+      })
     );
   }
 
@@ -424,45 +449,21 @@ const requireFetchOk = {
         }
 
         const variable = fetchBinding(node, context);
+        let member = resultUse(node).parent;
 
-        if (variable && !checksFetchStatus(node, variable)) {
-          context.report({ node, messageId: "checkStatus" });
-        } else if (
-          !variable &&
-          resultUse(node).parent?.type === "MemberExpression"
+        if (
+          wrappedFetch &&
+          member?.type === "MemberExpression" &&
+          propertyName(member) === "data"
         ) {
+          member = resultUse(member).parent;
+        }
+
+        if (variable && !checksFetchStatus(node, variable, context)) {
+          context.report({ node, messageId: "checkStatus" });
+        } else if (!variable && isBodyRead(member)) {
           context.report({ node, messageId: "checkStatus" });
         }
-      },
-    };
-  },
-};
-
-const noSecretInUrl = {
-  meta: {
-    type: "problem",
-    docs: { description: "Keep credentials out of URL query parameters" },
-    schema: [],
-    messages: {
-      secretInUrl:
-        "Do not put credentials in URL query parameters. Use an Authorization header or the API's supported credential header instead. URLs can leak through logs and browser history.",
-    },
-  },
-  create(context) {
-    function checkUrl(node, value) {
-      if (/[?&](?:secret|token|key|api_?key)=/iu.test(value)) {
-        context.report({ node, messageId: "secretInUrl" });
-      }
-    }
-
-    return {
-      Literal(node) {
-        if (!node.regex) {
-          checkUrl(node, node.value);
-        }
-      },
-      TemplateElement(node) {
-        checkUrl(node, node.value.cooked ?? node.value.raw);
       },
     };
   },
