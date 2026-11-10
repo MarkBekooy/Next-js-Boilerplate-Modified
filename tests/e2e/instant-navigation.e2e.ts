@@ -85,14 +85,22 @@ for (const locale of locales) {
 
           if (instantHeading) {
             await expect(
-              page.getByRole("main").first().getByText(heading, { exact: true })
+              page
+                .getByRole("main")
+                .first()
+                .getByText(heading, { exact: true })
+                .and(page.locator('h1, [data-slot="card-title"]'))
             ).toBeVisible();
           }
         },
         { baseURL }
       );
       await expect(
-        page.getByRole("main").first().getByText(heading, { exact: true })
+        page
+          .getByRole("main")
+          .first()
+          .getByText(heading, { exact: true })
+          .and(page.locator('h1, [data-slot="card-title"]'))
       ).toBeVisible();
     });
 
@@ -110,12 +118,20 @@ for (const locale of locales) {
 
         if (instantHeading) {
           await expect(
-            page.getByRole("main").first().getByText(heading, { exact: true })
+            page
+              .getByRole("main")
+              .first()
+              .getByText(heading, { exact: true })
+              .and(page.locator('h1, [data-slot="card-title"]'))
           ).toBeVisible();
         }
       });
       await expect(
-        page.getByRole("main").first().getByText(heading, { exact: true })
+        page
+          .getByRole("main")
+          .first()
+          .getByText(heading, { exact: true })
+          .and(page.locator('h1, [data-slot="card-title"]'))
       ).toBeVisible();
     });
   }
