@@ -10,17 +10,17 @@ allowBuilds:
   msw: true
 
 minimumReleaseAgeExclude:
-  - "@next/env@16.4.3 || 16.4.5"
-  - "@next/swc-darwin-arm64@16.4.3 || 16.4.5"
-  - "@next/swc-darwin-x64@16.4.3 || 16.4.5"
-  - "@next/swc-linux-arm64-gnu@16.4.3 || 16.4.5"
-  - "@next/swc-linux-arm64-musl@16.4.3 || 16.4.5"
-  - "@next/swc-linux-x64-gnu@16.4.3 || 16.4.5"
-  - "@next/swc-linux-x64-musl@16.4.3 || 16.4.5"
-  - "@next/swc-win32-arm64-msvc@16.4.3 || 16.4.5"
-  - "@next/swc-win32-x64-msvc@16.4.3 || 16.4.5"
-  - next@16.4.3 || 16.4.5
-  - "@posthog/core@1.60.1 || 1.63.1"
+  - "@next/env@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-darwin-arm64@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-darwin-x64@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-linux-arm64-gnu@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-linux-arm64-musl@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-linux-x64-gnu@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-linux-x64-musl@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-win32-arm64-msvc@16.4.3 || 16.4.5 || 16.4.6"
+  - "@next/swc-win32-x64-msvc@16.4.3 || 16.4.5 || 16.4.6"
+  - next@16.4.3 || 16.4.5 || 16.4.6
+  - "@posthog/core@1.60.1 || 1.63.1 || 1.66.0"
   - "@posthog/nextjs-config@1.12.0 || 1.12.1"
   - "@posthog/webpack-plugin@1.8.0"
   - "@clerk/localizations@4.24.5"
@@ -28,11 +28,14 @@ minimumReleaseAgeExclude:
   - "@clerk/backend@3.26.6"
   - "@clerk/nextjs@7.9.24"
   - "@clerk/react@6.18.5"
-  - "@next/mdx@16.4.5"
-  - lucide-react@1.68.0
+  - "@next/mdx@16.4.5 || 16.4.6"
+  - lucide-react@1.68.0 || 1.71.0
   - "@posthog/browser-common@0.10.5"
-  - posthog-js@1.445.4
+  - posthog-js@1.445.4 || 1.447.7
   - "@next/playwright@16.4.5"
+  - "@posthog/types@1.423.0"
+  - posthog-node@5.66.0
+  - svix@2.10.0
 
 overrides:
   "@types/react": 19.3.0
