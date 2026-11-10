@@ -20,7 +20,7 @@ minimumReleaseAgeExclude:
   - "@next/swc-win32-arm64-msvc@16.4.3 || 16.4.5 || 16.4.6"
   - "@next/swc-win32-x64-msvc@16.4.3 || 16.4.5 || 16.4.6"
   - next@16.4.3 || 16.4.5 || 16.4.6
-  - "@posthog/core@1.60.1 || 1.63.1 || 1.66.0"
+  - "@posthog/core@1.60.1 || 1.63.1 || 1.66.0 || 1.67.0"
   - "@posthog/nextjs-config@1.12.0 || 1.12.1"
   - "@posthog/webpack-plugin@1.8.0"
   - "@clerk/localizations@4.24.5"
@@ -34,7 +34,7 @@ minimumReleaseAgeExclude:
   - posthog-js@1.445.4 || 1.447.7
   - "@next/playwright@16.4.5 || 16.4.6"
   - "@posthog/types@1.423.0"
-  - posthog-node@5.66.0
+  - posthog-node@5.66.0 || 5.67.0
   - svix@2.10.0
   - "@electric-sql/pglite@0.5.16"
   - "@electric-sql/pglite-age@0.0.17"
