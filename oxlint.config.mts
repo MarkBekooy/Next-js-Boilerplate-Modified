@@ -41,6 +41,7 @@ const vitest = {
     rules: {
       ...override.rules,
       "vitest/prefer-import-in-mock": "off",
+      "vitest/prefer-importing-vitest-globals": "error",
     },
   })),
 } satisfies OxlintConfig;
@@ -142,6 +143,7 @@ export default defineConfig({
     "github/filenames-match-regex": "off",
     "jsdoc/require-param": "error",
     "jsdoc/require-returns": "error",
+    "jsx-a11y/aria-role": "error",
     "max-lines": ["error", { max: 500 }],
     "max-lines-per-function": [
       "error",
@@ -171,8 +173,10 @@ export default defineConfig({
         ],
       },
     ],
+    "no-unused-vars": "error",
     "no-use-before-define": ["error", { functions: false }],
     "no-warning-comments": "off",
+    "react-doctor/no-barrel-import": "error",
     "react-doctor/no-giant-component": "off",
     "react/function-component-definition": [
       "error",
@@ -186,6 +190,7 @@ export default defineConfig({
     "shadcn/require-static-classes": "error",
     "typescript/consistent-type-definitions": ["error", "type"],
     "unicorn/filename-case": "off",
+    "unicorn/prefer-export-from": "error",
   },
   settings: {
     ...jsPluginSettings,

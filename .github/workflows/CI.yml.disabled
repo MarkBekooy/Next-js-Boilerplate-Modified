@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [22.x, 24.x]
+        node-version: [26.13.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     name: Build with ${{ matrix.node-version }}
@@ -39,7 +39,7 @@ jobs:
         env:
           EXPOSE_TESTING_API: "1"
 
-      - if: matrix.node-version == '22.x' && success()
+      - if: matrix.node-version == '26.13.0' && success()
         name: Cache Next.js build output
         uses: actions/cache/save@v4
         with:
@@ -50,7 +50,7 @@ jobs:
   static:
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [26.13.0]
 
     name: Run static checks
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
   unit:
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [26.13.0]
 
     name: Run unit tests
     runs-on: ubuntu-latest
@@ -109,7 +109,7 @@ jobs:
   e2e:
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [26.13.0]
 
     name: Run E2E tests
     runs-on: ubuntu-latest

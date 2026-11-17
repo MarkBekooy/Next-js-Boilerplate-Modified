@@ -199,7 +199,7 @@ Built-in feature from Next.js:
 
 ### Requirements
 
-- Node.js 22.22.2+ within 22.x, or 24.15.0+ and pnpm
+- Node.js 26.13.0+ and pnpm. semantic-release 26 requires this minimum.
 
 ### Getting started
 

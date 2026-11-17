@@ -34,28 +34,29 @@ export default function ActionPanel() {
   async function triggerRouteHandler() {
     setIsRoutePending(true);
 
-    const { data: routeMessage, error: routeRequestError } = await tryCatch(
-      async () => {
-        const response = await fetch("/api/hello", { cache: "no-store" });
+    const { data: routeMessage, error: routeRequestError } =
+      await Promise.resolve(
+        tryCatch(async () => {
+          const response = await fetch("/api/hello", { cache: "no-store" });
 
-        if (!response.ok) {
-          throw new Error("Request failed");
-        }
+          if (!response.ok) {
+            throw new Error("Request failed");
+          }
 
-        // SAFETY: The request targets our /api/hello route, which returns an optional message string.
-        const data = (await response.json()) as { message?: string };
+          // SAFETY: The request targets our /api/hello route, which returns an optional message string.
+          const data = (await response.json()) as { message?: string };
 
-        return data.message ?? "No response";
-      }
-    );
+          return data.message ?? "No response";
+        })
+      ).finally(() => {
+        setIsRoutePending(false);
+      });
 
     if (routeRequestError) {
       setRouteHandlerResult("Something went wrong");
     } else {
       setRouteHandlerResult(routeMessage);
     }
-
-    setIsRoutePending(false);
   }
 
   return (
